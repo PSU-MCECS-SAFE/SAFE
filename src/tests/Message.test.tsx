@@ -1,7 +1,6 @@
 import Message from "../safeMessage/SafeMessage";
 
-
-//Validate the constructor generates an object correctly
+// Validate the constructor generates an object correctly
 test("Validation of message constructor", () => {
     expect(() => {
         new Message(
@@ -10,6 +9,17 @@ test("Validation of message constructor", () => {
             "Test String"
         );
     }).not.toThrowError();
+
+    // Now knowing the constructor work, lets check that the variables 
+    // are filled up correctly
+    const testObject: Message = new Message(
+        "Test Title",
+        "Test Receiver",
+        "Test String"
+    );
+    expect(testObject.title).toBe("Test Title");
+    expect(testObject.receiver_name).toBe("Test Receiver");
+    expect(testObject.message).toBe("Test String");
 });
 
 
