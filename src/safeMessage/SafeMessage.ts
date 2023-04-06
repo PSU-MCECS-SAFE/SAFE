@@ -7,6 +7,7 @@ export class Message {
   receiver_name: string;
   message: string;
 
+
   /**
    * Constructor for the `Message` class object
    * @param title - The messages title being sent to the receiver
@@ -28,6 +29,7 @@ export class Message {
     this.message = message;
   }
 }
+
 
 // Allows quick imports from this class into other files.
 export default Message;
