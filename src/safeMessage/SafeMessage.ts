@@ -15,18 +15,19 @@ export class Message {
    * @param message - The message the sender is sending
    */
   public constructor(title: string, receiver_name: string, message: string) {
-    if (title === undefined || title.length === 0) {
-      throw new Error("The title cannot be empty.");
-    }
-    if (receiver_name === undefined || receiver_name.length === 0) {
-      throw new Error("The intended Receiver cannot be empty.");
-    }
-    if (message === undefined || message.length === 0) {
-      throw new Error("The message cannot be empty.");
-    }
+    this.verify_string(title, "title");
+    this.verify_string(receiver_name, "intended Receiver");
+    this.verify_string(message, "message");
+    
     this.title = title;
     this.receiver_name = receiver_name;
     this.message = message;
+  }
+
+  private verify_string(variable_name: string, field_name: string) {
+    if (variable_name === undefined || variable_name.length === 0) {
+      throw new Error("The " + field_name + " cannot be empty.");
+    }
   }
 }
 
