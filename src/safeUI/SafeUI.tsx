@@ -14,20 +14,23 @@ import React from 'react';
 function SafeUI() {
   return (
     <div>
-      <Typography mt={2} mb={3} variant="h3" gutterBottom>
+      <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
         PSU's CS Department Anonymous Feedback System
       </Typography>
-      <Grid container rowSpacing={2} spacing={2}>
+      <Typography mt={2} mb={3} align="center">
+        Find out how we are committed to keeping your identity anonymous!
+      </Typography>
+      <Grid container rowSpacing={2} spacing={2} justifyContent="center">
         <Grid item xs={8}>
-          <TextField id="label" variant="outlined" label="To: " fullWidth />
+          <TextField id="label" variant="standard" label="To: " fullWidth />
         </Grid>
 
         <Grid item xs={8}>
           <TextField
             id="label"
-            variant="outlined"
+            variant="standard"
             label="Subject: "
             fullWidth
           />
@@ -37,8 +40,9 @@ function SafeUI() {
             hiddenLabel
             id="filled-hidden-label-normal"
             placeholder="Enter Message"
-            variant="standard"
+            variant="outlined"
             multiline
+            rows={7}
             fullWidth
           />
           <Typography mt={2} mb={3} gutterBottom>
