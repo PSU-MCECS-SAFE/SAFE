@@ -1,14 +1,10 @@
 export class Sender {
-  message: Message;
+  newMessage: Message;
   database: MessageDB;
 
-  public constructor() {
-    this.message = new Message();
+  public constructor(title: string, receiver_name: string, message: string) {
+    this.newMessage = new Message(title, receiver_name, message);
     this.database = new MessageDB();
-  }
-
-  public createMessage() {
-    this.message.createMessage();
   }
 
   public savetoDB() {
