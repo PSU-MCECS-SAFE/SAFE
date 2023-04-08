@@ -2,19 +2,17 @@ export class Sender {
   message: Message;
   database: MessageDB;
 
-  public constructor(message: Message, database: MessageDB;) {
-    if (message === undefined) {
-      throw new Error("No Message.");
-    }
-    if (database === undefined) {
-      throw new Error("No Database.");
-    }
-    this.message = message;
-    this.database = database;
+  public constructor() {
+    this.message = new Message();
+    this.database = new MessageDB();
+  }
+
+  public createMessage() {
+    this.message.createMessage();
   }
 
   public savetoDB() {
-
+    this.database.addMessage(this.message);
   }
 
   public emailMessage() {
