@@ -1,11 +1,12 @@
 import postgres from 'postgres'
+import Result from 'postgres'
 import Message from './SafeMessage'
 
 /**
 * Parser for the `Message` class object from PostgreSQL query
 * @param psql_msg - The message from a PostgreSQL query
 */
-function parse_psql(psql_msgs: Array<Object>) : Message {
+function parse_psql(psql_msgs: Array<Result>) : Message {
     if (psql_msgs.length != 1) {
         var amount: string = (psql_msgs.length < 1) ? "No" : "Too many";
         throw new Error(amount + " messages in database query");
