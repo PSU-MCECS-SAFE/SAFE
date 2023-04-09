@@ -4,12 +4,12 @@ import { ResultRow } from 'ts-postgres/dist/src/result';
 
 /**
  * Connect to Database and run query
+ * @param query - string containing query to be made
  */
-async function psql_to_Message(){
+async function psql_to_Message(query: string) : Promise<Message[]> {
     // Connect to DB
     var client = new Client.Client({"host": "localhost"});
     await client.connect();
-    var query = "SELECT * FROM test";
 
     // Get Query and make each row an element in an array
     var result_iterable = await client.query(query);
@@ -19,7 +19,7 @@ async function psql_to_Message(){
     client.end();
 
     // Convert DB results to Message
-    var messages: Message[] = psql_entry_to_Message(msgs);
+    return psql_entry_to_Message(msgs);
 }
 
 /**
