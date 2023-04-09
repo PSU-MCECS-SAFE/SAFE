@@ -1,16 +1,44 @@
-import postgres from 'postgres'
-import Result from 'postgres'
+import Client from 'ts-postgres'
 import Message from './SafeMessage'
+import { ResultRow } from 'ts-postgres/dist/src/result';
+
+/**
+ * Connect to Database and run query
+ */
+async function psql_to_Message(){
+    // Connect to DB
+    var client = new Client.Client({"host": "localhost"});
+    await client.connect();
+    var query = "SELECT * FROM test";
+
+    // Get Query and make each row an element in an array
+    var result_iterable = await client.query(query);
+    var msgs = [...result_iterable];
+
+    // Close DB
+    client.end();
+
+    // Convert DB results to Message
+    var messages: Message[] = psql_entry_to_Message(msgs);
+}
 
 /**
 * Parser for the `Message` class object from PostgreSQL query
-* @param psql_msg - The message from a PostgreSQL query
+* @param msgs - PostgreSQL query results in an array
 */
-function parse_psql(psql_msgs: Array<Result>) : Message {
-    if (psql_msgs.length != 1) {
-        var amount: string = (psql_msgs.length < 1) ? "No" : "Too many";
-        throw new Error(amount + " messages in database query");
+function psql_entry_to_Message(msgs: ResultRow<Client.Value>[]) : Message[] {
+    // Verify there is at least one entry
+    if (msgs.length < 1) {
+        throw new Error("No messages in database query");
     }
-    var msg = psql_msgs[0];
-    return new Message(msg.title, msg.receiver_name, msg.message);
+
+    // Return Message objects from data in DB entry
+    var messages: Message[] = [];
+    for(const msg of msgs){
+        let title = msg.get('title') as string;
+        let receiver_name = msg.get('receiver_name') as string;
+        let message = msg.get('message') as string;
+        messages.push(new Message(title, receiver_name, message));
+    }
+    return messages;
 }
