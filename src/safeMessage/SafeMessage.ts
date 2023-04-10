@@ -8,8 +8,8 @@ export class Message {
   message: string;
   code: string;
   receive_reply: boolean;
-  has_been_read : boolean;
-  time_submitted : Date;
+  has_been_read: boolean;
+  time_submitted: Date;
 
   /**
    * Constructor for the `Message` class object
@@ -17,18 +17,30 @@ export class Message {
    * @param receiver_name - Who the intended recipient is
    * @param message - The message the sender is sending
    */
-  public constructor (title: string,
-                      receiver_name: string,
-                      message: string,
-                      code: string = "",
-                      receive_reply: boolean = false,
-                      has_been_read: boolean = false,
-                      time_submitted: Date = new Date()
-                      ) {
+  /* Add these to the docstring above when they come online.
+   * param code - WIP. This feature has yet to be created. 
+   *              Code generated for sender to view feedback if any provided
+   * param receive_reply - WIP. This feature has yet to be created.
+   *                        Indicator that this feedback message is requesting
+   *                        a reply.
+   * param has_been_read - WIP. This feature has yet to be created.
+   *                        Indicator that this feedback message has been read.
+   * param time_submitted - WIP. This feature has yet to be created.
+   *                         Date/Time message was submitted.
+   */
+  public constructor(
+    title: string,
+    receiver_name: string,
+    message: string,
+    code: string = "",
+    receive_reply: boolean = false,
+    has_been_read: boolean = false,
+    time_submitted: Date = new Date()
+  ) {
     this.verify_string(title, "title");
     this.verify_string(receiver_name, "intended Receiver");
     this.verify_string(message, "message");
-    
+
     this.title = title;
     this.receiver_name = receiver_name;
     this.message = message;
@@ -38,6 +50,12 @@ export class Message {
     this.time_submitted = time_submitted;
   }
 
+  /**
+   * Verifies that the information being provided in the constructor is not
+   * undefined or an empty string.
+   * @param variable_name - Argument being error checked
+   * @param field_name - Field being checked for Message class variable
+   */
   private verify_string(variable_name: string, field_name: string) {
     if (variable_name === undefined || variable_name.length === 0) {
       throw new Error("The " + field_name + " cannot be empty.");
