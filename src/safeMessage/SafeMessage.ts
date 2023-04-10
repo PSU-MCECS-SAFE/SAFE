@@ -1,3 +1,6 @@
+const TITLE_FIELD: string = "title";
+const RECEIVER_FIELD: string = "intended Receiver";
+const MESSAGE_FIELD: string = "message";
 /**
  * Message class utilized throughout SAFE to capture, transfer, and display
  * data to users.
@@ -37,9 +40,9 @@ export class Message {
     has_been_read: boolean = false,
     time_submitted: Date = new Date()
   ) {
-    this.verify_string(title, "title");
-    this.verify_string(receiver_name, "intended Receiver");
-    this.verify_string(message, "message");
+    this.verify_string(title, TITLE_FIELD);
+    this.verify_string(receiver_name, RECEIVER_FIELD);
+    this.verify_string(message, MESSAGE_FIELD);
 
     this.title = title;
     this.receiver_name = receiver_name;
