@@ -1,5 +1,5 @@
 // This file is implemented as styling for the submit button with properties instead of using
-// default properties provided by MUI5
+// default properties provided by MUI5.
 
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
