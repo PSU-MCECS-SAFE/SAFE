@@ -19,14 +19,14 @@ async function psql_to_Message(query: string) : Promise<Message[]> {
     client.end();
 
     // Convert DB results to Message
-    return psql_entry_to_Message(msgs);
+    return psql_create_Messages(msgs);
 }
 
 /**
 * Parser for the `Message` class object from PostgreSQL query
 * @param msgs - PostgreSQL query results in an array
 */
-function psql_entry_to_Message(msgs: ResultRow<Client.Value>[]) : Message[] {
+function psql_create_Messages(msgs: ResultRow<Client.Value>[]) : Message[] {
     // Verify there is at least one entry
     if (msgs.length < 1) {
         throw new Error("No messages in database query");
@@ -38,7 +38,12 @@ function psql_entry_to_Message(msgs: ResultRow<Client.Value>[]) : Message[] {
         let title = msg.get('title') as string;
         let receiver_name = msg.get('receiver_name') as string;
         let message = msg.get('message') as string;
-        messages.push(new Message(title, receiver_name, message));
+        let code = msg.get('code') as string;
+        let receive_reply = msg.get('receive_reply') as boolean;
+        let has_been_read = msg.get('has_been_read') as boolean;
+        let time_submitted = msg.get('time_submitted') as Date; // Will probably break, untested
+
+        messages.push(new Message(title, receiver_name, message, code, receive_reply, has_been_read, time_submitted));
     }
     return messages;
 }
