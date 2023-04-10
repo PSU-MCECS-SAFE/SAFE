@@ -28,7 +28,6 @@ export class Message {
     this.verify_string(title, "title");
     this.verify_string(receiver_name, "intended Receiver");
     this.verify_string(message, "message");
-    this.verify_string(code, "code");
     
     this.title = title;
     this.receiver_name = receiver_name;
