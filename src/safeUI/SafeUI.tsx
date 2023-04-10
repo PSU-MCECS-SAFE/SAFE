@@ -1,7 +1,10 @@
 //This import isn't required in newer versions of react in every file, but
 //is a fail safe for older versions. Best to do it anyways!
-import { Button, Grid, TextField, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { StyledSubmitButton } from "./Styles/Styled";
+import React from "react";
+import { lightGreen } from "@mui/material/colors";
+import { useState } from "react";
 
 /* Components to implement
  * 1) Welcome Message
@@ -12,8 +15,11 @@ import React from 'react';
  */
 
 function SafeUI() {
+  const [wordCount, setWordCount] = useState(0);
+
   return (
-    <div>
+    <Box sx={{ backgroundColor: "#E8F5E9", width: "100vw", height: "100vh" }}>
+      <Box sx={{ backgroundColor: "#6fc092", height: "100px" }} />
       <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
@@ -24,7 +30,13 @@ function SafeUI() {
       </Typography>
       <Grid container rowSpacing={2} spacing={2} justifyContent="center">
         <Grid item xs={8}>
-          <TextField id="label" variant="standard" label="To: " fullWidth />
+          <TextField
+            id="label"
+            variant="standard"
+            label="To: "
+            fullWidth
+            required
+          />
         </Grid>
 
         <Grid item xs={8}>
@@ -44,14 +56,27 @@ function SafeUI() {
             multiline
             rows={7}
             fullWidth
+            autoComplete="off"
+            spellCheck="false"
+            onChange={(e) =>
+              setWordCount(
+                e.target.value.trim().split(/\s+/).filter(Boolean).length
+              )
+            }
           />
-          <Typography mt={2} mb={3} gutterBottom>
-            Character Count 2000
-          </Typography>
-          <Button variant="contained">Submit</Button>
+
+          <Grid container justifyContent="flex-end">
+            <Typography mt={2} mb={3} gutterBottom>
+              {wordCount} words
+            </Typography>
+          </Grid>
+
+          <Box textAlign="center">
+            <StyledSubmitButton variant="contained">Submit</StyledSubmitButton>
+          </Box>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }
 
