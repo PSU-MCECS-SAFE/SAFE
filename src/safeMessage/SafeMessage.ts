@@ -1,6 +1,9 @@
+
+// Global values to use in checking various information
 const TITLE_FIELD: string = "title";
 const RECEIVER_FIELD: string = "intended Receiver";
 const MESSAGE_FIELD: string = "message";
+
 /**
  * Message class utilized throughout SAFE to capture, transfer, and display
  * data to users.
