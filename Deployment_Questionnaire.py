@@ -36,15 +36,18 @@ while True:
     password = input("\nEnter the password: ")
 
     endpoint = input("\nEnter the endpoint address: ")
+    
+    dbname = input("\nEnter the database name: ")
 
     print("Username: " + username)
     print("Password: " + password)
     print("Database address: " + endpoint)
+    print("Database name: " + dbnamne)
     confirm = input("\nIs this correct? (Y/N): ")
     if confirm.lower() == 'y':
         break
     clearScreen()
-    print("\nPlease enter your corrected information...")
+    print("\nPlease enter the corrected information...")
 
 # Create the .tsx file
 with open("./src/safeMessageDB/messageDBConnect.tsx", "w") as file:
@@ -55,7 +58,7 @@ with open("./src/safeMessageDB/messageDBConnect.tsx", "w") as file:
     file.write(f"    user: '{username}',\n")
     file.write(f"    password: '{password}',\n")
     file.write(f"    host: '{endpoint}',\n")
-    file.write("    database: 'haosheng',\n")
+    file.write(f"    database: '{dbname}',\n")
     file.write("    port: 5432,\n")
     file.write(
         "    ssl: { rejectUnauthorized: false }, // only use this option for development purposes\n")
