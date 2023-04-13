@@ -54,7 +54,6 @@ with open("./src/safeMessageDB/messageDBConnect.tsx", "w") as file:
     file.write(f"    host: '{endpoint}',\n")
     file.write("    database: 'SAFE',\n")
     file.write("    port: 5432,\n")
-    file.write("    ssl: { rejectUnauthorized: false }, // only use this option for development purposes\n")
     file.write("});\n")
     file.write("\n")
     file.write("export { messageDBConnect };")
