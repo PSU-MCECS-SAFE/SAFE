@@ -42,7 +42,7 @@ while True:
     print("Username: " + username)
     print("Password: " + password)
     print("Database address: " + endpoint)
-    print("Database name: " + dbnamne)
+    print("Database name: " + dbname)
     confirm = input("\nIs this correct? (Y/N): ")
     if confirm.lower() == 'y':
         break
