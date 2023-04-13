@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 
 """
 This python script is utilized in the `npm run deployment` script you can find
@@ -7,20 +8,23 @@ then promptly deleted once `npm run deployment` has reached its final stage
 to ensure that the secrets entered are never leaked.
 """
 
-clearScreen = lambda: os.system('cls' if os.name == 'nt' else 'clear')
+
+def clearScreen(): return os.system('cls' if os.name == 'nt' else 'clear')
+
+
 clearScreen()
 
 print("Welcome to SAFE (System for Anonymous Feedback) configuration setup.\n\n"
       "This will guide you through setting up your connection to a\n"
       "specific database."
-      
+
       "\n\n**NOTICE** -- You must already have PostgresSQL database setup\n"
       "and accessible with a username and password.\n")
 
-if(os.path.exists("./src/safeMessageDB/messageDBConnect.tsx")):
+if (os.path.exists("./src/safeMessageDB/messageDBConnect.tsx")):
     confirm = input("\n**ALERT**: Database configuration already exists!\n"
                     "Would you like to reconfigure your settings? (Y/N): ")
-    if(confirm.lower() == 'n'):
+    if (confirm.lower() == 'n'):
         print("\n\nKeeping current configuration...\n\n")
         sys.exit()
 
@@ -31,9 +35,8 @@ while True:
 
     password = input("\nEnter the password: ")
 
-
     endpoint = input("\nEnter the endpoint address: ")
-    
+
     print("Username: " + username)
     print("Password: " + password)
     print("Database address: " + endpoint)
@@ -52,11 +55,12 @@ with open("./src/safeMessageDB/messageDBConnect.tsx", "w") as file:
     file.write(f"    user: '{username}',\n")
     file.write(f"    password: '{password}',\n")
     file.write(f"    host: '{endpoint}',\n")
-    file.write("    database: 'SAFE',\n")
+    file.write("    database: 'haosheng',\n")
     file.write("    port: 5432,\n")
+    file.write(
+        "    ssl: { rejectUnauthorized: false }, // only use this option for development purposes\n")
     file.write("});\n")
     file.write("\n")
     file.write("export { messageDBConnect };")
 
 print("\n\n!!!File created!!!")
-
