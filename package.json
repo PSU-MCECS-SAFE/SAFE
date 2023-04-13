@@ -36,7 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "jest-test": "jest",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deployment": "python3 Deployment_Questionnaire.py"
   },
   "jest": {
     "transform": {
