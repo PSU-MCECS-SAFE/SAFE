@@ -1,10 +1,10 @@
 //This import isn't required in newer versions of react in every file, but
 //is a fail safe for older versions. Best to do it anyways!
-import { Box, Grid, TextField, Typography } from "@mui/material";
-import { StyledSubmitButton } from "./Styles/Styled";
-import React from "react";
-import { lightGreen } from "@mui/material/colors";
-import { useState } from "react";
+import { Box, Grid, TextField, Typography } from '@mui/material';
+import { StyledSubmitButton } from './Styles/Styled';
+import React from 'react';
+import { lightGreen } from '@mui/material/colors';
+import { useState } from 'react';
 
 /* Components to implement
  * 1) Welcome Message
@@ -16,32 +16,32 @@ import { useState } from "react";
 
 function SafeUI() {
   const [wordCount, setWordCount] = useState(0);
-  const [to, setTo] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [to, setTo] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
   const [toError, setToError] = useState(false);
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
-  const [helperText, setHelperText] = useState("");
+  const [helperText, setHelperText] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setToError(false);
     setSubjectError(false);
     setMessageError(false);
-    setHelperText("");
+    setHelperText('');
 
-    if (to === "") {
+    if (to === '') {
       setToError(true);
-      setHelperText("This field is required");
+      setHelperText('This field is required');
     }
-    if (subject === "") {
+    if (subject === '') {
       setSubjectError(true);
-      setHelperText("This field is required");
+      setHelperText('This field is required');
     }
-    if (message === "") {
+    if (message === '') {
       setMessageError(true);
-      setHelperText("This field is required");
+      setHelperText('This field is required');
     }
 
     if (to && subject && message) {
@@ -49,25 +49,27 @@ function SafeUI() {
     }
   };
 
+  const isSubmitDisabled = !to || !subject || !message;
+
   return (
-    <Box sx={{ backgroundColor: "#E8F5E9", width: "100vw", height: "100vh" }}>
-      <Box sx={{ backgroundColor: "#6a7f10", height: "100px" }} />
-      <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
+    <Box sx={{ backgroundColor: '#E8F5E9', width: '100vw', height: '100vh' }}>
+      <Box sx={{ backgroundColor: '#6a7f10', height: '100px' }} />
+      <Typography mt={2} mb={3} variant='h3' align='center' gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
         PSU's CS Department Anonymous Feedback System
       </Typography>
-      <Typography mt={2} mb={3} align="center">
+      <Typography mt={2} mb={3} align='center'>
         Find out how we are committed to keeping your identity anonymous!
       </Typography>
 
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container rowSpacing={2} spacing={2} justifyContent="center">
+      <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+        <Grid container rowSpacing={2} spacing={2} justifyContent='center'>
           <Grid item xs={8}>
             <TextField
-              id="label"
-              variant="standard"
-              label="To: "
+              id='label'
+              variant='standard'
+              label='To: '
               fullWidth
               required
               onChange={(e) => setTo(e.target.value)}
@@ -78,9 +80,9 @@ function SafeUI() {
 
           <Grid item xs={8}>
             <TextField
-              id="label"
-              variant="standard"
-              label="Subject: "
+              id='label'
+              variant='standard'
+              label='Subject: '
               fullWidth
               onChange={(e) => setSubject(e.target.value)}
               error={subjectError}
@@ -91,14 +93,14 @@ function SafeUI() {
           <Grid item xs={8}>
             <TextField
               hiddenLabel
-              id="filled-hidden-label-normal"
-              placeholder="Enter Message"
-              variant="outlined"
+              id='filled-hidden-label-normal'
+              placeholder='Enter Message'
+              variant='outlined'
               multiline
               rows={7}
               fullWidth
-              autoComplete="off"
-              spellCheck="false"
+              autoComplete='off'
+              spellCheck='false'
               onChange={(e) => {
                 setMessage(e.target.value);
                 setWordCount(
@@ -109,14 +111,18 @@ function SafeUI() {
               helperText={helperText}
             />
 
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent='flex-end'>
               <Typography mt={2} mb={3} gutterBottom>
                 {wordCount} words
               </Typography>
             </Grid>
 
-            <Box textAlign="center">
-              <StyledSubmitButton variant="contained" type="submit">
+            <Box textAlign='center'>
+              <StyledSubmitButton
+                variant='contained'
+                type='submit'
+                disabled={isSubmitDisabled}
+              >
                 Submit
               </StyledSubmitButton>
             </Box>
