@@ -53,7 +53,7 @@ function SafeUI() {
 
   return (
     <Box sx={{ backgroundColor: '#E8F5E9', width: '100vw', height: '100vh' }}>
-      <Box sx={{ backgroundColor: '#6a7f10', height: '100px' }} />
+      <Box sx={{ backgroundColor: '#6a7f10', height: '38px' }} />
       <Typography mt={2} mb={3} variant='h3' align='center' gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
@@ -113,7 +113,7 @@ function SafeUI() {
 
             <Grid container justifyContent='flex-end'>
               <Typography mt={2} mb={3} gutterBottom>
-                {wordCount} words
+                {wordCount} / 2000
               </Typography>
             </Grid>
 
