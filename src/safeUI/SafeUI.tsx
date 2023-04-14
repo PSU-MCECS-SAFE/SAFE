@@ -16,7 +16,7 @@ import { useState } from 'react';
 
 function SafeUI() {
   const [wordCount, setWordCount] = useState(0);
-  const [to, setTo] = useState('');
+  const [to, setTo] = useState('Mark Jones');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [toError, setToError] = useState(false);
@@ -69,12 +69,13 @@ function SafeUI() {
             <TextField
               id='label'
               variant='standard'
-              label='To: '
+              label='To: Mark Jones'
               fullWidth
-              required
+              //required
               onChange={(e) => setTo(e.target.value)}
               error={toError}
               helperText={helperText}
+              disabled={true}
             />
           </Grid>
 
