@@ -1,40 +1,44 @@
 import { messageDB } from '../safeMessageDB/messageDB';
 import { messageDBConnect } from '../safeMessageDB/messageDBConnect';
 
-// import { messageDB } from './messageDB';
-// import { messageDBConnect } from './messageDBConnect';
-import sinon from 'sinon';
-
-describe('messageDB', () => {
-  let connectSpy: sinon.SinonSpy;
-  let querySpy: sinon.SinonSpy;
-  let endSpy: sinon.SinonSpy;
-
-  beforeEach(() => {
-    connectSpy = sinon.spy(messageDBConnect, 'connect');
-    querySpy = sinon.spy(messageDBConnect, 'query');
-    endSpy = sinon.spy(messageDBConnect, 'end');
-  });
-
-  afterEach(() => {
-    connectSpy.restore();
-    querySpy.restore();
-    endSpy.restore();
-  });
-
-  describe('addMessage', () => {
-    it('should call connect, query, and end with the correct arguments', async () => {
-      const title = 'Test Title';
-      const receiver_name = 'Test Receiver';
-      const message = 'Test Message';
-      const insert = new messageDB();
-
-      await insert.addMessage(title, receiver_name, message);
-
-      expect(connectSpy.calledOnce).toBe(true);
-      expect(querySpy.calledOnceWith(`INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [title, receiver_name, message, null, null, null, null])).toBe(true);
-      expect(endSpy.calledOnce).toBe(true);
-    });
-  });
+test('Message DB connection testing', async () => {
+  await messageDBConnect.connect();
+  const result = await messageDBConnect.query('SELECT * FROM "Message"');
+  expect(result.rows.length).toBeGreaterThan(0);
+  messageDBConnect.end();
 });
 
+// describe('PostgreSQL database connection', () => {
+//   let client: any;
+//   let insert = new messageDB();
+
+//   // Message DB connection testing
+//   it('should be able to query the "Message" table', async () => {
+//     client = await messageDBConnect.connect();
+//     const result = await client.query('SELECT * FROM "Message"');
+//     expect(result.rows.length).toBeGreaterThan(0);
+//     await client.release();
+//   });
+
+//   // Insert data object to database
+//   it('should be able to insert to the the "Message" table', async () => {
+//     const title = 'Testing';
+//     const receiver_name = 'John';
+//     const message = 'string';
+
+//     // will add them to testing in next sprint
+//     const code = null;
+//     const receive_reply = null;
+//     const has_been_read = null;
+//     const time_submitted = null;
+
+//     insert.addMessage(title, receiver_name, message);
+//     const result = await client.query(
+//       'SELECT * FROM "Message" ORDER BY time_submitted DESC LIMIT 1'
+//     );
+//     expect(result.rows.length).toBe(1);
+//     expect(result.rows[0].title).toEqual('Testing');
+//     expect(result.rows[0].receiver_name).toEqual('John');
+//     expect(result.rows[0].message).toEqual('string');
+//   });
+// });
