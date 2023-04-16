@@ -13,7 +13,7 @@ import { useState } from "react";
  * 4) Message Box (2000(+?) input limit)
  * 5) Submit Button
  */
-const MAX_CHARACTERS = 7690;
+const MAX_CHARACTERS = 7500;
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
   const [to, setTo] = useState("Mark Jones");
@@ -26,9 +26,8 @@ function SafeUI() {
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
-    //const newWordCount = newMessage.trim().split(/\s+/).filter(Boolean).length;
     const newCharacterCount = newMessage.length;
-    if (newCharacterCount < 7500) {
+    if (newCharacterCount <= 7500) {
       setMessage(newMessage);
       setCharCount(newCharacterCount);
     }
@@ -55,7 +54,7 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
-      console.log(to, subject, message);
+      console.log(to, subject, message); //Function calling to transfer data from front to back end
     }
   };
 
