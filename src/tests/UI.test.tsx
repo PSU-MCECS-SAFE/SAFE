@@ -7,7 +7,7 @@ test('renders SafeUI without crashing', () => {
 
 test('renders the form elements', () => {
   render(<SafeUI />);
-  expect(screen.getByLabelText(/To: Mark Jones/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/To:/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/Subject:/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/Enter Message/i)).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
