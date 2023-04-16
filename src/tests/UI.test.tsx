@@ -47,11 +47,11 @@ test('submit button is disabled when required fields are empty', () => {
   expect(submitButton).toBeDisabled();
 });
 
-test('displays word count of message', () => {
+test('displays character count of message', () => {
   render(<SafeUI />);
   const messageInput = screen.getByPlaceholderText(/Enter Message/i);
   fireEvent.change(messageInput, {
     target: { value: 'This is a test message' },
   });
-  expect(screen.getByText(/5 \/ 2000/i)).toBeInTheDocument();
+  expect(screen.getByText(/22 \/ 7500/i)).toBeInTheDocument();
 });
