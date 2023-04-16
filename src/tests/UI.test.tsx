@@ -55,3 +55,5 @@ test('displays character count of message', () => {
   });
   expect(screen.getByText(/22 \/ 7500/i)).toBeInTheDocument();
 });
+
+//test input in message
