@@ -47,13 +47,36 @@ test('submit button is disabled when required fields are empty', () => {
   expect(submitButton).toBeDisabled();
 });
 
+//test input in message
 test('displays character count of message', () => {
   render(<SafeUI />);
   const messageInput = screen.getByPlaceholderText(/Enter Message/i);
   fireEvent.change(messageInput, {
-    target: { value: 'This is a test message' },
+    target: { value: 'This is a test message' }
   });
   expect(screen.getByText(/22 \/ 7500/i)).toBeInTheDocument();
 });
 
-//test input in message
+//test input in subject
+test('displays character count of the subject', () => {
+  render(<SafeUI />);
+  const subjectInput = screen.getByPlaceholderText(/Enter Subject/i);
+  fireEvent.change(subjectInput, {
+    target: { value: 'This is a test' }
+  });
+  expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
+});
+
+/* test('displays character count of subject and message', () => {
+  render(<SafeUI />);
+  const messageInput = screen.getByPlaceholderText(/Enter Message/i);
+  const subjectInput = screen.getByLabelText(/Subject:/i);
+  fireEvent.change(messageInput, {
+    target: { value: 'This is a test message' }
+  });
+  fireEvent.change(subjectInput, {
+    target: { value: 'This is a test' }
+  });
+  expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
+  expect(screen.getByText(/22 \/ 7500/i)).toBeInTheDocument();
+}); */

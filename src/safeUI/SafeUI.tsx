@@ -106,6 +106,7 @@ function SafeUI() {
               id="label"
               variant="standard"
               label="Subject: "
+              placeholder="Enter Subject"
               fullWidth
               onChange={handleSubjectChange}
               error={subjectError}
