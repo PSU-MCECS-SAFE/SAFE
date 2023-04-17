@@ -14,6 +14,7 @@ import { useState } from 'react';
  * 5) Submit Button
  */
 const MAX_CHARACTERS = 7500;
+const MAX_Subject_CHARACTERS = 250;
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
   const [to, setTo] = useState('Mark Jones');
@@ -29,6 +30,15 @@ function SafeUI() {
     const newCharacterCount = newMessage.length;
     if (newCharacterCount <= 7500) {
       setMessage(newMessage);
+      setCharCount(newCharacterCount);
+    }
+  };
+
+  const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newSubject = e.target.value;
+    const newCharacterCount = newSubject.length;
+    if (newCharacterCount <= 250) {
+      setMessage(newSubject);
       setCharCount(newCharacterCount);
     }
   };
@@ -96,10 +106,17 @@ function SafeUI() {
               variant="standard"
               label="Subject: "
               fullWidth
-              onChange={(e) => setSubject(e.target.value)}
+              onChange={handleSubjectChange}
               error={subjectError}
               helperText={helperText}
+              inputProps={{ maxlength: MAX_Subject_CHARACTERS }}
             />
+            
+            <Grid container justifyContent="flex-end">
+                <Typography mt={2} mb={3} gutterBottom>
+                  {characterCount} / 250
+                </Typography>
+            </Grid>
           </Grid>
 
           <Grid item xs={8}>
