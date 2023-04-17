@@ -17,6 +17,7 @@ const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 250;
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
+  const [subjectCharacterCount, setSubjectCharCount] = useState(0);
   const [to, setTo] = useState('Mark Jones');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
@@ -38,8 +39,8 @@ function SafeUI() {
     const newSubject = e.target.value;
     const newCharacterCount = newSubject.length;
     if (newCharacterCount <= 250) {
-      setMessage(newSubject);
-      setCharCount(newCharacterCount);
+      setSubject(newSubject);
+      setSubjectCharCount(newCharacterCount);
     }
   };
 
@@ -111,10 +112,10 @@ function SafeUI() {
               helperText={helperText}
               inputProps={{ maxlength: MAX_Subject_CHARACTERS }}
             />
-            
+
             <Grid container justifyContent="flex-end">
                 <Typography mt={2} mb={3} gutterBottom>
-                  {characterCount} / 250
+                  {subjectCharacterCount} / 250
                 </Typography>
             </Grid>
           </Grid>
