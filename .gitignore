@@ -26,4 +26,4 @@ yarn-error.log*
 
 
 # Never remove unless project implementation significantly changes 
-messageDBConnect.tsx
+messageDBConnect.ts
