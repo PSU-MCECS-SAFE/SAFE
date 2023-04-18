@@ -5,6 +5,8 @@ import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 import { lightGreen } from '@mui/material/colors';
 import { useState } from 'react';
+import messageDB from '../safeMessageDB/messageDB';
+import util from '../safeUtil/Util';
 
 /* Components to implement
  * 1) Welcome Message
@@ -25,6 +27,7 @@ function SafeUI() {
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
+  const dbInstance = new messageDB();
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -65,7 +68,8 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
-      console.log(to, subject, message); //Function calling to transfer data from front to back end
+      dbInstance.addMessage(to, subject, message);
+      // util.SendMail();
     }
   };
 
