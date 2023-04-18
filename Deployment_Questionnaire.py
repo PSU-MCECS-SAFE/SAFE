@@ -3,7 +3,7 @@ import sys
 
 """
 This python script is utilized in the `npm run deployment` script you can find
-in `package.json`. This generates a .tsx file that is used in the build phase
+in `package.json`. This generates a .ts file that is used in the build phase
 then promptly deleted once `npm run deployment` has reached its final stage
 to ensure that the secrets entered are never leaked.
 """
@@ -21,7 +21,7 @@ print("Welcome to SAFE (System for Anonymous Feedback) configuration setup.\n\n"
       "\n\n**NOTICE** -- You must already have PostgresSQL database setup\n"
       "and accessible with a username and password.\n")
 
-if (os.path.exists("./src/safeMessageDB/messageDBConnect.tsx")):
+if (os.path.exists("./src/safeMessageDB/messageDBConnect.ts")):
     confirm = input("\n**ALERT**: Database configuration already exists!\n"
                     "Would you like to reconfigure your settings? (Y/N): ")
     if (confirm.lower() == 'n'):
@@ -49,8 +49,8 @@ while True:
     clearScreen()
     print("\nPlease enter the corrected information...")
 
-# Create the .tsx file
-with open("./src/safeMessageDB/messageDBConnect.tsx", "w") as file:
+# Create the .ts file
+with open("./src/safeMessageDB/messageDBConnect.ts", "w") as file:
     file.write("import { Client } from 'pg';\n")
     file.write("\n")
     file.write("// Create database connection\n")
