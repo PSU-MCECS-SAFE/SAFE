@@ -16,19 +16,32 @@ export class messageDB {
       await messageDBConnect.end();
     }
   }
+
+
+  /**
+  * Connect to Database and run query
+  * @param query - string containing query to be made
+  */
+  public async getMessage(query: string) : Promise<ResultRow<Client.Value>[]>{
+    // Connect to DB
+    var client = new Client.Client({"host": "localhost"});
+    await client.connect();
+  
+    // Get Query and make each row an element in an array
+    var result_iterable = await client.query(query);
+  
+    // Close DB
+    client.end();
+  
+    // Convert object iterable to array of objects
+    var msgs = [...result_iterable];
+  
+    if(msgs.length < 1){
+        throw new Error("No messages in database query");
+    }
+  
+    return msgs;
+  }
 }
 
-// async function getMessage() {
-//   try {
-//     await messageDBConnect.connect();
-//     const result = await messageDBConnect.query('SELECT * FROM "Message"');
-//     result.rows.forEach(row => {
-//       console.log(result.rows);
-//     });
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     await messageDBConnect.end();
-//   }
-// }
 export default messageDB;
