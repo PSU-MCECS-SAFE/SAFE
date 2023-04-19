@@ -5,7 +5,7 @@ import { safeJSONProps as sjp } from "../safeUtil/Util";
 
 describe('Util Tests', () => {
 
-    //JSON 
+    //JSON file property acquisition testing
     describe('Identify each JSON property from test file.', () => {
         beforeAll(() => {
             const testJSON = {
