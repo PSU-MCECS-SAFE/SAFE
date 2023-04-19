@@ -4,6 +4,7 @@ import fs from 'fs';
 
 export const safeConfigPath = '../../../safeConfig/safeConfig.json'
 
+
 /* Use me when calling getConfigProp! Import like this if you want to use me!
  * import { safeJSONProps as sjp } from "../safeUtil/Util";
  */
@@ -14,6 +15,7 @@ export const enum safeJSONProps {
   db_name = "db_name",
   rcvr_email = "rcvr_email"
 }
+
 
 export async function sendEmail() {
   var message = 'This is supposed to be a message from the db';
@@ -29,6 +31,7 @@ export async function sendEmail() {
     console.error(`exec error: ${error}`);
   }
 }
+
 
 /**
  * Get specific information from a json file and its properties.
