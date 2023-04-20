@@ -20,6 +20,7 @@
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "browserify": "^17.0.0",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",
     "dgram": "^1.0.1",

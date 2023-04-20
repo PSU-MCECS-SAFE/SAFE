@@ -8,6 +8,7 @@ import { useState } from 'react';
 import messageDB from '../safeMessageDB/messageDB';
 import util from '../safeUtil/Util';
 
+
 /* Components to implement
  * 1) Welcome Message
  * 2) Receiver Name
@@ -27,7 +28,7 @@ function SafeUI() {
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
-  const dbInstance = new messageDB();
+  // const dbInstance = new messageDB();
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -68,8 +69,37 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
-      dbInstance.addMessage(to, subject, message);
-      // util.SendMail();
+      // fetch('http://localhost:3001/message')
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     console.log(data);
+      //   })
+      //   .catch(error => console.error(error))
+      fetch('http://localhost:3001/addMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: subject,
+          receiver_name: to,
+          message: message,
+          code: null,
+          receive_reply: false,
+          has_been_read: false,
+          time_submitted: null
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+          console.log('Response status:', error.response.status);
+          console.log('Response text:', error.response.statusText);
+        });
     }
   };
 
@@ -139,7 +169,7 @@ function SafeUI() {
               onChange={handleMessageChange}
               error={messageError}
               helperText={helperText}
-              inputProps={{ maxlength: MAX_CHARACTERS }}
+              inputProps={{ maxLength: MAX_CHARACTERS }}
             />
 
             <Grid container justifyContent='flex-end'>
