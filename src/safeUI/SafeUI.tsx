@@ -3,7 +3,7 @@
 import { Box, Grid, TextField, Typography } from '@mui/material';
 import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
-import { lightGreen } from '@mui/material/colors';
+// import { lightGreen } from '@mui/material/colors';
 import { useState } from 'react';
 
 /* Components to implement
@@ -18,7 +18,7 @@ const MAX_Subject_CHARACTERS = 250;
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
-  const [to, setTo] = useState('Mark Jones');
+  const [to, setTo] = useState('Mark Jones'); //Change to PSU CS dept?
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [toError, setToError] = useState(false);
@@ -74,27 +74,38 @@ function SafeUI() {
   return (
     <Box sx={{ backgroundColor: '#E8F5E9', width: '100vw', height: '100vh' }}>
       <Box sx={{ backgroundColor: '#6a7f10', height: '38px' }} />
-      <Typography mt={2} mb={3} variant='h3' align='center' gutterBottom>
+      <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
         PSU's CS Department Anonymous Feedback System
       </Typography>
-      <Typography mt={2} mb={3} align='center'>
+      <Typography mt={2} mb={3} align="center">
         Find out how we are committed to keeping your identity anonymous!
       </Typography>
 
-      <form noValidate autoComplete='off' onSubmit={handleSubmit}>
-        <Grid container rowSpacing={2} spacing={2} justifyContent='center'>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <Grid container rowSpacing={2} spacing={2} justifyContent="center">
           <Grid item xs={8}>
             <TextField
-              id='label'
-              variant='standard'
-              label='To:'
-              value='Mark Jones'
+              id="label"
+              variant="standard"
+              label="To:"
+              value="Portland State University - Computer Science Department"
+              disabled={true} // If prop isn't disabled, text from 'To:' box can be removed.
+              // Even though static value remains, text is technically removed
+              // preventing submission of button. Text can be further inserted,
+              // leaving unneccessary input access to users
+              // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
               //autoComplete=''       Future improvement: Have list of receivers here,
               //                      Could be expanded if SAFE is used by multiple departments
               fullWidth
               //required
+              // Bold text for disabled component
+              sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                  WebkitTextFillColor: '#000000',
+                },
+              }}
               onChange={(e) => setTo(e.target.value)}
               error={toError}
               helperText={helperText}
@@ -103,10 +114,10 @@ function SafeUI() {
 
           <Grid item xs={8}>
             <TextField
-              id='label'
-              variant='standard'
-              label='Subject: '
-              placeholder='Enter Subject'
+              id="label"
+              variant="standard"
+              label="Subject:"
+              placeholder="Enter Subject"
               fullWidth
               onChange={handleSubjectChange}
               error={subjectError}
@@ -114,7 +125,7 @@ function SafeUI() {
               inputProps={{ maxLength: MAX_Subject_CHARACTERS }}
             />
 
-            <Grid container justifyContent='flex-end'>
+            <Grid container justifyContent="flex-end">
               <Typography mt={2} mb={3} gutterBottom>
                 {subjectCharacterCount} / 250
               </Typography>
@@ -124,30 +135,30 @@ function SafeUI() {
           <Grid item xs={8}>
             <TextField
               hiddenLabel
-              id='filled-hidden-label-normal'
-              placeholder='Enter Message'
-              variant='outlined'
+              id="filled-hidden-label-normal"
+              placeholder="Enter Message"
+              variant="outlined"
               multiline
               rows={7}
               fullWidth
-              autoComplete='off'
-              spellCheck='false'
+              autoComplete="off"
+              spellCheck="false"
               onChange={handleMessageChange}
               error={messageError}
               helperText={helperText}
               inputProps={{ maxlength: MAX_CHARACTERS }}
             />
 
-            <Grid container justifyContent='flex-end'>
+            <Grid container justifyContent="flex-end">
               <Typography mt={2} mb={3} gutterBottom>
                 {characterCount} / 7500
               </Typography>
             </Grid>
 
-            <Box textAlign='center'>
+            <Box textAlign="center">
               <StyledSubmitButton
-                variant='contained'
-                type='submit'
+                variant="contained"
+                type="submit"
                 disabled={isSubmitDisabled}
               >
                 Submit
