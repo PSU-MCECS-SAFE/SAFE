@@ -75,6 +75,49 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     const mail = spawn('mail', mailArgs);
     mail.stdin.write(message);
     mail.stdin.end();
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+//This post request endpoint is only for testing purpose
+app.post('/addMessageTest', async (req: Request, res: Response) => {
+  const {
+    title,
+    receiver_name,
+    message,
+    code,
+    receive_reply,
+    has_been_read,
+    time_submitted,
+    message_replied,
+  } = req.body;
+
+  try {
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+
+    // Execute a SQL query to insert a new event
+    const result = await client.query(
+      'INSERT INTO "TestMessage" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+      [
+        title,
+        receiver_name,
+        message,
+        code,
+        receive_reply,
+        has_been_read,
+        time_submitted,
+        message_replied,
+      ]
+    );
+
+    // Release the client connection back to the pool
+    res.status(200).send();
+    client.release();
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -85,3 +128,5 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 app.listen(3001, () => {
   console.log(`Server listening on port 3001`);
 });
+
+export default app;
