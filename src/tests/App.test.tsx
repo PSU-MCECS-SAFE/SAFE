@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import App from "../TypeScriptDemo/App";
+import App from "../App";
 
 /**
  * This is sample test file provided by the template, use it to both do your
