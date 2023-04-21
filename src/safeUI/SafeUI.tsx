@@ -5,10 +5,6 @@ import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 import { lightGreen } from '@mui/material/colors';
 import { useState } from 'react';
-import messageDB from '../safeMessageDB/messageDB';
-import util from '../safeUtil/Util';
-
-
 
 /* Components to implement
  * 1) Welcome Message
@@ -29,8 +25,6 @@ function SafeUI() {
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
-  // const dbInstance = new messageDB();
-
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -81,10 +75,13 @@ function SafeUI() {
       //     console.log(data);
       //   })
       //   .catch(error => console.error(error))
+
+      // fetch data from API endpoint
+      // param: request method, header, body
       fetch('http://localhost:3001/addMessage', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title: subject,
@@ -94,20 +91,20 @@ function SafeUI() {
           receive_reply: false,
           has_been_read: false,
           time_submitted: null,
-          message_replied: 'testing reply'
-        })
+          message_replied: null,
+        }),
       })
-        .then(response => {
+        // response from fetch
+        .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          // send email
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
         });
-    };
-  }
+    }
+  };
 
   const isSubmitDisabled = !to || !subject || !message;
 
