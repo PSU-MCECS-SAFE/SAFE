@@ -20,9 +20,8 @@ import { promisify } from 'util';
 import { exec } from 'child_process';
 
 export class util {
-  public async SendEmail() {
-    var message = 'This is supposed to be a message from the db';
-    const command = `mail -s 'You have received new feedback!' leshi@pdx.edu <<< "${message}"`;
+  public async SendEmail(message: string) {
+    const command = `mail -s 'You have received new feedback!' haosheng@pdx.edu <<< "${message}"`;
     const execPromise = promisify(exec);
 
     //Fill out email address below.

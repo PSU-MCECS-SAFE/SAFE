@@ -9,6 +9,7 @@ import messageDB from '../safeMessageDB/messageDB';
 import util from '../safeUtil/Util';
 
 
+
 /* Components to implement
  * 1) Welcome Message
  * 2) Receiver Name
@@ -29,6 +30,7 @@ function SafeUI() {
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
   // const dbInstance = new messageDB();
+
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -69,6 +71,10 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
+      /**
+       * This is how to call the getMessage from atabase
+       */
+
       // fetch('http://localhost:3001/message')
       //   .then(response => response.json())
       //   .then(data => {
@@ -87,21 +93,21 @@ function SafeUI() {
           code: null,
           receive_reply: false,
           has_been_read: false,
-          time_submitted: null
+          time_submitted: null,
+          message_replied: 'testing reply'
         })
       })
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          // send email
         })
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);
-          console.log('Response status:', error.response.status);
-          console.log('Response text:', error.response.statusText);
         });
-    }
-  };
+    };
+  }
 
   const isSubmitDisabled = !to || !subject || !message;
 
