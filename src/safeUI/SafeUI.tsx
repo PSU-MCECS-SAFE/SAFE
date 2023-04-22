@@ -1,6 +1,6 @@
 //This import isn't required in newer versions of react in every file, but
 //is a fail safe for older versions. Best to do it anyways!
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import { Box, Grid, Link, TextField, Typography } from '@mui/material';
 import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
@@ -73,7 +73,22 @@ function SafeUI() {
 
   return (
     <Box sx={{ backgroundColor: '#E8F5E9', width: '100vw', height: '100vh' }}>
-      <Box sx={{ backgroundColor: '#6a7f10', height: '38px' }} />
+      <Box
+        sx={{
+          backgroundColor: '#6a7f10',
+          height: '38px',
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: '25px',
+        }}
+      >
+        <img
+          src="http://localhost:3000/PSU_logo_accent_transparent.png"
+          alt="Logo"
+          width="135"
+          height="53"
+        />
+      </Box>
       <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
@@ -164,6 +179,27 @@ function SafeUI() {
                 Submit
               </StyledSubmitButton>
             </Box>
+            <Typography mt={4} mb={3} align="center">
+              This site should not be used to report{' '}
+              <Link href="https://www.pdx.edu/diversity/title-ix">
+                Title IX
+              </Link>{' '}
+              violations, including{' '}
+              <Link href="https://www.pdx.edu/sexual-assault/faculty-staff-reporting-obligations">
+                sexual misconduct
+              </Link>{' '}
+              or{' '}
+              <Link href="https://www.pdx.edu/general-counsel/mandatory-child-abuse-reporting">
+                child abuse
+              </Link>
+              ; please use the respective links for further information. Please
+              note also that the{' '}
+              <Link href="https://www.pdx.edu/womens-resource-center/">
+                Women’s Resource Center
+              </Link>{' '}
+              also provides a confidential reporting option for the PSU
+              community.
+            </Typography>
           </Grid>
         </Grid>
       </form>
