@@ -14,7 +14,7 @@ import { useState } from 'react';
  * 5) Submit Button
  */
 const MAX_CHARACTERS = 7500;
-const MAX_Subject_CHARACTERS = 250;
+const MAX_Subject_CHARACTERS = 75;
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
@@ -38,7 +38,7 @@ function SafeUI() {
   const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newSubject = e.target.value;
     const newCharacterCount = newSubject.length;
-    if (newCharacterCount <= 250) {
+    if (newCharacterCount <= 75) {
       setSubject(newSubject);
       setSubjectCharCount(newCharacterCount);
     }
@@ -83,7 +83,7 @@ function SafeUI() {
         }}
       >
         <img
-          src="http://localhost:3000/PSU_logo_accent_transparent.png"
+          src="/PSU_logo_accent_transparent.png"
           alt="Logo"
           width="135"
           height="53"
@@ -142,7 +142,7 @@ function SafeUI() {
 
             <Grid container justifyContent="flex-end">
               <Typography mt={2} mb={3} gutterBottom>
-                {subjectCharacterCount} / 250
+                {subjectCharacterCount} / 75
               </Typography>
             </Grid>
           </Grid>
