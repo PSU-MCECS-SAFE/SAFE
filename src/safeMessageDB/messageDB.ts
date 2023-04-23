@@ -47,6 +47,23 @@ export class messageDB {
 
     return msgs;
   }
+
+  /**
+   * Checks if there was a response to feedback given from user
+   * @param code - Unique code given to user to identify their original message
+   */
+  public static async checkReply(code: string): Promise<boolean> {
+    var thread: ResultRow<Client.Value>[] = await messageDB.getThread(code);
+    return (thread[0].get("receiver_name") !== thread[thread.length - 1].get("receiver_name"));
+  }
+
+  /**
+   * Retrieves feedback/reply thread
+   * @param code - Unique code given to user to identify their original message
+   */
+  public static async getThread(code: string): Promise<ResultRow<Client.Value>[]> {
+    return messageDB.getMessage("SELECT * FROM messages WHERE code = " + code + " ORDER BY time_submitted DESC");
+  }
 }
 
 export default messageDB;
