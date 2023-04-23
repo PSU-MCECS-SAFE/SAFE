@@ -66,17 +66,3 @@ test('displays character count of the subject', () => {
   });
   expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
 });
-
-/* test('displays character count of subject and message', () => {
-  render(<SafeUI />);
-  const messageInput = screen.getByPlaceholderText(/Enter Message/i);
-  const subjectInput = screen.getByLabelText(/Subject:/i);
-  fireEvent.change(messageInput, {
-    target: { value: 'This is a test message' }
-  });
-  fireEvent.change(subjectInput, {
-    target: { value: 'This is a test' }
-  });
-  expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
-  expect(screen.getByText(/22 \/ 7500/i)).toBeInTheDocument();
-}); */
