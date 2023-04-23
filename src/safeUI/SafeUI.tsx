@@ -1,6 +1,13 @@
 //This import isn't required in newer versions of react in every file, but
 //is a fail safe for older versions. Best to do it anyways!
-import { Box, Grid, Link, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Link,
+  Snackbar,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
@@ -14,17 +21,18 @@ import { useState } from 'react';
  * 5) Submit Button
  */
 const MAX_CHARACTERS = 7500;
-const MAX_Subject_CHARACTERS = 75;
+const MAX_Subject_CHARACTERS = 100;
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
-  const [to, setTo] = useState('Mark Jones'); //Change to PSU CS dept?
+  const [to, setTo] = useState('PSU CS Department');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [toError, setToError] = useState(false);
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -38,7 +46,7 @@ function SafeUI() {
   const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newSubject = e.target.value;
     const newCharacterCount = newSubject.length;
-    if (newCharacterCount <= 75) {
+    if (newCharacterCount <= 100) {
       setSubject(newSubject);
       setSubjectCharCount(newCharacterCount);
     }
@@ -67,6 +75,19 @@ function SafeUI() {
     if (to && subject && message) {
       console.log(to, subject, message); //Function calling to transfer data from front to back end
     }
+  };
+
+  const handleSnackbarOpen = () => {
+    setOpen(true);
+  };
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const formEvent = new Event('submit', {
+      bubbles: true,
+    }) as unknown as React.FormEvent<HTMLFormElement>;
+    handleSubmit(formEvent);
+    handleSnackbarOpen();
   };
 
   const isSubmitDisabled = !to || !subject || !message;
@@ -132,7 +153,7 @@ function SafeUI() {
               id="label"
               variant="standard"
               label="Subject:"
-              placeholder="Enter Subject"
+              placeholder="Briefly describe your feedback (course feedback, suggestions for improvement...)"
               fullWidth
               onChange={handleSubjectChange}
               error={subjectError}
@@ -142,7 +163,7 @@ function SafeUI() {
 
             <Grid container justifyContent="flex-end">
               <Typography mt={2} mb={3} gutterBottom>
-                {subjectCharacterCount} / 75
+                {subjectCharacterCount} / 100
               </Typography>
             </Grid>
           </Grid>
@@ -161,7 +182,7 @@ function SafeUI() {
               onChange={handleMessageChange}
               error={messageError}
               helperText={helperText}
-              inputProps={{ maxlength: MAX_CHARACTERS }}
+              inputProps={{ maxLength: MAX_CHARACTERS }}
             />
 
             <Grid container justifyContent="flex-end">
@@ -175,11 +196,19 @@ function SafeUI() {
                 variant="contained"
                 type="submit"
                 disabled={isSubmitDisabled}
+                onClick={handleButtonClick}
               >
                 Submit
               </StyledSubmitButton>
             </Box>
-            <Typography mt={4} mb={3} align="center">
+            <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              open={open}
+              onClose={() => setOpen(false)}
+              message="Feedback Successfully sent to PSU's CS Dept."
+              autoHideDuration={5000}
+            />
+            <Typography variant="subtitle2" mt={4} mb={3} align="center">
               This site should not be used to report{' '}
               <Link href="https://www.pdx.edu/diversity/title-ix">
                 Title IX
