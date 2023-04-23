@@ -27,7 +27,7 @@ export class messageDB {
    * Connect to Database and run query
    * @param query - string containing query to be made
    */
-  public async getMessage(query: string): Promise<ResultRow<Client.Value>[]> {
+  public static async getMessage(query: string): Promise<ResultRow<Client.Value>[]> {
     // Connect to DB
     var client = new Client.Client({ host: 'localhost' });
     await client.connect();
