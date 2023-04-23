@@ -21,6 +21,7 @@
     "@types/react-dom": "^18.0.11",
     "cuss": "^2.1.0",
     "pg": "^8.10.0",
+    "qrcode": "^1.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -56,6 +57,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.16",
+    "@types/qrcode": "^1.5.0",
     "@types/sentiment": "^5.0.1",
     "@types/sinon": "^10.0.14",
     "sinon": "^15.0.3"
