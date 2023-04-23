@@ -96,7 +96,9 @@ function SafeUI() {
   const handleYes = () => {
     setOpen(false);
     setOpenCode(true);
-    setEmail('');
+    if(email !== ''){
+      setEmail('');
+    }
   };
 
   const handleEmail = (e: React.FormEvent<HTMLFormElement>) => {
