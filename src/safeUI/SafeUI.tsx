@@ -1,6 +1,6 @@
 //This import isn't required in newer versions of react in every file, but
 //is a fail safe for older versions. Best to do it anyways!
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { StyledSubmitButton } from "./Styles/Styled";
 import { StyledButton } from "./Styles/Styled";
 import React from "react";
@@ -219,7 +219,42 @@ function SafeUI() {
 
   return (
     <Box sx={{ backgroundColor: "#E8F5E9", width: "100vw", height: "100vh" }}>
-      <Box sx={{ backgroundColor: "#6a7f10", height: "38px" }} />
+      <Box sx={{ backgroundColor: "#6a7f10", height: "38px" }}>
+        <Box textAlign="right" sx={{ height: "38px" }}>
+          <StyledButton
+            variant="contained"
+            onClick={handleOpenInputCodeModal}
+            autoFocus
+            sx={{
+              height: "38px",
+              backgroundColor: "#6a7f10",
+              color: "rgb(255,255,255)",
+              fontSize: "14px",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+              textAlign: "center",
+              "&:hover": {
+                backgroundColor: "#1d252d",
+                color: "#FFFFFF",
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+              },
+            }}
+          >
+            Check Reply
+          </StyledButton>
+          <Dialog open={openInputCodeModal} onClose={handleCloseInputCodeModal}>
+            {uniqueCodeInputModal}
+          </Dialog>
+          <Dialog
+            open={openMessageModal}
+            onClose={handleCloseMessageModal}
+            scroll="paper"
+          >
+            {displayMessageModal}
+          </Dialog>
+          ;
+        </Box>
+      </Box>
       <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
@@ -228,28 +263,6 @@ function SafeUI() {
       <Typography mt={2} mb={3} align="center">
         Find out how we are committed to keeping your identity anonymous!
       </Typography>
-
-      {/* Button to open modals for users inputting provided-unique code after clicking the button*/}
-      <Box textAlign="right">
-        <StyledButton
-          variant="contained"
-          onClick={handleOpenInputCodeModal}
-          autoFocus
-        >
-          Check Reply
-        </StyledButton>
-        <Dialog open={openInputCodeModal} onClose={handleCloseInputCodeModal}>
-          {uniqueCodeInputModal}
-        </Dialog>
-        <Dialog
-          open={openMessageModal}
-          onClose={handleCloseMessageModal}
-          scroll="paper"
-        >
-          {displayMessageModal}
-        </Dialog>
-        ;
-      </Box>
 
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container rowSpacing={2} spacing={2} justifyContent="center">
