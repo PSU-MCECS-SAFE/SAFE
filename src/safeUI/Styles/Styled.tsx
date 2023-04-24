@@ -3,10 +3,10 @@
 
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { lightGreen } from '@mui/material/colors';
+// import { lightGreen } from '@mui/material/colors';
 
 export const StyledSubmitButton = styled(Button)(({ theme }) => ({
-  backgroundColor: lightGreen[700],
+  backgroundColor: '#6a7f10',
   fontSize: '16px',
   borderRadius: '4px',
   padding: '0.5em 2em',
