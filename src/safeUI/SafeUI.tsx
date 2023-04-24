@@ -12,11 +12,13 @@ import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
-import {GoogleReCaptchaProvider, useGoogleReCaptcha} from "react-google-recaptcha-v3";
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+} from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string){
-};
+function handleToken(token: string) {}
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -126,7 +128,7 @@ function SafeUI() {
   const isSubmitDisabled = !to || !subject || !message;
 
   return (
-    <Box sx={{ backgroundColor: '#E8F5E9', width: '100vw', height: '100vh' }}>
+    <Box sx={{ backgroundColor: '#faf7e1', width: '100vw', height: '100vh' }}>
       <Box
         sx={{
           backgroundColor: '#6a7f10',
