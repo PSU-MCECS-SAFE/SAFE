@@ -27,3 +27,6 @@ yarn-error.log*
 
 # Never remove unless project implementation significantly changes 
 messageDBConnect.ts
+
+#JSoutFolder
+/JSoutFile

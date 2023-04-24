@@ -108,7 +108,44 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
-      console.log(to, subject, message); //Function calling to transfer data from front to back end
+      /**
+       * This is how to call the getMessage from atabase
+       */
+
+      // fetch('http://localhost:3001/message')
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     console.log(data);
+      //   })
+      //   .catch(error => console.error(error))
+
+      // fetch data from API endpoint
+      // param: request method, header, body
+      fetch('http://localhost:3001/addMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: subject,
+          receiver_name: to,
+          message: message,
+          code: null,
+          receive_reply: false,
+          has_been_read: false,
+          time_submitted: null,
+          message_replied: null,
+        }),
+      })
+        // response from fetch
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+        })
+        .catch((error) => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
     }
   };
 
