@@ -80,7 +80,7 @@ function SafeUI() {
         PSU's CS Department Anonymous Feedback System
       </Typography>
       <Typography mt={2} mb={3} align='center'>
-        Find out how we are committed to keeping your identity <a href="./about.html">anonymous</a>!
+        Find out how we are committed to keeping your identity <a href="./about.html" target="blank">anonymous</a>!
       </Typography>
 
       <form noValidate autoComplete='off' onSubmit={handleSubmit}>
