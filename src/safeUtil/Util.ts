@@ -1,6 +1,16 @@
 import fs from 'fs';
 
-export const safeConfigPath = '../../../safeConfig/safeConfig.json';
+// export const safeConfigPath = '../../../safeConfig/safeConfig.json';
+
+import * as path from 'path';
+export const safeConfigPath = path.join(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'safeConfig',
+  'safeConfig.json'
+);
 
 /* Use me when calling getConfigProp! Import like this if you want to use me!
  * import { safeJSONProps as sjp } from "../safeUtil/Util";
