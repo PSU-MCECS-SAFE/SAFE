@@ -22,6 +22,13 @@ p.safemessage{
     animation: scale 3s forwards cubic-bezier(0.5, 1, 0.89, 1);
   }
 
+  p.utilbar{
+    font-family: "Montserrate Medium";
+    font-size: small;
+    text-align: left;
+    margin-left: 2%;
+  }
+
   h1.safeheader{
     font-family: "Times New Roman", Times, serif;
     font: serif;
