@@ -34,7 +34,9 @@ function SafeUI() {
   const [open, setOpen] = useState(false);
   const [openCode, setOpenCode] = useState(false);
   const [email, setEmail] = useState('');
-  const [EmailError, setEmailError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
+  const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -59,6 +61,7 @@ function SafeUI() {
     const newCharacterCount = newEmail.length;
     if (newCharacterCount <= 256) {
       setEmail(newEmail);
+      setValidEmail(emailRegex.test(newEmail));
     }
   };
 
@@ -91,6 +94,7 @@ function SafeUI() {
   const handleClose = () => {
     setOpen(false);
     setOpenCode(false);
+    console.log('receive_reply: false');
   };
 
   const handleYes = () => {
@@ -98,6 +102,8 @@ function SafeUI() {
     setOpenCode(true);
     if(email !== ''){
       setEmail('');
+      setEmailError(false);
+      setValidEmail(false);
     }
   };
 
@@ -109,10 +115,12 @@ function SafeUI() {
     if (email === '') {
       setEmailError(true);
       setHelperText('This field is required');
-    }
-
-    if (email) {
+    } else if(validEmail === false) {
+      setEmailError(true);
+      setHelperText('Enter a valid email');
+    } else {
       console.log(email); //Function calling to transfer sender email from front to back end
+      console.log('receive_reply: true');
       setOpenCode(false);
     }
   };
@@ -255,7 +263,7 @@ function SafeUI() {
               autoComplete='off'
               spellCheck='false'
               onChange={handleEmailChange}
-              error={EmailError}
+              error={emailError}
               helperText={helperText}
               inputProps={{ maxlength: MAX_EMAIL_CHARACTERS }}
             />

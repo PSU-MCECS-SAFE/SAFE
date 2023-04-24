@@ -26,7 +26,7 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   boxShadow: 'none',
   transition: 'all 0.3s ease',
   '&:hover': {
-    backgroundColor: '#6a7f10',
+    backgroundColor: lightGreen[700],
     color: '#FFFFFF',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
   },
