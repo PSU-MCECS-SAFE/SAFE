@@ -3,6 +3,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { messageDBConnect } from './messageDBConnect';
 import { spawn } from 'child_process';
+import {
+  safeJSONProps as sjp,
+  getConfigProp,
+  safeConfigPath as scp,
+} from '../safeUtil/Util';
 
 // Create a new Express app
 const app = express();
@@ -71,7 +76,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     client.release();
 
     // Send notification email to receiver
-    const mailArgs = [`-s "${title}"`, 'haosheng@pdx.edu'];
+    const mailArgs = [`-s "${title}"`, getConfigProp(sjp.rcvr_email, scp)];
     const mail = spawn('mail', mailArgs);
     mail.stdin.write(message);
     mail.stdin.end();
@@ -81,7 +86,6 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 //This post request endpoint is only for testing purpose
 app.post('/addMessageTest', async (req: Request, res: Response) => {
