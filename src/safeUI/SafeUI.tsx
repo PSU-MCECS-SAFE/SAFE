@@ -36,15 +36,13 @@ function SafeUI() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
+  const [emailHelperText, setEmailHelperText] = useState('');
+  const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
   const [openInputCodeModal, setOpenInputCodeModal] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
   const [inputCode, setInputCode] = useState("");
   const [validCode, setValidCode] = useState(false);
   const [codeModalHelperText, setCodeModalHelperText] = useState("");
-  const emailRegex = new RegExp(
-    /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-    "gm"
-  );
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -118,14 +116,14 @@ function SafeUI() {
   const handleEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError(false);
-    setHelperText("");
+    setEmailHelperText('');
 
     if (email === "") {
       setEmailError(true);
-      setHelperText("This field is required");
-    } else if (validEmail === false) {
+      setEmailHelperText('This field is required');
+    } else if(validEmail === false) {
       setEmailError(true);
-      setHelperText("Enter a valid email");
+      setEmailHelperText('Enter a valid email');
     } else {
       console.log(email); //Function calling to transfer sender email from front to back end
       console.log("receive_reply: true");
@@ -348,7 +346,7 @@ function SafeUI() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            If yes, you will get a code that you can use to check for replies
+            If yes, you will get a code that you can use to check back here for replies 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -373,8 +371,10 @@ function SafeUI() {
           <DialogContent>
             <DialogContentText>Code:</DialogContentText>
             <DialogContentText>
-              Here is your code. If you wish for us to email you the code please
-              enter your email.
+              Code: 
+            </DialogContentText>
+            <DialogContentText>
+              Here is your code. If you wish for us to email you the code please enter your email. Your email will not be saved!
             </DialogContentText>
             <TextField
               autoFocus
@@ -389,7 +389,7 @@ function SafeUI() {
               spellCheck="false"
               onChange={handleEmailChange}
               error={emailError}
-              helperText={helperText}
+              helperText={emailHelperText}
               inputProps={{ maxlength: MAX_EMAIL_CHARACTERS }}
             />
           </DialogContent>
