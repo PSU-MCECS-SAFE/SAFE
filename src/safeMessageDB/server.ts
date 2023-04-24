@@ -55,10 +55,10 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    messageDBConnect.connect();
 
     // Execute a SQL query to insert a new event
-    const result = await client.query(
+    messageDBConnect.query(
       'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         title,
@@ -73,7 +73,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     );
 
     // Release the client connection back to the pool
-    client.release();
+    messageDBConnect.end();
 
     // Send notification email to receiver
     const mailArgs = [`-s "${title}"`, getConfigProp(sjp.rcvr_email, scp)];
@@ -102,10 +102,10 @@ app.post('/addMessageTest', async (req: Request, res: Response) => {
 
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    messageDBConnect.connect();
 
     // Execute a SQL query to insert a new event
-    const result = await client.query(
+    messageDBConnect.query(
       'INSERT INTO "TestMessage" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         title,
@@ -121,7 +121,7 @@ app.post('/addMessageTest', async (req: Request, res: Response) => {
 
     // Release the client connection back to the pool
     res.status(200).send();
-    client.release();
+    messageDBConnect.end();
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
