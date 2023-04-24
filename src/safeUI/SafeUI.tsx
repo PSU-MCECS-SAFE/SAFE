@@ -128,7 +128,7 @@ function SafeUI() {
   const isSubmitDisabled = !to || !subject || !message;
 
   return (
-    <Box sx={{ backgroundColor: '#faf7e1', width: '100vw', height: '100vh' }}>
+    <Box sx={{ backgroundColor: '#faf7e1', width: 'auto', height: 'auto' }}>
       <Box
         sx={{
           backgroundColor: '#6a7f10',
