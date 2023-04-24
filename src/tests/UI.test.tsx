@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom'
 import { render, screen, fireEvent } from '@testing-library/react';
 import SafeUI from '../safeUI/SafeUI';
 
@@ -65,4 +66,15 @@ test('displays character count of the subject', () => {
     target: { value: 'This is a test' }
   });
   expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
+});
+
+test('opens modal when submitted', () => {
+  render(<SafeUI />);
+  const subjectInput = screen.getByLabelText(/Subject:/i);
+  const messageInput = screen.getByPlaceholderText(/Enter Message/i);
+  const submitButton = screen.getByRole('button', { name: /submit/i });
+
+  fireEvent.change(subjectInput, { target: { value: 'Test Subject' } });
+  fireEvent.change(messageInput, { target: { value: 'Test message' } });
+  fireEvent.click(submitButton);
 });
