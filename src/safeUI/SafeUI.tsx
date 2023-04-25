@@ -18,7 +18,7 @@ import {
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) {}
+function handleToken(token: string) { }
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -176,7 +176,7 @@ function SafeUI() {
         }}
       >
         <img
-          src="/PSU_logo_accent_transparent.png"
+          src="./PSU_logo_accent_transparent.png"
           alt="Logo"
           width="135"
           height="53"
