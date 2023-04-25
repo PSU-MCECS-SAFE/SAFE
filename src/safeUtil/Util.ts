@@ -1,8 +1,6 @@
 import fs from 'fs';
-
-// export const safeConfigPath = '../../../safeConfig/safeConfig.json';
-
 import * as path from 'path';
+
 export const safeConfigPath = path.join(
   __dirname,
   '..',
