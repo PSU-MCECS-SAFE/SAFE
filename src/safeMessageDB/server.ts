@@ -55,10 +55,10 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
   try {
     // Acquire a client connection from the connection pool
-    messageDBConnect.connect();
+    const client = await messageDBConnect.connect();
 
     // Execute a SQL query to insert a new event
-    messageDBConnect.query(
+    await client.query(
       'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         title,
@@ -73,7 +73,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     );
 
     // Release the client connection back to the pool
-    messageDBConnect.end();
+    client.release();
 
     // Send notification email to receiver
     const mailArgs = [`-s "${title}"`, getConfigProp(sjp.rcvr_email, scp)];
@@ -102,10 +102,10 @@ app.post('/addMessageTest', async (req: Request, res: Response) => {
 
   try {
     // Acquire a client connection from the connection pool
-    messageDBConnect.connect();
+    const client = await messageDBConnect.connect();
 
     // Execute a SQL query to insert a new event
-    messageDBConnect.query(
+    client.query(
       'INSERT INTO "TestMessage" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         title,
