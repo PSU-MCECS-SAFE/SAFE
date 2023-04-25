@@ -36,8 +36,11 @@ function SafeUI() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
-  const [emailHelperText, setEmailHelperText] = useState('');
-  const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+  const [emailHelperText, setEmailHelperText] = useState("");
+  const emailRegex = new RegExp(
+    /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
+    "gm"
+  );
   const [openInputCodeModal, setOpenInputCodeModal] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
   const [inputCode, setInputCode] = useState("");
@@ -116,14 +119,14 @@ function SafeUI() {
   const handleEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError(false);
-    setEmailHelperText('');
+    setEmailHelperText("");
 
     if (email === "") {
       setEmailError(true);
-      setEmailHelperText('This field is required');
-    } else if(validEmail === false) {
+      setEmailHelperText("This field is required");
+    } else if (validEmail === false) {
       setEmailError(true);
-      setEmailHelperText('Enter a valid email');
+      setEmailHelperText("Enter a valid email");
     } else {
       console.log(email); //Function calling to transfer sender email from front to back end
       console.log("receive_reply: true");
@@ -202,7 +205,9 @@ function SafeUI() {
       <DialogContent>
         {/* The 'sx' prop is used to preserve the format of the message when user typed in message box*/}
 
-        <DialogContentText sx={{ whiteSpace: "pre", overflowWrap: "anywhere" }}>
+        <DialogContentText
+          sx={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}
+        >
           {" "}
           {message}
         </DialogContentText>
@@ -246,13 +251,13 @@ function SafeUI() {
           <Dialog
             open={openMessageModal}
             onClose={handleCloseMessageModal}
-            scroll="paper"
+            scroll={"paper"}
           >
             {displayMessageModal}
           </Dialog>
-          ;
         </Box>
       </Box>
+
       <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
@@ -346,7 +351,8 @@ function SafeUI() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            If yes, you will get a code that you can use to check back here for replies 
+            If yes, you will get a code that you can use to check back here for
+            replies
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -370,11 +376,10 @@ function SafeUI() {
         <form noValidate autoComplete="off" onSubmit={handleEmail}>
           <DialogContent>
             <DialogContentText>Code:</DialogContentText>
+            <DialogContentText>Code:</DialogContentText>
             <DialogContentText>
-              Code: 
-            </DialogContentText>
-            <DialogContentText>
-              Here is your code. If you wish for us to email you the code please enter your email. Your email will not be saved!
+              Here is your code. If you wish for us to email you the code please
+              enter your email. Your email will not be saved!
             </DialogContentText>
             <TextField
               autoFocus
