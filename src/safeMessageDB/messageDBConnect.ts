@@ -1,4 +1,4 @@
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import {
   safeJSONProps as sjp,
   getConfigProp,
@@ -6,7 +6,7 @@ import {
 } from '../safeUtil/Util';
 
 // Create database connection
-export const messageDBConnect: Client = new Client({
+export const messageDBConnect = new Pool({
   user: getConfigProp(sjp.username, scp),
   database: getConfigProp(sjp.db_name, scp),
   port: 5432,
