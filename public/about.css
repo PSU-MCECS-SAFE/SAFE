@@ -1,17 +1,21 @@
-
 body {
     font-family: Arial;
     margin: 0;
-    background-color: #E8F5E9;
+    background-color: #faf7e1;
   }
   
-  .banner {
-    position:fixed;
-    height: 4%;
-    width: 100%;
+  header {
     background: #6a7f10;
+    color: white;
+    font-size: 12px;
+    align-items: center;
+    padding-left:25px;
+    height: 38px;
+    text-align: center;
+
   }
-  .content {padding:15%;}
+
+.content {padding:15%;}
 
 p.safemessage{
     font-family: "Montserrat Medium";
@@ -20,13 +24,6 @@ p.safemessage{
     text-align: center;
     transform: scale(0.98);
     animation: scale 3s forwards cubic-bezier(0.5, 1, 0.89, 1);
-  }
-
-  p.utilbar{
-    font-family: "Montserrate Medium";
-    font-size: small;
-    text-align: left;
-    margin-left: 2%;
   }
 
   h1.safeheader{
