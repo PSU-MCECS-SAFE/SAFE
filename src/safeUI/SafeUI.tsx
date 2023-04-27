@@ -414,7 +414,7 @@ function SafeUI() {
               onChange={handleSubjectChange}
               error={subjectError}
               helperText={helperText}
-              inputProps={{ maxLength: MAX_SUBJECT_CHARACTERS }}
+              inputProps={{ maxLength: MAX_Subject_CHARACTERS }}
             />
 
             <Grid container justifyContent="flex-end">
