@@ -18,7 +18,7 @@ import {
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) { }
+function handleToken(token: string) {}
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -48,13 +48,6 @@ const Captcha = () => {
 </GoogleReCaptchaProvider>
 */
 
-/* Components to implement
- * 1) Welcome Message
- * 2) Receiver Name
- * 3) Subject Line
- * 4) Message Box (2000(+?) input limit)
- * 5) Submit Button
- */
 const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 100;
 function SafeUI() {
@@ -188,8 +181,12 @@ function SafeUI() {
         PSU's CS Department Anonymous Feedback System
       </Typography>
 
-      <Typography mt={2} mb={3} align='center'>
-        Find out how we are committed to keeping your identity <a href="./about.html" target="blank">anonymous</a>!
+      <Typography mt={2} mb={3} align="center">
+        Find out how we are committed to keeping your identity{' '}
+        <a href="./about.html" target="blank">
+          anonymous
+        </a>
+        !
       </Typography>
 
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -264,23 +261,6 @@ function SafeUI() {
               </Typography>
             </Grid>
 
-            <Box textAlign="center">
-              <StyledSubmitButton
-                variant="contained"
-                type="submit"
-                disabled={isSubmitDisabled}
-                onClick={handleButtonClick}
-              >
-                Submit
-              </StyledSubmitButton>
-            </Box>
-            <Snackbar
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              open={open}
-              onClose={() => setOpen(false)}
-              message="Feedback Successfully sent to PSU's CS Dept."
-              autoHideDuration={5000}
-            />
             <Typography variant="subtitle2" mt={4} mb={3} align="center">
               This site should not be used to report{' '}
               <Link href="https://www.pdx.edu/diversity/title-ix">
@@ -302,6 +282,24 @@ function SafeUI() {
               also provides a confidential reporting option for the PSU
               community.
             </Typography>
+
+            <Box textAlign="center">
+              <StyledSubmitButton
+                variant="contained"
+                type="submit"
+                disabled={isSubmitDisabled}
+                onClick={handleButtonClick}
+              >
+                Submit
+              </StyledSubmitButton>
+            </Box>
+            <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              open={open}
+              onClose={() => setOpen(false)}
+              message="Feedback Successfully sent to PSU's CS Dept."
+              autoHideDuration={5000}
+            />
           </Grid>
         </Grid>
       </form>
