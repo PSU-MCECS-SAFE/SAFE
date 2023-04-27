@@ -65,6 +65,7 @@ const Captcha = () => {
 const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 100;
 const MAX_EMAIL_CHARACTERS = 256;
+
 function SafeUI() {
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
@@ -76,6 +77,7 @@ function SafeUI() {
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState("");
   const [open, setOpen] = useState(false);
+  const [openEmail, setOpenEmail] = useState(false);
   const [openCode, setOpenCode] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -139,6 +141,7 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
+      setOpenEmail(true);
       /**
        * This is how to call the getMessage from atabase
        */
@@ -177,18 +180,18 @@ function SafeUI() {
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
         });
-      setOpen(true);
     }
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenEmail(false);
     setOpenCode(false);
     console.log("receive_reply: false");
+    handleSnackbarOpen();
   };
 
   const handleYes = () => {
-    setOpen(false);
+    setOpenEmail(false);
     setOpenCode(true);
     if (email !== "") {
       setEmail("");
@@ -212,6 +215,7 @@ function SafeUI() {
       console.log(email); //Function calling to transfer sender email from front to back end
       console.log("receive_reply: true");
       setOpenCode(false);
+      handleSnackbarOpen();
     }
   };
 
@@ -258,7 +262,6 @@ function SafeUI() {
       bubbles: true,
     }) as unknown as React.FormEvent<HTMLFormElement>;
     handleSubmit(formEvent);
-    handleSnackbarOpen();
   };
 
   const uniqueCodeInputModal = (
@@ -325,12 +328,14 @@ function SafeUI() {
                   paddingLeft: '25px',
                 }}
             >
+        <Box textAlign="right" sx={{ height: "38px" }}>
         <img
           src="/PSU_logo_accent_transparent.png"
           alt="Logo"
           width="135"
-          height="53"
+          height="38"
         />
+        </Box>
         <Box textAlign="right" sx={{ height: "38px" }}>
           <StyledButton
             variant="contained"
@@ -490,7 +495,7 @@ function SafeUI() {
       </form>
 
       <Dialog
-        open={open}
+        open={openEmail}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >

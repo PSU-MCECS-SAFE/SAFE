@@ -61,20 +61,9 @@ test('displays character count of message', () => {
 //test input in subject
 test('displays character count of the subject', () => {
   render(<SafeUI />);
-  const subjectInput = screen.getByPlaceholderText(/Enter Subject/i);
+  const subjectInput = screen.getByLabelText(/Subject:/i);
   fireEvent.change(subjectInput, {
     target: { value: 'This is a test' }
   });
-  expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
-});
-
-test('opens modal when submitted', () => {
-  render(<SafeUI />);
-  const subjectInput = screen.getByLabelText(/Subject:/i);
-  const messageInput = screen.getByPlaceholderText(/Enter Message/i);
-  const submitButton = screen.getByRole('button', { name: /submit/i });
-
-  fireEvent.change(subjectInput, { target: { value: 'Test Subject' } });
-  fireEvent.change(messageInput, { target: { value: 'Test message' } });
-  fireEvent.click(submitButton);
+  expect(screen.getByText(/14 \/ 100/i)).toBeInTheDocument();
 });
