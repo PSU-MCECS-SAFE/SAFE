@@ -64,6 +64,8 @@ async function checkCombinations(code_combination: number[], code_length: number
 // TODO: Finish writing this function
 async function getNextCode(code_combination: number[], code_length: number, max: number, min: number, index: number = 0): Promise<number[]> {
     var new_code_combination: number[] = code_combination;
+    var init: number = code_combination[code_combination.length - 1];
+    var i: number = (init !== (dictionary.length - 1)) ? (init + 1) : 0;
     if (index === code_length - 1) {
         // We are at the last index in the array
         await checkCombinations(code_combination, code_length);
