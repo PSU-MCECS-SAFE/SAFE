@@ -98,8 +98,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
 
 // Start the server
-app.listen(3001, () => {
-  console.log(`Server listening on port 3001`);
+app.listen(3001, '131.252.208.28', () => {
+  console.log(`Server listening on 131.252.208.28:3001`);
 });
 
 export default app;
