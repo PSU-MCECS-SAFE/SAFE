@@ -4,6 +4,7 @@
 import React from "react";
 import SafeUI from "./safeUI/SafeUI";
 import "./App.css";
+import ReceiverDashboard from "./safeReceiverDashboard/safeReceiverDashboard";
 
 /*
  * This is where the "app" is selected to run. What we call here will be an
@@ -24,11 +25,11 @@ import "./App.css";
  *
  * - Alex
  */
-
+//changed for testing only. will change back before merging
 function App() {
   return (
     <div className="container">
-      <SafeUI></SafeUI>
+      <ReceiverDashboard></ReceiverDashboard>
     </div>
   );
 }
