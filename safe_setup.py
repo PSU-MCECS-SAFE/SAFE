@@ -193,7 +193,7 @@ def executeNodeJSScripts():
     if __BUILD_EXISTS:
         print("\nFound old build dir. . .    removing. . .")
         shutil.rmtree(__BUILD_PATH)
-    os.system("npm --silent run build")
+    os.system("npm run --silent build")
 
     # Lets make the server executable and usable so that the site can
     # properly pass data from the page to the database
