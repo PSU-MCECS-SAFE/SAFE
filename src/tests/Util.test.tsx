@@ -2,7 +2,7 @@ import fs from 'fs';
 import * as util from "../safeUtil/Util";
 import { safeJSONProps as sjp } from "../safeUtil/Util";
 
-
+const TESTPATH = './testing.json';
 describe('Util Tests', () => {
 
     //JSON file property acquisition testing
@@ -24,8 +24,6 @@ describe('Util Tests', () => {
                 if (err) throw err;
             });
         });
-
-        const TESTPATH = './testing.json';
         it('Acquire username from testing.json', () => {
             expect(util.getConfigProp(sjp.username, TESTPATH)).toBe("Test Name")
         });
