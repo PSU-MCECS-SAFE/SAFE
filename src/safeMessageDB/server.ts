@@ -40,6 +40,30 @@ app.use(cors());
 //     }
 // });
 
+
+app.get('/delete', async (req: Request, res: Response) => {
+});
+
+// Define an endpoint for retrieving all events
+app.all('/query', async (req: Request, res: Response) => {
+  const { query } = req.body;
+
+  try {
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+
+    // Execute a SQL query to retrieve all events
+    const result = await client.query('$1', [ query ]);
+    // Release the client connection back to the pool
+    client.release();
+    // Send the results as JSON
+    res.json(result.rows).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Define an endpoint for adding a new event
 app.post('/addMessage', async (req: Request, res: Response) => {
   const {
