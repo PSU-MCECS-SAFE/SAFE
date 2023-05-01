@@ -1,4 +1,3 @@
-from multiprocessing import process
 import os
 import json
 import shutil
@@ -7,17 +6,31 @@ import sys
 import time
 import re
 
+
 def isDebugPresent():
+    """
+    Detects if the command line had any additional args and if they were the
+    debug arg.
+    
+    ### Return: 
+    True if debug arg detected, false otherwise
+    """
     if len(sys.argv) == 2 and (sys.argv[1] == "-d" or sys.argv[1] == "-D"):
             return True
     return False
 
-"""
+""" This is not a docstring, no. This is a tribute!
+
 This python script is utilized in the `npm run deployment` script you can find
 in `package.json`. This generates a .ts file that is used in the build phase
 then promptly deleted once `npm run deployment` has reached its final stage
 to ensure that the secrets entered are never leaked.
+
+There are a lot of time.sleep(x) present to allow the user to get the sensation
+work is being done. It's also nice to read the messages left for you to ensure
+nothing wild is happening.
 """
+
 __OS_NAME = os.name
 __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
@@ -27,32 +40,39 @@ __BUILD_EXISTS = os.path.exists(__BUILD_PATH)
 __JSOUT_EXISTS = os.path.exists(__JSOUT_PATH)
 __DEBUG = isDebugPresent()
 
-# helper functions
 
 
-"""
-Prints the config information if file has been found.
-"""
 def print_info(username, password, db_address, db_name, rcvr_email):
+    """
+    Prints the config information if file has been found.
+    """
     print("Username: " + username)
     print("Password: " + password)
     print("Database address: " + db_address)
     print("Database name: " + db_name)
     print("Receiver email: " + rcvr_email)
 
-"""
-Clears the terminal screen at specific instances
-"""
+
 def clearScreen():
+    """
+    Clears the terminal screen at specific instances
+    ### Return:
+    A function for the os to clear the terminal depending on its type.
+    """
     if not __DEBUG:
         return os.system("cls" if __OS_NAME == "nt" else "clear")
     return
 
-"""
-If the host is not ada.cs.pdx.edu, babbage.cs.pdx.edu or quizor*.pdx.edu
-and the debug argument is not present for the script, abort mission!
-"""
+
 def whoIsMyHost():
+    """
+    If the host is not ada.cs.pdx.edu, babbage.cs.pdx.edu or quizor*.pdx.edu
+    and the debug argument is not present for the script, abort mission!
+    ### Return:
+    False if the regex failed to find matching hostname from the function call.
+    
+    True otherwise.
+    """
     clearScreen()
     myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
     pattern = r'(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)'
@@ -61,16 +81,12 @@ def whoIsMyHost():
     return True
 
 
-
-
-# Operational Functions - Required for the script to succeed
-"""
-Creates the config file with all key fields needed from user input
-and verifies their input. If the file exists, it asks them to verify the
-information and confirm it or re-enter it with updated information.
-"""
 def makeConfigFile():
-
+    """
+    Creates the config file with all key fields needed from user input
+    and verifies their input. If the file exists, it asks them to verify the
+    information and confirm it or re-enter it with updated information.
+    """
     clearScreen()
 
     print(
@@ -107,6 +123,7 @@ def makeConfigFile():
 
         if conf.lower() == "n":
             print("\n\nKeeping current configuration. . .\n\n")
+            time.sleep(2)
             return
 
     print("\n\nGenerating new configuration file. . .\n")
@@ -148,8 +165,14 @@ def makeConfigFile():
 
     print("\n\n!!!SAFE configuration file created !!!")
     time.sleep(2)
-    
-def executeNpmNpxScripts():
+
+
+
+def executeNodeJSScripts():
+    """
+    Perform the NPM script options. This can be added to as the project is passed
+    on and changed.
+    """
     print("\n\nNow performing deployment actions. Some directories related\n" + 
           "the websites code may be removed to generate new versions.\n" + 
           "\nThis is PERFECTLY NORMAL and TO BE EXPECTED if this script\n" + 
@@ -163,12 +186,15 @@ def executeNpmNpxScripts():
     
     os.system("npm --silent i")        
     
+    # Clean builds never hurt anyone
     if(__BUILD_EXISTS):
         print("\nFound old build dir. . .    removing. . .")
         shutil.rmtree(__BUILD_PATH)
     os.system("npm --silent run build")
 
 
+    # Lets make the server executable and usable so that the site can
+    # properly pass data from the page to the database
     if(__JSOUT_EXISTS):
         print("\nJSoutFile directory found. . .    removing. . .")
         shutil.rmtree(__JSOUT_PATH)
@@ -176,17 +202,34 @@ def executeNpmNpxScripts():
     os.system("npx --silent tsc")
 
 
+
 def modifiyUserGroupPermissions():
+    """
+    Modifies the user group permissions so that the PSU linux systems apache
+    server can access the SAFE directories and present the webpage.
+    """ 
+    # If the website fails to display, check these permissions against the
+    # CAT's documentation on what permissions must be set for the apache
+    # server to access the directories.
+    # https://cat.pdx.edu/services/web/account-websites/
     print("\nUNIX-like system detected. . . Running chmod changes on REQUIRED" +
           "directories for the SAFE website on PSU servers.")
+    time.sleep(1)
     os.system("chmod 711 ../SAFE")
     os.system("chmod -R 711 ./build")
+    print("\nModifications complete\n")
+    time.sleep(1)
+    
+    
 
 
 
 
-####### main ############
+############ main ############
 def main():
+    
+    # If the script is ran on non-unix machines, and -d or -D is not present
+    # this message will appear and the script will terminate with sys.exit
     if whoIsMyHost() is False and not __DEBUG:
         print("This script can only be ran on Portland State University " +
               "linux servers owned and operated by the CAT.\n" +
@@ -194,17 +237,21 @@ def main():
               "be updated. Contact the development team for more " + 
               "support.\n")
         sys.exit()
-        
+    
+    # If being ran with -d or -D, give the user notice
     if __DEBUG:
         print("\n\nDEBUG MODE DETECTED. . .    SCRIPT WILL CONTINUE IN 3 " + 
               "SECONDS. . .\n\n")
-        time.sleep(3)
-        
+        time.sleep(2)
+
     makeConfigFile()
-    executeNpmNpxScripts()
+    executeNodeJSScripts()
+    
+    # Ensure we are on the right type of system for this to actually work.
     if(__OS_NAME == 'posix'):
         modifiyUserGroupPermissions()
     
+    # We're finished!
     print("\n\nSAFE setup complete!\n\n")
     time.sleep(1)
 
