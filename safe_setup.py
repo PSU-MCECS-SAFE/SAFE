@@ -120,12 +120,12 @@ def makeConfigFile():
             )
 
         conf = input(
-            "\n**ALERT**: Would you like to UPDATE this information? (Y/N): "
+            "\n**ALERT**: Would you like to *KEEP* this information? (Y/N): "
         )
 
-        if conf.lower() == "n":
+        if conf.lower() == "y":
             print("\n\nKeeping current configuration. . .\n\n")
-            time.sleep(2)
+            time.sleep(1)
             return
 
     print("\n\nGenerating new configuration file. . .\n")
@@ -186,13 +186,19 @@ def executeNodeJSScripts():
     time.sleep(3)
 
     print("\nRunning npm scripts to prepare website for deployment. . .\n")
-
+    
+    print("\n****************************************************")
+    print("\nCalling 'npm i' to install any missing packages. . .")
+    print("\n****************************************************")
     os.system("npm --silent i")
 
     # Clean builds never hurt anyone
     if __BUILD_EXISTS:
-        print("\nFound old build dir. . .    removing. . .")
+        print("\n\nFound old build dir. . .    removing. . .")
         shutil.rmtree(__BUILD_PATH)
+    print("\n******************************")
+    print("\nCalling script 'npm run build'")
+    print("\n******************************")
     os.system("npm run --silent build")
 
     # Lets make the server executable and usable so that the site can
@@ -200,7 +206,9 @@ def executeNodeJSScripts():
     if __JSOUT_EXISTS:
         print("\nJSoutFile directory found. . .    removing. . .")
         shutil.rmtree(__JSOUT_PATH)
-    print("\nCompiling database server code. . .")
+    print("\n******************************************************")
+    print("\nCalling 'npx tsc' to compile database server code. . .")
+    print("\n******************************************************")
     os.system("npx --silent tsc")
 
 
