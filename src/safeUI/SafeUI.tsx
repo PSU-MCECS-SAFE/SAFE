@@ -176,6 +176,7 @@ function SafeUI() {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          handleSnackbarOpen();
         })
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
@@ -187,7 +188,6 @@ function SafeUI() {
     setOpenEmail(false);
     setOpenCode(false);
     console.log("receive_reply: false");
-    handleSnackbarOpen();
   };
 
   const handleYes = () => {
@@ -215,7 +215,6 @@ function SafeUI() {
       console.log(email); //Function calling to transfer sender email from front to back end
       console.log("receive_reply: true");
       setOpenCode(false);
-      handleSnackbarOpen();
     }
   };
 
@@ -467,7 +466,7 @@ function SafeUI() {
               open={open}
               onClose={() => setOpen(false)}
               message="Feedback Successfully sent to PSU's CS Dept."
-              autoHideDuration={5000}
+              autoHideDuration={10000}
             />
             <Typography variant="subtitle2" mt={4} mb={3} align="center">
               This site should not be used to report{' '}
