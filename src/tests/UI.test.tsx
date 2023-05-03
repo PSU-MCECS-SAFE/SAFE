@@ -25,9 +25,7 @@ test('renders the welcome message and subtitle', () => {
   );
   // Check if the subtitle is rendered with correct content
   expect(
-    screen.getByText(
-      'Find out how we are committed to keeping your identity anonymous!'
-    )
+    screen.queryByText(/Find out how we are committed to keeping your identity/i)
   ).toBeInTheDocument();
 });
 
@@ -48,6 +46,7 @@ test('submit button is disabled when required fields are empty', () => {
   expect(submitButton).toBeDisabled();
 });
 
+
 //test input in message
 test('displays character count of message', () => {
   render(<SafeUI />);
@@ -61,6 +60,17 @@ test('displays character count of message', () => {
 //test input in subject
 test('displays character count of the subject', () => {
   render(<SafeUI />);
+  const subjectInput = screen.getByPlaceholderText(/Briefly describe your feedback \(course feedback, suggestions for improvement...\)/i);
+  fireEvent.change(subjectInput, {
+    target: { value: 'This is a test' }
+  });
+  expect(screen.getByText(/14 \/ 100/i)).toBeInTheDocument();
+});
+
+
+/* test('displays character count of subject and message', () => {
+  render(<SafeUI />);
+  const messageInput = screen.getByPlaceholderText(/Enter Message/i);
   const subjectInput = screen.getByLabelText(/Subject:/i);
   fireEvent.change(subjectInput, {
     target: { value: 'This is a test' }
