@@ -62,7 +62,6 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   };
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s]/g, '');
 
-
   try {
     // Acquire a client connection from the connection pool
     const client = await messageDBConnect.connect();
@@ -85,7 +84,10 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     await client.release();
 
     // Send notification email to receiver
-    const mailArgs = [`-s "${sanitizedTitle}"`, getConfigProp(sjp.rcvr_email, scp)];
+    const mailArgs = [
+      `-s "${sanitizedTitle}"`,
+      getConfigProp(sjp.rcvr_email, scp),
+    ];
     const mail = spawn('mail', mailArgs);
     mail.stdin.write(sanitizedBody.message);
     mail.stdin.end();
@@ -96,9 +98,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   }
 });
 
-
 // Start the server
-app.listen(3001, () => {
+app.listen(3001, '131.252.208.28', () => {
   console.log(`Server listening on port 3001`);
 });
 
