@@ -96,7 +96,7 @@ function SafeUI() {
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
     const newCharacterCount = newMessage.length;
-    if (newCharacterCount <= 7500) {
+    if (newCharacterCount <= MAX_CHARACTERS) {
       setMessage(newMessage);
       setCharCount(newCharacterCount);
     }
@@ -105,7 +105,7 @@ function SafeUI() {
   const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newSubject = e.target.value;
     const newCharacterCount = newSubject.length;
-    if (newCharacterCount <= 100) {
+    if (newCharacterCount <= MAX_Subject_CHARACTERS) {
       setSubject(newSubject);
       setSubjectCharCount(newCharacterCount);
     }
@@ -114,7 +114,7 @@ function SafeUI() {
   const handleEmailChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newEmail = e.target.value;
     const newCharacterCount = newEmail.length;
-    if (newCharacterCount <= 256) {
+    if (newCharacterCount <= MAX_EMAIL_CHARACTERS) {
       setEmail(newEmail);
       setValidEmail(emailRegex.test(newEmail));
     }
@@ -332,7 +332,7 @@ function SafeUI() {
           src='./PSU_logo_accent_transparent.png'
           alt='Logo'
           width='135'
-          height='53'
+          height='38'
         />
         </Box>
         <Box textAlign="right" sx={{ height: "38px" }}>
@@ -427,7 +427,7 @@ function SafeUI() {
 
             <Grid container justifyContent='flex-end'>
               <Typography mt={2} mb={3} gutterBottom>
-                {subjectCharacterCount} / 100
+                {subjectCharacterCount} / {MAX_Subject_CHARACTERS}
               </Typography>
             </Grid>
           </Grid>
@@ -451,7 +451,7 @@ function SafeUI() {
 
             <Grid container justifyContent='flex-end'>
               <Typography mt={2} mb={3} gutterBottom>
-                {characterCount} / 7500
+                {characterCount} / {MAX_CHARACTERS}
               </Typography>
             </Grid>
 
@@ -531,7 +531,6 @@ function SafeUI() {
         </DialogTitle>
         <form noValidate autoComplete="off" onSubmit={handleEmail}>
           <DialogContent>
-            <DialogContentText>Code:</DialogContentText>
             <DialogContentText>Code:</DialogContentText>
             <DialogContentText>
               Here is your code. If you wish for us to email you the code please
