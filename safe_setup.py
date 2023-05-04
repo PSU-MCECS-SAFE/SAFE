@@ -344,7 +344,6 @@ def main():
 
     # Nice little menu to use this script.
     scriptMenu()
-    modifyUserGroupPermissions()
 
     # We're finished!
     print("Exiting script. . .\n\n\n")
