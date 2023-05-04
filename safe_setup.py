@@ -75,9 +75,7 @@ def whoIsMyHost():
     """
     clearScreen()
     myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
-    pattern = (
-        r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)"
-    )
+    pattern = r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|rita\.cs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)"
     if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
         return False
     return True
@@ -89,8 +87,6 @@ def makeConfigFile():
     and verifies their input. If the file exists, it asks them to verify the
     information and confirm it or re-enter it with updated information.
     """
-    clearScreen()
-
     print(
         "Welcome to SAFE (System for Anonymous Feedback) "
         "configuration setup.\n\n"
@@ -169,50 +165,93 @@ def makeConfigFile():
     time.sleep(2)
 
 
-def executeNodeJSScripts():
-    """
-    Perform the NPM script options. This can be added to as the project is passed
-    on and changed.
-    """
+def executeNpmAll():
     print(
-        "\n\nNow performing deployment actions. Some directories related\n"
-        + "the websites code may be removed to generate new versions.\n"
-        + "\nThis is PERFECTLY NORMAL and TO BE EXPECTED if this script\n"
-        + "has been ran previously.\n"
+        "\n\nNow performing NPM deployment actions. Some directories related\n"
+        "the websites code may be removed to generate new versions.\n"
+        "\nThis is PERFECTLY NORMAL and TO BE EXPECTED if this script\n"
+        "has been ran previously.\n"
     )
     time.sleep(6)
 
     print("\nThis script will now resume.\n")
     time.sleep(3)
+    executeNpmInstall()
+    executeNpmRunBuild()
+    executeNpxTsc()
 
-    print("\nRunning npm scripts to prepare website for deployment. . .\n")
-    
-    print("\n****************************************************")
-    print("\nCalling 'npm i' to install any missing packages. . .")
-    print("\n****************************************************")
-    os.system("npm --silent i")
 
+def executeNpmInstall():
+    """
+    Run the `npm install` script.
+    """
+    print(
+        "\n**********************************************************"
+        "\nCalling 'npm install' to install any missing packages. . ."
+        "\n**********************************************************"
+    )
+    if __DEBUG:  # Tell us what's really happening behind the scenes
+        os.system("npm i")
+    else:
+        os.system("npm --silent i")
+    print(
+        "\n************************"
+        "\n'npm install' complete!!"
+        "\n************************"
+    )
+
+
+def executeNpmRunBuild():
+    """
+    Executes the `npm run build` script.
+    """
     # Clean builds never hurt anyone
     if __BUILD_EXISTS:
         print("\n\nFound old build dir. . .    removing. . .")
         shutil.rmtree(__BUILD_PATH)
-    print("\n******************************")
-    print("\nCalling script 'npm run build'")
-    print("\n******************************")
-    os.system("npm run --silent build")
+    print(
+        "\n***********************************"
+        "\nCalling script 'npm run build'. . ."
+        "\n***********************************"
+    )
+    if __DEBUG:  # Tell us what's really happening behind the scenes
+        os.system("npm run build")
+    else:
+        os.system("npm run --silent build")
+    print(
+        "\n**************************"
+        "\n'npm run build' complete!!"
+        "\n**************************"
+    )
 
+
+def executeNpxTsc():
+    """
+    Rebuilds `src/safeMessageDB/server.ts` to `.js` for us to run the backend
+    server to process requests from the website.
+    """
     # Lets make the server executable and usable so that the site can
     # properly pass data from the page to the database
     if __JSOUT_EXISTS:
         print("\nJSoutFile directory found. . .    removing. . .")
         shutil.rmtree(__JSOUT_PATH)
-    print("\n******************************************************")
-    print("\nCalling 'npx tsc' to compile database server code. . .")
-    print("\n******************************************************")
-    os.system("npx --silent tsc")
+    print(
+        "\n******************************************************"
+        "\nCalling 'npx tsc' to compile database server code. . ."
+        "\n******************************************************"
+    )
+    if __DEBUG:  # Tell us what's really happening behind the scenes
+        os.system("npx tsc")
+    else:
+        os.system("npx --silent tsc")
+    print(
+        "\n********************"
+        "\n'npx tsc' complete!!"
+        "\n********************"
+    )
 
 
-def modifiyUserGroupPermissions():
+def modifyUserGroupPermissions():
     """
     Modifies the user group permissions so that the PSU linux systems apache
     server can access the SAFE directories and present the webpage.
@@ -221,15 +260,66 @@ def modifiyUserGroupPermissions():
     # CAT's documentation on what permissions must be set for the apache
     # server to access the directories.
     # https://cat.pdx.edu/services/web/account-websites/
-    print(
-        "\nUNIX-like system detected. . . Running chmod changes on REQUIRED"
-        + "directories for the SAFE website on PSU servers."
-    )
-    time.sleep(1)
-    os.system("chmod 711 ../SAFE")
-    os.system("chmod -R 711 ./build")
-    print("\nModifications complete\n")
-    time.sleep(1)
+    if __OS_NAME == "posix":
+        print(
+            "\nUNIX-like system detected. . . Running chmod changes on REQUIRED"
+            + "directories for the SAFE website on PSU servers."
+        )
+        time.sleep(1)
+        os.system("chmod 711 ../SAFE")
+        if __BUILD_EXISTS:
+            os.system("chmod -R 711 ./build")
+        print("\nModifications complete\n")
+        time.sleep(1)
+    return
+
+
+def scriptMenu():
+    """
+    Navigate the script to match users desired needs.
+    """
+    option = -1
+    while True:
+        option = input(
+            "\nSelect which task you need to execute"
+            "\n\t1)  Execute full deployment (all of the below except option 6)."
+            "\n\t2)  Edit SAFE configuration file."
+            "\n\t3)  Run 'npm install' to get missing packages."
+            "\n\t4)  Run 'npm run build' to build website."
+            "\n\t5)  Run 'npx tsc' to compile REST api script."
+            "\n\t6)  Run options 3-5."
+            "\n\t0)  Exit this script."
+            "\n\nOption: "
+        )
+        print("\n")
+        match option:
+            case "1":
+                clearScreen()
+                makeConfigFile()
+                executeNpmAll()
+                modifyUserGroupPermissions()
+                print("\n\nSAFE setup complete!\n\n")
+            case "2":
+                clearScreen()
+                makeConfigFile()
+            case "3":
+                clearScreen()
+                executeNpmInstall()
+            case "4":
+                clearScreen()
+                executeNpmRunBuild()
+            case "5":
+                clearScreen()
+                executeNpxTsc()
+            case "6":
+                clearScreen()
+                executeNpmAll()
+                modifyUserGroupPermissions()
+            case "0":
+                modifyUserGroupPermissions()
+                return
+            case _:
+                print("\n\n**ERROR** - Invalid option. . .\n")
 
 
 ############ main ############
@@ -254,15 +344,12 @@ def main():
         )
         time.sleep(2)
 
-    makeConfigFile()
-    executeNodeJSScripts()
-
-    # Ensure we are on the right type of system for this to actually work.
-    if __OS_NAME == "posix":
-        modifiyUserGroupPermissions()
+    # Nice little menu to use this script.
+    scriptMenu()
+    modifyUserGroupPermissions()
 
     # We're finished!
-    print("\n\nSAFE setup complete!\n\n")
+    print("Exiting script. . .\n\n\n")
     time.sleep(1)
 
 
