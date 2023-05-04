@@ -129,6 +129,7 @@ function SafeUI() {
         verifyString(subject);
         sentiment = verifyString(message);
       }catch(e){
+        // There are cuss words in either the subject or the message
       }
       fetch('http://localhost:3001/addMessage', {
         method: 'POST',
