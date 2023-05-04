@@ -216,8 +216,12 @@ def executeNpmRunBuild():
     )
     if __DEBUG:  # Tell us what's really happening behind the scenes
         os.system("npm run build")
+        global __BUILD_EXISTS
+        __BUILD_EXISTS = True
     else:
         os.system("npm run --silent build")
+        global __BUILD_EXISTS
+        __BUILD_EXISTS = True
     print(
         "\n**************************"
         "\n'npm run build' complete!!"
