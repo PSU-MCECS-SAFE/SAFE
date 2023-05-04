@@ -263,7 +263,7 @@ def modifyUserGroupPermissions():
     if __OS_NAME == "posix":
         print(
             "\nUNIX-like system detected. . . Running chmod changes on REQUIRED"
-            + "directories for the SAFE website on PSU servers."
+            "\ndirectories for the SAFE website on PSU servers."
         )
         time.sleep(1)
         os.system("chmod 711 ../SAFE")
