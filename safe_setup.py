@@ -37,7 +37,6 @@ __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
 __JSOUT_PATH = "./JSoutFile"
 __CFG_EXISTS = os.path.exists(__CFG_PATH)
-global __BUILD_EXISTS
 __BUILD_EXISTS = os.path.exists(__BUILD_PATH)
 __JSOUT_EXISTS = os.path.exists(__JSOUT_PATH)
 __DEBUG = isDebugPresent()
@@ -217,10 +216,8 @@ def executeNpmRunBuild():
     )
     if __DEBUG:  # Tell us what's really happening behind the scenes
         os.system("npm run build")
-        __BUILD_EXISTS = True
     else:
         os.system("npm run --silent build")
-        __BUILD_EXISTS = True
     print(
         "\n**************************"
         "\n'npm run build' complete!!"
@@ -270,7 +267,7 @@ def modifyUserGroupPermissions():
         )
         time.sleep(1)
         os.system("chmod 711 ../SAFE")
-        if __BUILD_EXISTS:
+        if os.path.exists(__BUILD_PATH):
             os.system("chmod -R 711 ./build")
         print("\nModifications complete\n")
         time.sleep(1)
