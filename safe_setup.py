@@ -37,6 +37,7 @@ __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
 __JSOUT_PATH = "./JSoutFile"
 __CFG_EXISTS = os.path.exists(__CFG_PATH)
+global __BUILD_EXISTS
 __BUILD_EXISTS = os.path.exists(__BUILD_PATH)
 __JSOUT_EXISTS = os.path.exists(__JSOUT_PATH)
 __DEBUG = isDebugPresent()
@@ -216,11 +217,9 @@ def executeNpmRunBuild():
     )
     if __DEBUG:  # Tell us what's really happening behind the scenes
         os.system("npm run build")
-        global __BUILD_EXISTS
         __BUILD_EXISTS = True
     else:
         os.system("npm run --silent build")
-        global __BUILD_EXISTS
         __BUILD_EXISTS = True
     print(
         "\n**************************"
