@@ -316,7 +316,6 @@ def scriptMenu():
                 executeNpmAll()
                 modifyUserGroupPermissions()
             case "0":
-                modifyUserGroupPermissions()
                 return
             case _:
                 print("\n\n**ERROR** - Invalid option. . .\n")
