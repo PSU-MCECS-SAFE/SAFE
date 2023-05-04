@@ -37,7 +37,6 @@ __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
 __JSOUT_PATH = "./JSoutFile"
 __CFG_EXISTS = os.path.exists(__CFG_PATH)
-__BUILD_EXISTS = os.path.exists(__BUILD_PATH)
 __JSOUT_EXISTS = os.path.exists(__JSOUT_PATH)
 __DEBUG = isDebugPresent()
 
@@ -206,7 +205,7 @@ def executeNpmRunBuild():
     Executes the `npm run build` script.
     """
     # Clean builds never hurt anyone
-    if __BUILD_EXISTS:
+    if os.path.exists(__BUILD_PATH):
         print("\n\nFound old build dir. . .    removing. . .")
         shutil.rmtree(__BUILD_PATH)
     print(
@@ -223,6 +222,7 @@ def executeNpmRunBuild():
         "\n'npm run build' complete!!"
         "\n**************************"
     )
+    modifyUserGroupPermissions()
 
 
 def executeNpxTsc():
@@ -298,28 +298,22 @@ def scriptMenu():
                 clearScreen()
                 makeConfigFile()
                 executeNpmAll()
-                modifyUserGroupPermissions()
                 print("\n\nSAFE setup complete!\n\n")
             case "2":
                 clearScreen()
                 makeConfigFile()
-                modifyUserGroupPermissions()
             case "3":
                 clearScreen()
                 executeNpmInstall()
-                modifyUserGroupPermissions()
             case "4":
                 clearScreen()
                 executeNpmRunBuild()
-                modifyUserGroupPermissions()
             case "5":
                 clearScreen()
                 executeNpxTsc()
-                modifyUserGroupPermissions()
             case "6":
                 clearScreen()
                 executeNpmAll()
-                modifyUserGroupPermissions()
             case "0":
                 return
             case _:
