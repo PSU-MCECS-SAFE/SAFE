@@ -303,15 +303,19 @@ def scriptMenu():
             case "2":
                 clearScreen()
                 makeConfigFile()
+                modifyUserGroupPermissions()
             case "3":
                 clearScreen()
                 executeNpmInstall()
+                modifyUserGroupPermissions()
             case "4":
                 clearScreen()
                 executeNpmRunBuild()
+                modifyUserGroupPermissions()
             case "5":
                 clearScreen()
                 executeNpxTsc()
+                modifyUserGroupPermissions()
             case "6":
                 clearScreen()
                 executeNpmAll()
