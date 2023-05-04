@@ -279,9 +279,10 @@ def scriptMenu():
     Navigate the script to match users desired needs.
     """
     option = -1
+    print("\nSAFE developer deployment script\n")
     while True:
         option = input(
-            "\nSelect which task you need to execute"
+            "\nSelect which task you need to execute:"
             "\n\t1)  Execute full deployment (all of the below except option 6)."
             "\n\t2)  Edit SAFE configuration file."
             "\n\t3)  Run 'npm install' to get missing packages."
