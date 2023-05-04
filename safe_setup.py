@@ -36,8 +36,6 @@ __OS_NAME = os.name
 __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
 __JSOUT_PATH = "./JSoutFile"
-__CFG_EXISTS = os.path.exists(__CFG_PATH)
-__JSOUT_EXISTS = os.path.exists(__JSOUT_PATH)
 __DEBUG = isDebugPresent()
 
 
@@ -96,7 +94,7 @@ def makeConfigFile():
     )
 
     # If this path/file exist then ensure they want to override the information
-    if __CFG_EXISTS:
+    if os.path.exists(__CFG_PATH):
         print(
             "\n\n\n**ALERT**: DATABASE CONFIGURATION ALREADY EXISTS!"
             "\nCurrent configuration information: \n"
@@ -145,7 +143,7 @@ def makeConfigFile():
         print("\nPlease enter the corrected information. . .")
 
     # Create the directory/JSON file
-    if not __CFG_EXISTS:
+    if not os.path.exists(__CFG_PATH):
         os.makedirs(os.path.dirname(__CFG_PATH), exist_ok=True)
 
     # Make a quick dictionary to dump w/ JSON
@@ -232,7 +230,7 @@ def executeNpxTsc():
     """
     # Lets make the server executable and usable so that the site can
     # properly pass data from the page to the database
-    if __JSOUT_EXISTS:
+    if os.path.exists(__JSOUT_PATH):
         print("\nJSoutFile directory found. . .    removing. . .")
         shutil.rmtree(__JSOUT_PATH)
     print(
