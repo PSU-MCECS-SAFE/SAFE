@@ -8,6 +8,7 @@ import {
   getConfigProp,
   safeConfigPath as scp,
 } from '../safeUtil/Util';
+import { Code } from '../safeUtil/generateCode';
 
 // Create a new Express app
 const app = express();
@@ -40,8 +41,7 @@ app.use(cors());
 //     }
 // });
 
-
-app.get('/delete', async (req: Request, res: Response) => {
+app.delete('/delete', async (req: Request, res: Response) => {
 });
 
 // Define an endpoint for retrieving all events

@@ -16,6 +16,7 @@ import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from 'react-google-recaptcha-v3';
+import verifyString from '../safeMessageDB/verifyString';
 
 // Function to handle token from reCAPTCHA
 function handleToken(token: string) {}
@@ -121,20 +122,28 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
+      var sentiment: number = 0;
+      try{
+        // For clarification, this is call the
+        // checkString function in verifyString file
+        verifyString(subject);
+        sentiment = verifyString(message);
+      }catch(e){
+      }
       fetch('http://localhost:3001/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: subject,
           receiver_name: to,
+          title: subject,
           message: message,
+          sentiment: sentiment,
           code: null,
+          time_submitted: new Date(),
           receive_reply: false,
           has_been_read: false,
-          time_submitted: null,
-          message_replied: null,
         }),
       })
         // response from fetch
