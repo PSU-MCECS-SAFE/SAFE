@@ -202,7 +202,6 @@ function SafeUI() {
   };
 
   const handleYes = () => {
-    console.log("called")
     fetch('http://131.252.208.28:3004/setReply', {
       method: 'POST',
       headers: {
