@@ -7,6 +7,13 @@ function checkString(msg: string): Sentiment.AnalysisResult {
         throw new Error("Invalid String: String is empty");
     }
 
+    const dictionary: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    for (var i: number = 0; i < msg.length; i++) {
+        if (!dictionary.includes(msg[i])){
+            throw new Error("Invalid String: String contains invalid characters");
+        }
+    }
+
     // Check for cuss words
     if (checkProfanities(msg.split(" ")).length > 0){
         throw new Error("Invalid String: String contains profanities");
