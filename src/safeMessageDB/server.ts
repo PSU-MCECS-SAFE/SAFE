@@ -59,6 +59,7 @@ app.delete('/delete', async (req: Request, res: Response) => {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
+  res.sendStatus(200);
 });
 
 // Define an endpoint for retrieving all events
