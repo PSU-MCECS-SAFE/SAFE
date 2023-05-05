@@ -9,6 +9,7 @@ import {
   safeConfigPath as scp,
 } from '../safeUtil/Util';
 import xss from 'xss';
+import { Code } from '../safeUtil/generateCode'
 
 // Create a new Express app
 const app = express();
@@ -65,7 +66,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   try {
     // Acquire a client connection from the connection pool
     const client = await messageDBConnect.connect();
-
+    const msg_code = await Code.genCode(client);
     // Execute a SQL query to insert a new event
     await client.query(
       'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
@@ -73,7 +74,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
         sanitizedTitle,
         receiver_name,
         sanitizedBody.message,
-        code,
+        msg_code,
         receive_reply,
         has_been_read,
         time_submitted,
@@ -91,7 +92,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     const mail = spawn('mail', mailArgs);
     mail.stdin.write(sanitizedBody.message);
     mail.stdin.end();
-    res.status(200).send();
+    // res.status(200).send();
+    res.status(200).send(`here is your code: ${msg_code}`)  //we use this to test if user can get back the code from server
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -99,7 +101,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3001, '131.252.208.28', () => {
+app.listen(3003, '131.252.208.28', () => {
   console.log(`Server listening on port 3001`);
 });
 

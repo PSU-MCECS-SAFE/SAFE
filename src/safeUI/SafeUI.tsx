@@ -25,7 +25,7 @@ import {
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) {}
+function handleToken(token: string) { }
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -155,7 +155,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3001/addMessage', {
+      fetch('http://131.252.208.28:3003/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -177,6 +177,9 @@ function SafeUI() {
             throw new Error('Network response was not ok');
           }
           handleSnackbarOpen();
+          return response.text();
+        }).then((responseText) => {
+          console.log(responseText);
         })
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
