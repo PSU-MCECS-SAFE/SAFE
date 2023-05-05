@@ -43,9 +43,10 @@ app.use(cors());
 //         res.status(500).json({ error: 'Internal server error' });
 //     }
 // });
-app.post('/receiverEmail', async (req: Request, res: Response) => {
+
+
+app.post('/setReply', async (req: Request, res: Response) => {
   const {
-    email,
     code
   } = req.body;
 
@@ -54,12 +55,25 @@ app.post('/receiverEmail', async (req: Request, res: Response) => {
     const client = await messageDBConnect.connect();
     // Execute a SQL query to insert a new event
     await client.query(
-      'UPDATE "Message" SET receive_reply = true WHERE code = $1',
-      [code]
+      'UPDATE "Message" SET receive_reply = true WHERE code = $1', [code]
     );
     // Release the client connection back to the pool
     await client.release();
 
+    res.status(200); //we use this to test if user can get back the code from server
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/receiverEmail', async (req: Request, res: Response) => {
+  const {
+    email,
+    code
+  } = req.body;
+
+  try {
     // Send notification email to receiver
     const mailArgs = [`-s SAFE- This is a copy of your Code`, email,];
     const mail = spawn('mail', mailArgs);
@@ -148,7 +162,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3003, '131.252.208.28', () => {
+app.listen(3004, '131.252.208.28', () => {
   console.log(`Server listening on port 3001`);
 });
 
