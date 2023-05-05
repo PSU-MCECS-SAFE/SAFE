@@ -25,7 +25,7 @@ import {
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) {}
+function handleToken(token: string) { }
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -164,19 +164,16 @@ function SafeUI() {
           title: subject,
           receiver_name: to,
           message: message,
-          code: null,
           receive_reply: false,
           has_been_read: false,
-          time_submitted: null,
           message_replied: null,
         }),
       })
         // response from fetch
         .then((response) => {
           if (response.status === 400) {
-            alert('Invalid message: message contains profanities');
-            throw new Error('Invalid message: message contains profanities');
 
+            throw new Error('Invalid message: message contains profanities');
           }
           else if (!response.ok) {
             throw new Error(response.statusText);
@@ -191,7 +188,7 @@ function SafeUI() {
         .catch((error) => {
           setOpenEmail(false);
           console.error('There was a problem with the fetch operation:', error);
-          alert('Something went wrong in our system, please try again later');
+          alert('Invalid message: message contains profanities');
         });
     }
   };
@@ -199,7 +196,6 @@ function SafeUI() {
   const handleClose = () => {
     setOpenEmail(false);
     setOpenCode(false);
-    console.log('receive_reply: false');
     // refresh the page once user hit close button
     window.location.reload();
   };
@@ -226,8 +222,31 @@ function SafeUI() {
       setEmailError(true);
       setEmailHelperText('Enter a valid email');
     } else {
-      console.log(email); //Function calling to transfer sender email from front to back end
-      console.log('receive_reply: true');
+      fetch('http://131.252.208.28:3003/receiverEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          code: code,
+        }),
+      })
+        // response from fetch
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.text();
+        })
+        .then((responseText) => {
+          alert(responseText);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error('There was a problem with the fetch operation:', error);
+          alert('Something went wrong in our system, please try again later');
+        });
       setOpenCode(false);
     }
   };
