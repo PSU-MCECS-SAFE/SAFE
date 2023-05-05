@@ -173,8 +173,13 @@ function SafeUI() {
       })
         // response from fetch
         .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
+          if (response.status === 400) {
+            alert('Invalid message: message contains profanities');
+            throw new Error('Invalid message: message contains profanities');
+
+          }
+          else if (!response.ok) {
+            throw new Error(response.statusText);
           }
           setOpenEmail(true);
           handleSnackbarOpen();
