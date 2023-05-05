@@ -121,7 +121,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3001/addMessage', {
+      fetch('http://131.252.208.28:3003/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,8 +139,13 @@ function SafeUI() {
       })
         // response from fetch
         .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
+          if (response.status === 400) {
+            alert('Invalid message: message contains profanities');
+            throw new Error('Invalid message: message contains profanities');
+
+          }
+          else if (!response.ok) {
+            throw new Error(response.statusText);
           }
           return response.text();
         }).then((responseText) => {
