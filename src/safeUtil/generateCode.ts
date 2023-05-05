@@ -2,7 +2,7 @@
 // import { ResultRow } from 'ts-postgres/dist/src/result';
 import { messageDBConnect } from '../safeMessageDB/messageDBConnect';
 import QRCode from 'qrcode';
-import { Pool, PoolClient } from 'pg';
+import { Pool, PoolClient, QueryResult } from 'pg';
 
 export class Code {
 
@@ -14,25 +14,37 @@ export class Code {
         return arr.sort().join('');
     }
 
+    private static async isAvailable(client: PoolClient, code: string): Promise<boolean> {
+        var isAvailable: boolean = true;
+        // Check if code exists in database. Get "next" code if it exists in the database
+        const query = {
+            rowMode: 'array',
+            text: 'SELECT $1 FROM "Message" WHERE code = $2;',
+            values: ['time_submitted', code],
+        }
+        var result: QueryResult<any> = await client.query(query);
+        // console.log(result);
+        // if (result.rowCount !== 0 || Code.isExpired()) {}
+        if (result.rowCount !== 0) {
+            isAvailable = false;
+        }
+        return isAvailable;
+    }
+
     public static async genCode(client: PoolClient): Promise<string> {
         const max: number = 64;
         const min: number = 32;
-        let code_combination: number[] = [];
         const code_length = Code.randInt(max, min);
         const dictionary: string = Code.sortChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
-        // TODO: Generate random code
+        // Generate random code
+        let code_combination: number[] = [];
         for (let i: number = 0; i < code_length; i++) {
             code_combination.push(Code.randInt(dictionary.length - 1));
         }
 
-        // Check if code exists in database. Get "next" code if it exists in the database
-        const query = {
-            text: 'SELECT COUNT(*) FROM "Message" WHERE code = $1',
-            values: [`'${Code.renderCode(code_combination, dictionary)}'`],
-        };
-        const result = await client.query(query);
-        if (result.rows[0].count !== '0') {
+        var isAvailable: boolean = await Code.isAvailable(client, Code.renderCode(code_combination, dictionary));
+        if (!isAvailable) {
             // Get "next" possible code
             code_combination = await Code.getNextCode(client, code_combination, code_length, dictionary, max, min);
         }
@@ -41,11 +53,17 @@ export class Code {
     }
 
     private static async checkCombinations(client: PoolClient, code_combination: number[], code_length: number, index: number, dictionary: string): Promise<number[]> {
-        const query = `SELECT code FROM "Message" WHERE code LIKE $1 AND char_length(Messages.code) = $2`;
         const code = Code.renderCode(code_combination.slice(0, code_combination.length - 2), dictionary);
-        const params = [`'${code}%'`, `'${code_combination.length}'`];
-        const result = await client.query(query, params);
+
+        const query = {
+            rowMode: 'array',
+            text: 'SELECT code FROM "Message" WHERE code LIKE $1 AND char_length(code) = $2',
+            values: [code, code_combination.length],
+        }
+        var result: QueryResult<any> = await client.query(query);
+
         let existing_codes: string[] = [];
+        console.log(result.rows);
         for (let row of result.rows) {
             existing_codes.push(String(row.code));
         }
@@ -94,6 +112,15 @@ export class Code {
             code += (dictionary[char]);
         });
         return code;
+    }
+
+    // TODO: Doesn't work for some reason?
+    private static renderCodeCombination(code: string, dictionary: string): number[] {
+        let code_combination: number[] = [];
+        for(var i: number = 0; i < code.length; i++){
+            code_combination.push(dictionary.indexOf(code[i]));
+        }
+        return code_combination;
     }
 
     private static randInt(max: number, min: number = 0) {

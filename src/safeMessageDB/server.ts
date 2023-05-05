@@ -77,7 +77,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
         msg_code,
         receive_reply,
         has_been_read,
-        time_submitted,
+        new Date(),
         sanitizedBody.message_replied,
       ]
     );
@@ -101,7 +101,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3003, '131.252.208.28', () => {
+app.listen(3001, '131.252.208.28', () => {
   console.log(`Server listening on port 3001`);
 });
 
