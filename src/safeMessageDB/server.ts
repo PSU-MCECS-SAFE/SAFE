@@ -43,7 +43,35 @@ app.use(cors());
 //         res.status(500).json({ error: 'Internal server error' });
 //     }
 // });
+app.post('/receiverEmail', async (req: Request, res: Response) => {
+  const {
+    email,
+    code
+  } = req.body;
 
+  try {
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+    // Execute a SQL query to insert a new event
+    await client.query(
+      'UPDATE "Message" SET receive_reply = true WHERE code = $1',
+      [code]
+    );
+    // Release the client connection back to the pool
+    await client.release();
+
+    // Send notification email to receiver
+    const mailArgs = [`-s SAFE- This is a copy of your Code`, email,];
+    const mail = spawn('mail', mailArgs);
+    mail.stdin.write(`Here is a copy of your unqiue code: ${code} \n please check back later in the website with reply. https://feedback.cs.pdx.edu`);
+    mail.stdin.end();
+
+    res.status(200).send(`Your code had been sent to the email you provied`); //we use this to test if user can get back the code from server
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 // Define an endpoint for adding a new event
@@ -52,10 +80,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     title,
     receiver_name,
     message,
-    code,
     receive_reply,
     has_been_read,
-    time_submitted,
     message_replied,
   } = req.body;
 
