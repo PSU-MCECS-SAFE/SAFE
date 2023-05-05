@@ -1,22 +1,11 @@
-import Sentiment from 'sentiment'
-import cuss from 'cuss'
+import Sentiment from 'sentiment';
+import BadWordsFilter from 'bad-words';
 
-function checkString(msg: string): Sentiment.AnalysisResult {
+//this will return a scorce range from -5 to 5 and other things we don't need
+export function checkString(msg: string): Sentiment.AnalysisResult {
     // Make sure string isn't empty
     if (msg.length === 0) {
         throw new Error("Invalid String: String is empty");
-    }
-
-    const dictionary: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    for (var i: number = 0; i < msg.length; i++) {
-        if (!dictionary.includes(msg[i])){
-            throw new Error("Invalid String: String contains invalid characters");
-        }
-    }
-
-    // Check for cuss words
-    if (checkProfanities(msg.split(" ")).length > 0){
-        throw new Error("Invalid String: String contains profanities");
     }
 
     // Return the sentiment analysis results
@@ -24,18 +13,18 @@ function checkString(msg: string): Sentiment.AnalysisResult {
     return sentiment.analyze(msg);
 }
 
-function checkProfanities(words: string[]): string[] {
-    // NOTE: Sorry, I'm doing exactly what the documentation for this
-    // package told me not to do, which is to use it as profanity filter
-    var profanities: string[] = [];
-    words.forEach(word => {
-        try {
-            if (cuss.cuss.word === 2) {
-                profanities.concat(word);
-            }
-        } catch (error) {
-            // Do nothing, word just doesn't exist in the dictionary
-        }
-    });
-    return profanities;
+/* 
+  Some common examples of profane words that may be included in the bad-words package are:
+    -The "F-word" and other common swear words
+    -Racial slurs and derogatory terms
+    -Words related to sex and sexuality
+    -Insults and derogatory terms for individuals or groups
+*/
+export function checkProfanities(words: string): boolean {
+    const filter = new BadWordsFilter();
+    if (filter.isProfane(words)) {
+        return true
+    }
+    return false;
 }
+
