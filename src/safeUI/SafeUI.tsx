@@ -155,7 +155,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3003/addMessage', {
+      fetch('http://131.252.208.28:3004/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +172,6 @@ function SafeUI() {
         // response from fetch
         .then((response) => {
           if (response.status === 400) {
-
             throw new Error('Invalid message: message contains profanities');
           }
           else if (!response.ok) {
@@ -188,7 +187,7 @@ function SafeUI() {
         .catch((error) => {
           setOpenEmail(false);
           console.error('There was a problem with the fetch operation:', error);
-          alert('Invalid message: message contains profanities');
+          alert(error);
         });
     }
   };
