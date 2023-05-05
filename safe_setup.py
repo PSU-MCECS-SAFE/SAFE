@@ -324,11 +324,11 @@ def main():
     # this message will appear and the script will terminate with sys.exit
     if whoIsMyHost() is False and not __DEBUG:
         print(
-            "This script can only be ran on Portland State University "
-            + "linux servers owned and operated by the CAT.\n"
-            + "If this message is printed in error, the script needs to "
-            + "be updated. Contact the development team for more "
-            + "support.\n"
+            "\nThis script can only be ran on Portland State University "
+            "linux servers owned and operated by the CAT."
+            "\nIf this message is printed in error, the script needs to "
+            "be updated. Contact the development team for more "
+            "support.\n"
         )
         sys.exit()
 
@@ -336,7 +336,7 @@ def main():
     if __DEBUG:
         print(
             "\n\nDEBUG MODE DETECTED. . .    SCRIPT WILL CONTINUE IN 3 "
-            + "SECONDS. . .\n\n"
+            "SECONDS. . .\n\n"
         )
         time.sleep(2)
 
