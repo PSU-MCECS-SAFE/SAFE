@@ -9,7 +9,7 @@ import {
   safeConfigPath as scp,
 } from '../safeUtil/Util';
 import xss from 'xss';
-import { Code } from '../safeUtil/generateCode'
+import { Code } from '../safeUtil/generateCode';
 
 // Create a new Express app
 const app = express();
@@ -93,7 +93,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     mail.stdin.write(sanitizedBody.message);
     mail.stdin.end();
     // res.status(200).send();
-    res.status(200).send(`here is your code: ${msg_code}`)  //we use this to test if user can get back the code from server
+    res.status(200).send(`${msg_code}`); //we use this to test if user can get back the code from server
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });

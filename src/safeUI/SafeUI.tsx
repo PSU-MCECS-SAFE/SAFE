@@ -10,22 +10,22 @@ import {
   Typography,
 } from '@mui/material';
 import { StyledSubmitButton } from './Styles/Styled';
-import { StyledButton } from "./Styles/Styled";
+import { StyledButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) { }
+function handleToken(token: string) {}
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -67,6 +67,7 @@ const MAX_Subject_CHARACTERS = 100;
 const MAX_EMAIL_CHARACTERS = 256;
 
 function SafeUI() {
+  const [code, setCode] = useState('');
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
   const [to, setTo] = useState('PSU CS Department');
@@ -75,23 +76,23 @@ function SafeUI() {
   const [toError, setToError] = useState(false);
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
-  const [helperText, setHelperText] = useState("");
+  const [helperText, setHelperText] = useState('');
   const [open, setOpen] = useState(false);
   const [openEmail, setOpenEmail] = useState(false);
   const [openCode, setOpenCode] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
-  const [emailHelperText, setEmailHelperText] = useState("");
+  const [emailHelperText, setEmailHelperText] = useState('');
   const emailRegex = new RegExp(
     /^[A-Za-z0-9_!#$%&'*+/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-    "gm"
+    'gm'
   );
   const [openInputCodeModal, setOpenInputCodeModal] = useState(false);
   const [openMessageModal, setOpenMessageModal] = useState(false);
-  const [inputCode, setInputCode] = useState("");
+  const [inputCode, setInputCode] = useState('');
   const [validCode, setValidCode] = useState(false);
-  const [codeModalHelperText, setCodeModalHelperText] = useState("");
+  const [codeModalHelperText, setCodeModalHelperText] = useState('');
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -125,19 +126,19 @@ function SafeUI() {
     setToError(false);
     setSubjectError(false);
     setMessageError(false);
-    setHelperText("");
+    setHelperText('');
 
-    if (to === "") {
+    if (to === '') {
       setToError(true);
-      setHelperText("This field is required");
+      setHelperText('This field is required');
     }
-    if (subject === "") {
+    if (subject === '') {
       setSubjectError(true);
-      setHelperText("This field is required");
+      setHelperText('This field is required');
     }
-    if (message === "") {
+    if (message === '') {
       setMessageError(true);
-      setHelperText("This field is required");
+      setHelperText('This field is required');
     }
 
     if (to && subject && message) {
@@ -178,8 +179,9 @@ function SafeUI() {
           }
           handleSnackbarOpen();
           return response.text();
-        }).then((responseText) => {
-          console.log(responseText);
+        })
+        .then((responseText) => {
+          setCode(responseText);
         })
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
@@ -190,14 +192,16 @@ function SafeUI() {
   const handleClose = () => {
     setOpenEmail(false);
     setOpenCode(false);
-    console.log("receive_reply: false");
+    console.log('receive_reply: false');
+    // refresh the page once user hit close button
+    window.location.reload();
   };
 
   const handleYes = () => {
     setOpenEmail(false);
     setOpenCode(true);
-    if (email !== "") {
-      setEmail("");
+    if (email !== '') {
+      setEmail('');
       setEmailError(false);
       setValidEmail(false);
     }
@@ -206,17 +210,17 @@ function SafeUI() {
   const handleEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError(false);
-    setEmailHelperText("");
+    setEmailHelperText('');
 
-    if (email === "") {
+    if (email === '') {
       setEmailError(true);
-      setEmailHelperText("This field is required");
+      setEmailHelperText('This field is required');
     } else if (validEmail === false) {
       setEmailError(true);
-      setEmailHelperText("Enter a valid email");
+      setEmailHelperText('Enter a valid email');
     } else {
       console.log(email); //Function calling to transfer sender email from front to back end
-      console.log("receive_reply: true");
+      console.log('receive_reply: true');
       setOpenCode(false);
     }
   };
@@ -227,7 +231,7 @@ function SafeUI() {
 
   const handleCloseInputCodeModal = () => {
     setOpenInputCodeModal(false);
-    setCodeModalHelperText("");
+    setCodeModalHelperText('');
   };
 
   const handleOpenMessageModal = () => {
@@ -241,16 +245,16 @@ function SafeUI() {
 
   const handleCodeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputCode === "ABCD") {
+    if (inputCode === 'ABCD') {
       // Check if input code matched the database
       // If not, message will not display, and message prompt for invalid code will be displayed
       handleOpenMessageModal();
       setValidCode(true);
-      setCodeModalHelperText("");
+      setCodeModalHelperText('');
     } else {
       setOpenMessageModal(false);
       setValidCode(false);
-      setCodeModalHelperText("Code is invalid. Please try another code.");
+      setCodeModalHelperText('Code is invalid. Please try another code.');
     }
   };
 
@@ -269,25 +273,25 @@ function SafeUI() {
   const uniqueCodeInputModal = (
     <div>
       <DialogTitle> Input Unique Code</DialogTitle>
-      <form noValidate autoComplete="off" onSubmit={handleCodeSubmit}>
+      <form noValidate autoComplete='off' onSubmit={handleCodeSubmit}>
         <DialogContent>
           <DialogContentText>
             Please enter provided unique code to view response
           </DialogContentText>
-          <Box textAlign="center" sx={{ padding: "1rem" }}>
+          <Box textAlign='center' sx={{ padding: '1rem' }}>
             <TextField
-              variant="outlined"
-              label="Provided Code"
-              placeholder="Provided Code"
+              variant='outlined'
+              label='Provided Code'
+              placeholder='Provided Code'
               helperText={codeModalHelperText}
-              sx={{ input: { textAlign: "center" } }}
+              sx={{ input: { textAlign: 'center' } }}
               onChange={(e) => setInputCode(e.target.value)}
             ></TextField>
           </Box>
         </DialogContent>
         <DialogActions>
           <StyledButton onClick={handleCloseInputCodeModal}>Close</StyledButton>
-          <StyledSubmitButton variant="contained" type="submit">
+          <StyledSubmitButton variant='contained' type='submit'>
             Submit
           </StyledSubmitButton>
         </DialogActions>
@@ -297,17 +301,17 @@ function SafeUI() {
 
   const displayMessageModal = (
     <div>
-      <DialogTitle sx={{ fontSize: "16px", fontWeight: "bold" }}>
-        {" "}
-        Message{" "}
+      <DialogTitle sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+        {' '}
+        Message{' '}
       </DialogTitle>
       <DialogContent>
         {/* The 'sx' prop is used to preserve the format of the message when user typed in message box*/}
 
         <DialogContentText
-          sx={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}
+          sx={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}
         >
-          {" "}
+          {' '}
           {message}
         </DialogContentText>
       </DialogContent>
@@ -321,40 +325,40 @@ function SafeUI() {
 
   return (
     <Box sx={{ backgroundColor: '#faf7e1', width: 'auto', height: 'auto' }}>
-            <Box
-                sx={{
-                  backgroundColor: '#6a7f10',
-                  height: '38px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  paddingLeft: '25px',
-                }}
-            >
-        <Box textAlign="right" sx={{ height: "38px" }}>
-        <img
-          src='./PSU_logo_accent_transparent.png'
-          alt='Logo'
-          width='135'
-          height='38'
-        />
+      <Box
+        sx={{
+          backgroundColor: '#6a7f10',
+          height: '38px',
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: '25px',
+        }}
+      >
+        <Box textAlign='right' sx={{ height: '38px' }}>
+          <img
+            src='./PSU_logo_accent_transparent.png'
+            alt='Logo'
+            width='135'
+            height='38'
+          />
         </Box>
-        <Box textAlign="right" sx={{ height: "38px" }}>
+        <Box textAlign='right' sx={{ height: '38px' }}>
           <StyledButton
-            variant="contained"
+            variant='contained'
             onClick={handleOpenInputCodeModal}
             autoFocus
             sx={{
-              height: "38px",
-              backgroundColor: "#6a7f10",
-              color: "rgb(255,255,255)",
-              fontSize: "14px",
-              paddingLeft: "16px",
-              paddingRight: "16px",
-              textAlign: "center",
-              "&:hover": {
-                backgroundColor: "#1d252d",
-                color: "#FFFFFF",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+              height: '38px',
+              backgroundColor: '#6a7f10',
+              color: 'rgb(255,255,255)',
+              fontSize: '14px',
+              paddingLeft: '16px',
+              paddingRight: '16px',
+              textAlign: 'center',
+              '&:hover': {
+                backgroundColor: '#1d252d',
+                color: '#FFFFFF',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
               },
             }}
           >
@@ -366,13 +370,13 @@ function SafeUI() {
           <Dialog
             open={openMessageModal}
             onClose={handleCloseMessageModal}
-            scroll={"paper"}
+            scroll={'paper'}
           >
             {displayMessageModal}
           </Dialog>
         </Box>
       </Box>
-      <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
+      <Typography mt={2} mb={3} variant='h3' align='center' gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
         PSU's CS Department Anonymous Feedback System
@@ -489,13 +493,13 @@ function SafeUI() {
                 Submit
               </StyledSubmitButton>
             </Box>
-            <Snackbar
+            {/* <Snackbar
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
               open={open}
               onClose={() => setOpen(false)}
               message="Feedback Successfully sent to PSU's CS Dept."
               autoHideDuration={10000}
-            />
+            /> */}
           </Grid>
         </Grid>
       </form>
@@ -503,15 +507,16 @@ function SafeUI() {
       <Dialog
         open={openEmail}
         onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
+        aria-labelledby='responsive-dialog-title'
       >
-        <DialogTitle id="responsive-dialog-title">
-          {"Would you like to receive replies to your feedback?"}
+        <DialogTitle id='responsive-dialog-title'>
+          Your feedback successfully sent to PSU CS Department! Would you like
+          to receive repliy to your feedback?
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
             If yes, you will get a code that you can use to check back here for
-            replies
+            reply
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -527,29 +532,29 @@ function SafeUI() {
       <Dialog
         open={openCode}
         onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
+        aria-labelledby='responsive-dialog-title'
       >
-        <DialogTitle id="responsive-dialog-title">
-          {"Would you like to receive your code by Email?"}
+        <DialogTitle id='responsive-dialog-title'>
+          {'Would you like to receive your code by Email?'}
         </DialogTitle>
-        <form noValidate autoComplete="off" onSubmit={handleEmail}>
+        <form noValidate autoComplete='off' onSubmit={handleEmail}>
           <DialogContent>
-            <DialogContentText>Code:</DialogContentText>
+            <DialogContentText>Code: {code}</DialogContentText>
             <DialogContentText>
               Here is your code. If you wish for us to email you the code please
               enter your email. Your email will not be saved!
             </DialogContentText>
             <TextField
               autoFocus
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
+              margin='dense'
+              id='name'
+              label='Email Address'
+              type='email'
               fullWidth
-              variant="standard"
-              placeholder="Enter Email"
-              autoComplete="off"
-              spellCheck="false"
+              variant='standard'
+              placeholder='Enter Email'
+              autoComplete='off'
+              spellCheck='false'
               onChange={handleEmailChange}
               error={emailError}
               helperText={emailHelperText}
@@ -558,7 +563,7 @@ function SafeUI() {
           </DialogContent>
           <DialogActions>
             <StyledButton onClick={handleClose}>Cancel</StyledButton>
-            <StyledSubmitButton variant="contained" type="submit">
+            <StyledSubmitButton variant='contained' type='submit'>
               Submit
             </StyledSubmitButton>
           </DialogActions>
