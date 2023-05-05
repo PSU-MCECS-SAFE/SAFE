@@ -25,7 +25,7 @@ import {
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) {}
+function handleToken(token: string) { }
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -142,7 +142,6 @@ function SafeUI() {
     }
 
     if (to && subject && message) {
-      setOpenEmail(true);
       /**
        * This is how to call the getMessage from atabase
        */
@@ -177,6 +176,7 @@ function SafeUI() {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          setOpenEmail(true);
           handleSnackbarOpen();
           return response.text();
         })
@@ -184,7 +184,9 @@ function SafeUI() {
           setCode(responseText);
         })
         .catch((error) => {
+          setOpenEmail(false);
           console.error('There was a problem with the fetch operation:', error);
+          alert("Something went wrong in our system, please try again later")
         });
     }
   };
