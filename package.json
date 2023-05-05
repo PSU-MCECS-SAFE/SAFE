@@ -41,8 +41,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "psu_deploy": "python3 ./safe_setup.py && npm run build",
-    "win_deploy": "python ./safe_setup.py && npm run build"
+    "psu_deploy": "python3 ./safe_setup.py",
+    "win_deploy": "python ./safe_setup.py"
   },
   "eslintConfig": {
     "extends": [
