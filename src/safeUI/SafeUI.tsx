@@ -25,7 +25,7 @@ import {
 } from 'react-google-recaptcha-v3';
 
 // Function to handle token from reCAPTCHA
-function handleToken(token: string) { }
+function handleToken(token: string) {}
 
 const Captcha = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -186,7 +186,7 @@ function SafeUI() {
         .catch((error) => {
           setOpenEmail(false);
           console.error('There was a problem with the fetch operation:', error);
-          alert("Something went wrong in our system, please try again later")
+          alert('Something went wrong in our system, please try again later');
         });
     }
   };
@@ -495,13 +495,6 @@ function SafeUI() {
                 Submit
               </StyledSubmitButton>
             </Box>
-            {/* <Snackbar
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              open={open}
-              onClose={() => setOpen(false)}
-              message="Feedback Successfully sent to PSU's CS Dept."
-              autoHideDuration={10000}
-            /> */}
           </Grid>
         </Grid>
       </form>
