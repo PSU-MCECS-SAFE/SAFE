@@ -10,6 +10,7 @@ import {
 } from '../safeUtil/Util';
 import xss from 'xss';
 import { Code } from '../safeUtil/generateCode'
+import { checkString, checkProfanities } from './verifyString'
 
 // Create a new Express app
 const app = express();
@@ -42,6 +43,8 @@ app.use(cors());
 //     }
 // });
 
+
+
 // Define an endpoint for adding a new event
 app.post('/addMessage', async (req: Request, res: Response) => {
   const {
@@ -61,7 +64,23 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     message: xss(message),
     message_replied: xss(message_replied),
   };
-  const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s]/g, '');
+  const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s\/]/g, '');
+  let ProfaneFlag = checkProfanities(message)
+  if (ProfaneFlag) {
+    return res.status(400).json({ error: 'Invalid message: message contains profanities' });
+  }
+  const result = checkString(message);
+  let analysis_result;
+  if (result.score < 0) {
+    analysis_result = 'negative';
+  } else if (result.score === 0) {
+    analysis_result = 'neutral';
+  } else if (result.score >= 1) {
+    analysis_result = 'positive';
+  } else {
+    analysis_result = 'unknown';
+  }
+
 
   try {
     // Acquire a client connection from the connection pool
@@ -69,7 +88,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     const msg_code = await Code.genCode(client);
     // Execute a SQL query to insert a new event
     await client.query(
-      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied, sentiment_analysis) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
       [
         sanitizedTitle,
         receiver_name,
@@ -79,6 +98,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
         has_been_read,
         new Date(),
         sanitizedBody.message_replied,
+        analysis_result,
       ]
     );
     // Release the client connection back to the pool
@@ -86,7 +106,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
     // Send notification email to receiver
     const mailArgs = [
-      `-s "${sanitizedTitle}"`,
+      `-s SAFE: "${sanitizedTitle}"`,
       getConfigProp(sjp.rcvr_email, scp),
     ];
     const mail = spawn('mail', mailArgs);
@@ -101,7 +121,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3001, '131.252.208.28', () => {
+app.listen(3003, '131.252.208.28', () => {
   console.log(`Server listening on port 3001`);
 });
 
