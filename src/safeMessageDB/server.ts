@@ -42,6 +42,23 @@ app.use(cors());
 // });
 
 app.delete('/delete', async (req: Request, res: Response) => {
+  const { code } = req.body;
+  try{
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+    // Execute a SQL query to insert a new event
+    await client.query(
+      'DELETE FROM "Message" WHERE code = $1',
+      [
+        code
+      ]
+    );
+    // Release the client connection back to the pool
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Define an endpoint for retrieving all events
