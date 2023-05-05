@@ -14,10 +14,11 @@ import { useCallback, useEffect, useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 
 function ReceiverDashboard() {
-  const [anchorE1, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget as HTMLElement);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
@@ -52,12 +53,13 @@ function ReceiverDashboard() {
         >
           Safe Faculty Dashboard
         </Typography>
-        <IconButton onClick={handleClick}>
+        <IconButton id="logout-button" onClick={handleClick}>
           <PersonIcon />
         </IconButton>
         <Menu
-          anchorEl={anchorE1}
-          open={Boolean(anchorE1)}
+          id="logout-menu"
+          anchorEl={anchorEl}
+          open={open}
           onClose={handleClose}
         >
           <MenuItem // Logout menu item
