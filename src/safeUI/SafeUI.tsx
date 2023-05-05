@@ -155,7 +155,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3004/addMessage', {
+      fetch('http://131.252.208.28:3003/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
