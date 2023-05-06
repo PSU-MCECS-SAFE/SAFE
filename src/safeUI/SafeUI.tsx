@@ -190,7 +190,7 @@ function SafeUI() {
 
       <Typography mt={2} mb={3} align='center'>
         Find out how we are committed to keeping your identity{' '}
-        <a href='./about.html' target='blank'>
+        <a href='./about.html'>
           anonymous
         </a>
         !
