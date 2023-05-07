@@ -155,7 +155,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3003/addMessage', {
+      fetch('http://131.252.208.28:3004/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,6 +192,8 @@ function SafeUI() {
     }
   };
 
+
+
   const handleClose = () => {
     setOpenEmail(false);
     setOpenCode(false);
@@ -200,20 +202,34 @@ function SafeUI() {
   };
 
   const handleYes = () => {
+    fetch('http://131.252.208.28:3004/setReply', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code: code,
+      }),
+    })
+      // response from fetch
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.text();
+      })
+      .then((responseText) => {
+        alert(responseText);
+        window.location.reload();
+      })
     setOpenEmail(false);
     setOpenCode(true);
-    if (email !== '') {
-      setEmail('');
-      setEmailError(false);
-      setValidEmail(false);
-    }
   };
 
   const handleEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError(false);
     setEmailHelperText('');
-
     if (email === '') {
       setEmailError(true);
       setEmailHelperText('This field is required');
@@ -221,7 +237,7 @@ function SafeUI() {
       setEmailError(true);
       setEmailHelperText('Enter a valid email');
     } else {
-      fetch('http://131.252.208.28:3003/receiverEmail', {
+      fetch('http://131.252.208.28:3004/receiverEmail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -244,7 +260,7 @@ function SafeUI() {
         })
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
-          alert('Something went wrong in our system, please try again later');
+          alert(error);
         });
       setOpenCode(false);
     }

@@ -43,9 +43,10 @@ app.use(cors());
 //         res.status(500).json({ error: 'Internal server error' });
 //     }
 // });
-app.post('/receiverEmail', async (req: Request, res: Response) => {
+
+
+app.post('/setReply', async (req: Request, res: Response) => {
   const {
-    email,
     code
   } = req.body;
 
@@ -54,12 +55,25 @@ app.post('/receiverEmail', async (req: Request, res: Response) => {
     const client = await messageDBConnect.connect();
     // Execute a SQL query to insert a new event
     await client.query(
-      'UPDATE "Message" SET receive_reply = true WHERE code = $1',
-      [code]
+      'UPDATE "Message" SET receive_reply = true WHERE code = $1', [code]
     );
     // Release the client connection back to the pool
     await client.release();
 
+    res.status(200); //we use this to test if user can get back the code from server
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/receiverEmail', async (req: Request, res: Response) => {
+  const {
+    email,
+    code
+  } = req.body;
+
+  try {
     // Send notification email to receiver
     const mailArgs = [`-s SAFE- This is a copy of your Code`, email,];
     const mail = spawn('mail', mailArgs);
@@ -96,17 +110,18 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   if (ProfaneFlag) {
     return res.status(400).json({ error: 'Invalid message: message contains profanities' });
   }
-  const sentiment_result: number = checkString(message);
+  const result = checkString(message);
   let analysis_result;
-  if (sentiment_result < 0) {
+  if (result.score < 0) {
     analysis_result = 'negative';
-  } else if (sentiment_result === 0) {
+  } else if (result.score === 0) {
     analysis_result = 'neutral';
-  } else if (sentiment_result >= 1) {
+  } else if (result.score >= 1) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
   }
+
 
   try {
     // Acquire a client connection from the connection pool
@@ -147,8 +162,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3007, '131.252.208.28', () => {
-  console.log(`Server listening on port 3007`);
+app.listen(3004, '131.252.208.28', () => {
+  console.log(`Server listening on port 3001`);
 });
 
 export default app;
