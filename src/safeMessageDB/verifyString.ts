@@ -2,7 +2,7 @@ import Sentiment from 'sentiment';
 import BadWordsFilter from 'bad-words';
 
 //this will return a scorce range from -5 to 5 and other things we don't need
-export function checkString(msg: string): Sentiment.AnalysisResult {
+export function checkString(msg: string): number {
     // Make sure string isn't empty
     if (msg.length === 0) {
         throw new Error("Invalid String: String is empty");
@@ -10,7 +10,8 @@ export function checkString(msg: string): Sentiment.AnalysisResult {
 
     // Return the sentiment analysis results
     var sentiment = new Sentiment();
-    return sentiment.analyze(msg);
+    var result: Sentiment.AnalysisResult = sentiment.analyze(msg);
+    return result.comparative;
 }
 
 /* 
@@ -27,4 +28,3 @@ export function checkProfanities(words: string): boolean {
     }
     return false;
 }
-

@@ -96,18 +96,17 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   if (ProfaneFlag) {
     return res.status(400).json({ error: 'Invalid message: message contains profanities' });
   }
-  const result = checkString(message);
+  const sentiment_result: number = checkString(message);
   let analysis_result;
-  if (result.score < 0) {
+  if (sentiment_result < 0) {
     analysis_result = 'negative';
-  } else if (result.score === 0) {
+  } else if (sentiment_result === 0) {
     analysis_result = 'neutral';
-  } else if (result.score >= 1) {
+  } else if (sentiment_result >= 1) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
   }
-
 
   try {
     // Acquire a client connection from the connection pool
@@ -148,8 +147,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3003, '131.252.208.28', () => {
-  console.log(`Server listening on port 3001`);
+app.listen(3007, '131.252.208.28', () => {
+  console.log(`Server listening on port 3007`);
 });
 
 export default app;
