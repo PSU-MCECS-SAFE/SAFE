@@ -112,11 +112,11 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   }
   const result = checkString(message);
   let analysis_result;
-  if (result.score < 0) {
+  if (result < 0) {
     analysis_result = 'negative';
-  } else if (result.score === 0) {
+  } else if (result === 0) {
     analysis_result = 'neutral';
-  } else if (result.score >= 1) {
+  } else if (result >= 1) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
