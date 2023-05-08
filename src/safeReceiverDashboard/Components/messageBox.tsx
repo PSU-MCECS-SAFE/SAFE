@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -118,23 +118,14 @@ import MessageCard from './MessageCard';
 
 async function fetchMessages() {
   console.log(`in fetch`);
-  fetch('http://131.252.208.28:3001/message', {
+  const response = await fetch('http://131.252.208.28:3001/message', {
     method: 'GET'
-  })
-    // response from fetch
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log(response.json());
-      return response.json();
-    })
-    .catch((error) => {
-      console.error('There was a problem with the fetch operation:', error);
-    });
-  //const response = await fetch('/addMessage');
-  //const messages = await response.json();
-  //return messages;
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const messages = await response.json();
+  return messages;
 }
 
 // ###################################################################################################################################################
@@ -163,12 +154,37 @@ function generate(
 
 function MessageBox() {
   const [expanded, setExpanded] = useState(false);
-  const [openCard, setCard] = useState(false);
-  const messages = fetchMessages();
+  const [messages, setMessages] = useState([]);
+  const [dateToDisplay, setDateToDisplay] = useState('05/07/2023');
+  const [titleToDisplay, setTitleToDisplay] = useState('hello');
+  const [messageToDisplay, setMessageToDisplay] = useState('hello world');
   
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const data = await fetchMessages();
+        setMessages(data);
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    };
+    getMessages();
+  }, []);
+
   const handleItemClick = () => {
     setExpanded(!expanded);
+    console.log(`clicked`);
+    setMessageToDisplay('hello new world');
   };
+
+  // set it up so the data loaded to for the chosen message 
+  /*
+  const handleItemClick = (title, date, message) => {
+    setExpanded(!expanded);
+    setTitleToDisplay(title);
+    setDateToDisplay(date);
+    setMessageToDisplay(message);
+  };*/
 
   return (
     <Box
@@ -209,7 +225,7 @@ function MessageBox() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography mt={2}>
-              <MessageCard date='05/07/2023' title='hello' message='hello world'/>
+              <MessageCard date={dateToDisplay}  title={titleToDisplay} message={messageToDisplay}/>
           </Typography>
               
         </Grid>
