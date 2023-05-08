@@ -33,89 +33,6 @@ import MessageControl from './messageControl';
 import MessageCard from './MessageCard';
 //7 total sentiment icons. If sentiment analysis is expanded upon to have more ranges, more icons can be imported and used
 
-// function generate(element: React.ReactElement) {
-//   return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) =>
-//     React.cloneElement(element, {
-//       key: value,
-//     })
-//   );
-// }
-
-// const MessageStyles = styled('div')(({ theme }) => ({
-//   backgroundColor: theme.palette.background.paper,
-//   border: '1px solid #ccc',
-//   height: 'calc(100vh - 110px)', //Height = viewport height minus 110px
-//   overflowY: 'auto',
-// }));
-
-// function MessageBox() {
-//   const [showPopout, setShowPopout] = useState(false);
-
-//   const handlePopoutClick = () => {
-//     setShowPopout(true);
-//   };
-
-//   const handlePopoutClose = () => {
-//     setShowPopout(false);
-//   };
-
-//   return (
-//     <Box
-//       sx={{
-//         flexGrow: 1,
-//         maxWidth: 1750,
-//         marginTop: '32px',
-//         marginLeft: '32px',
-//       }}
-//     >
-//       <Grid container spacing={2}>
-//         <Grid item xs={12} md={6}>
-//           <MessageStyles>
-//             <List>
-//               {generate(
-//                 <ListItem
-//                   style={{ border: '1px solid #ccc', marginBottom: '10px' }}
-//                   secondaryAction={
-//                     <ListItemSecondaryAction>
-//                       <IconButton edge="end" aria-label="delete">
-//                         <DeleteIcon />
-//                       </IconButton>
-//                     </ListItemSecondaryAction>
-//                   }
-//                 >
-//                   <ListItemAvatar>
-//                     <Avatar style={{ backgroundColor: 'green' }}>
-//                       <SentimentSatisfiedAltIcon />
-//                     </Avatar>
-//                   </ListItemAvatar>
-//                   <ListItemText primary="Subject" secondary="Date" />
-//                   <Button variant="contained" onClick={handlePopoutClick} />
-//                 </ListItem>
-//               )}
-//             </List>
-//           </MessageStyles>
-//         </Grid>
-//       </Grid>
-//       {showPopout && (
-//         <Box
-//           sx={{
-//             position: 'Fixed',
-//             top: '50%',
-//             left: '50%',
-//             transform: 'translate(-50%, -50%)',
-//             backgroundColor: '#fff',
-//             padding: '32px',
-//             boxShadow: '0px 2px 10px rgba(0,0,0,0.2)',
-//             zIndex: 1000,
-//           }}
-//         >
-//           <Button onClick={handlePopoutClose}> Close popout</Button>
-//         </Box>
-//       )}
-//     </Box>
-//   );
-// }
-
 async function fetchMessages() {
   /*   console.log(`in fetch`);
     const response = await fetch('131.252.208.28:3001/message', {
@@ -131,7 +48,7 @@ async function fetchMessages() {
     return messages; */
   console.log(`in fetch`);
   fetch('131.252.208.28:3001/message', {
-    method: 'GET'
+    method: 'GET',
   })
     // response from fetch
     .then((response) => {
@@ -177,7 +94,7 @@ function MessageBox() {
   const [dateToDisplay, setDateToDisplay] = useState('05/07/2023');
   const [titleToDisplay, setTitleToDisplay] = useState('hello');
   const [messageToDisplay, setMessageToDisplay] = useState('hello world');
-  fetchMessages()
+  fetchMessages();
   /*   useEffect(() => {
       const getMessages = async () => {
         try {
@@ -196,7 +113,7 @@ function MessageBox() {
     setMessageToDisplay('hello new world');
   };
 
-  // set it up so the data loaded to for the chosen message 
+  // set it up so the data loaded to for the chosen message
   /*
   const handleItemClick = (title, date, message) => {
     setExpanded(!expanded);
@@ -211,7 +128,7 @@ function MessageBox() {
         flexGrow: 1,
         maxWidth: `90%`,
         maxHeight: '90%',
-        mx: 'auto'
+        mx: 'auto',
       }}
     >
       <MessageControl />
@@ -243,121 +160,15 @@ function MessageBox() {
           </MessageStyles>
         </Grid>
         <Grid item xs={12} md={6}>
-          <MessageCard date={dateToDisplay} title={titleToDisplay} message={messageToDisplay} />
+          <MessageCard
+            date={dateToDisplay}
+            title={titleToDisplay}
+            message={messageToDisplay}
+          />
         </Grid>
       </Grid>
     </Box>
   );
 }
-
-// ###################################################################################################################################################
-
-// const MessageStyles = styled('div')(({ theme }) => ({
-//   backgroundColor: theme.palette.background.paper,
-//   //   border: '1px solid #ccc',
-//   height: 'calc(100vh - 110px)', //Height = viewport height minus 110px
-//   //   marginTop: '-20px',
-//   overflowY: 'auto',
-// }));
-
-// function generate(
-//   element: React.ReactElement,
-//   handleClick: Function,
-//   isExpanded: boolean
-// ) {
-//   return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) =>
-//     React.cloneElement(element, {
-//       key: value,
-//       handleClick,
-//       isExpanded,
-//     })
-//   );
-// }
-
-// const MenuBar = styled('div')(({ theme }) => ({
-//   backgroundColor: theme.palette.background.paper,
-//   height: '40px',
-//   display: 'flex',
-//   justifyContent: 'space-between',
-//   alignItems: 'center',
-//   paddingLeft: '16px',
-//   paddingRight: '16px',
-//   borderBottom: '1px solid #ccc',
-// }));
-
-// const DropDown = styled(Select)(({ theme }) => ({
-//   width: '150px',
-//   backgroundColor: 'white',
-//   borderRadius: '5px',
-//   marginRight: '10px',
-//   '&:focus': {
-//     backgroundColor: 'white',
-//   },
-// }));
-
-// function MessageBox() {
-//   const [expanded, setExpanded] = useState(false);
-//   const [selectedSortOption, setSelectedSortOption] = useState('All');
-
-//   const handleItemClick = () => {
-//     setExpanded(!expanded);
-//   };
-
-//   const handleSortChange = (event: SelectChangeEvent) => {
-//     setSelectedSortOption(event.target.value);
-//   };
-
-//   return (
-//     <Box
-//       sx={{
-//         flexGrow: 1,
-//         maxWidth: 1750,
-//         marginTop: '32px',
-//         marginLeft: '32px',
-//       }}
-//     >
-//       <MenuBar>
-//         <Typography variant="h6">Message Box</Typography>
-//         <div>
-//           <DropDown value={selectedSortOption} onChange={handleSortChange}>
-//             <MenuItem value="All">All</MenuItem>
-//             <MenuItem value="Unread">Unread</MenuItem>
-//             <MenuItem value="RepliedTo">Replied To</MenuItem>
-//             <MenuItem value="Archived">Archived</MenuItem>
-//           </DropDown>
-//           <Button variant="contained">Compose</Button>
-//         </div>
-//       </MenuBar>
-//       <Grid container spacing={2}>
-//         <Grid item xs={12} md={6}>
-//           <MessageStyles>
-//             <List>
-//               {generate(
-//                 <ListItem
-//                   style={{ border: '1px solid #ccc', marginBottom: '10px' }}
-//                   onClick={handleItemClick}
-//                 >
-//                   <ListItemAvatar>
-//                     <Avatar style={{ backgroundColor: 'green' }}>
-//                       <SentimentSatisfiedAltIcon />
-//                     </Avatar>
-//                   </ListItemAvatar>
-//                   <ListItemText primary="Subject" secondary="Date" />
-//                   <ListItemSecondaryAction>
-//                     <IconButton edge="end" aria-label="delete">
-//                       <DeleteIcon />
-//                     </IconButton>
-//                   </ListItemSecondaryAction>
-//                 </ListItem>,
-//                 handleItemClick,
-//                 expanded
-//               )}
-//             </List>
-//           </MessageStyles>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
 
 export default MessageBox;
