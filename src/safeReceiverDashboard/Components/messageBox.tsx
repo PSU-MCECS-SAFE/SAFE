@@ -30,6 +30,7 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import MessageControl from './messageControl';
+import MessageCard from './MessageCard';
 //7 total sentiment icons. If sentiment analysis is expanded upon to have more ranges, more icons can be imported and used
 
 // function generate(element: React.ReactElement) {
@@ -116,9 +117,24 @@ import MessageControl from './messageControl';
 // }
 
 async function fetchMessages() {
-  const response = await fetch('/addMessage');
-  const messages = await response.json();
-  return messages;
+  console.log(`in fetch`);
+  fetch('http://131.252.208.28:3001/message', {
+    method: 'GET'
+  })
+    // response from fetch
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log(response.json());
+      return response.json();
+    })
+    .catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
+  //const response = await fetch('/addMessage');
+  //const messages = await response.json();
+  //return messages;
 }
 
 // ###################################################################################################################################################
@@ -147,7 +163,9 @@ function generate(
 
 function MessageBox() {
   const [expanded, setExpanded] = useState(false);
-
+  const [openCard, setCard] = useState(false);
+  const messages = fetchMessages();
+  
   const handleItemClick = () => {
     setExpanded(!expanded);
   };
@@ -188,6 +206,12 @@ function MessageBox() {
               )}
             </List>
           </MessageStyles>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography mt={2}>
+              <MessageCard date='05/07/2023' title='hello' message='hello world'/>
+          </Typography>
+              
         </Grid>
       </Grid>
     </Box>
