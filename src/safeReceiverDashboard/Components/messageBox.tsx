@@ -117,15 +117,34 @@ import MessageCard from './MessageCard';
 // }
 
 async function fetchMessages() {
+  /*   console.log(`in fetch`);
+    const response = await fetch('131.252.208.28:3001/message', {
+      method: 'GET'
+    });
+    console.log(`response: ${response}`);
+    console.log(`response json: ${response.json()}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const messages = await response.json();
+    console.log(`messages: ${messages}`);
+    return messages; */
   console.log(`in fetch`);
-  const response = await fetch('http://131.252.208.28:3001/message', {
+  fetch('131.252.208.28:3001/message', {
     method: 'GET'
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  const messages = await response.json();
-  return messages;
+  })
+    // response from fetch
+    .then((response) => {
+      console.log(`response: ${response}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log(`response json: ${response.json()}`);
+      return response.json();
+    })
+    .catch((error) => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
 }
 
 // ###################################################################################################################################################
@@ -158,18 +177,18 @@ function MessageBox() {
   const [dateToDisplay, setDateToDisplay] = useState('05/07/2023');
   const [titleToDisplay, setTitleToDisplay] = useState('hello');
   const [messageToDisplay, setMessageToDisplay] = useState('hello world');
-  
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const data = await fetchMessages();
-        setMessages(data);
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-      }
-    };
-    getMessages();
-  }, []);
+  fetchMessages()
+  /*   useEffect(() => {
+      const getMessages = async () => {
+        try {
+          const data = await fetchMessages();  
+          setMessages(data);
+        } catch (error) {
+          console.error('There was a problem with the fetch operation:', error);
+        }
+      };
+      getMessages();
+    }, []); */
 
   const handleItemClick = () => {
     setExpanded(!expanded);
@@ -224,7 +243,7 @@ function MessageBox() {
           </MessageStyles>
         </Grid>
         <Grid item xs={12} md={6}>
-              <MessageCard date={dateToDisplay}  title={titleToDisplay} message={messageToDisplay}/>    
+          <MessageCard date={dateToDisplay} title={titleToDisplay} message={messageToDisplay} />
         </Grid>
       </Grid>
     </Box>
