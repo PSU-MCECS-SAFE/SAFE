@@ -1,26 +1,29 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6", //Need this to use import feature
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
     "allowJs": true,
+    "outDir": "JSoutFile", //Where the compiled files will go
+    "sourceMap": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "noEmit": false,
+    "jsx": "react-jsx",
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "esModuleInterop": true,
+    "module":"CommonJS"
   },
   "include": [
-    "src"
+    "src/safeMessageDB/server.ts" //This will also compile a few other files
+                                  //where it is referenced in or uses.
   ]
 }
