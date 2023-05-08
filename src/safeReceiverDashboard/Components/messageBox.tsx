@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -30,6 +30,7 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import MessageControl from './messageControl';
+import MessageCard from './MessageCard';
 //7 total sentiment icons. If sentiment analysis is expanded upon to have more ranges, more icons can be imported and used
 
 // function generate(element: React.ReactElement) {
@@ -116,7 +117,13 @@ import MessageControl from './messageControl';
 // }
 
 async function fetchMessages() {
-  const response = await fetch('/addMessage');
+  console.log(`in fetch`);
+  const response = await fetch('http://131.252.208.28:3001/message', {
+    method: 'GET'
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
   const messages = await response.json();
   return messages;
 }
@@ -147,18 +154,45 @@ function generate(
 
 function MessageBox() {
   const [expanded, setExpanded] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [dateToDisplay, setDateToDisplay] = useState('05/07/2023');
+  const [titleToDisplay, setTitleToDisplay] = useState('hello');
+  const [messageToDisplay, setMessageToDisplay] = useState('hello world');
+  
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const data = await fetchMessages();
+        setMessages(data);
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    };
+    getMessages();
+  }, []);
 
   const handleItemClick = () => {
     setExpanded(!expanded);
+    console.log(`clicked`);
+    setMessageToDisplay('hello new world');
   };
+
+  // set it up so the data loaded to for the chosen message 
+  /*
+  const handleItemClick = (title, date, message) => {
+    setExpanded(!expanded);
+    setTitleToDisplay(title);
+    setDateToDisplay(date);
+    setMessageToDisplay(message);
+  };*/
 
   return (
     <Box
       sx={{
         flexGrow: 1,
-        maxWidth: 1750,
-        marginTop: '32px',
-        marginLeft: '32px',
+        maxWidth: `90%`,
+        maxHeight: '90%',
+        mx: 'auto'
       }}
     >
       <MessageControl />
@@ -188,6 +222,9 @@ function MessageBox() {
               )}
             </List>
           </MessageStyles>
+        </Grid>
+        <Grid item xs={12} md={6}>
+              <MessageCard date={dateToDisplay}  title={titleToDisplay} message={messageToDisplay}/>    
         </Grid>
       </Grid>
     </Box>

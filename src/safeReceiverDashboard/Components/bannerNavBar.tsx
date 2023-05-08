@@ -34,7 +34,7 @@ function BannerNavBar() {
       />
       <Typography
         sx={{
-          color: 'black',
+          color: 'white',
           marginRight: 'auto',
           marginLeft: 'auto',
           fontSize: '24px',
