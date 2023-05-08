@@ -14,21 +14,26 @@ interface IMessageCardProps {
 
 export default function MessageCard({ date, title, message }: IMessageCardProps) {
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          date sent: {date}
-        </Typography>
-        <Typography variant="h5" component="div">
-          Title: {title}
-        </Typography>
-        <Typography variant="body2">
-          the message: {message}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">reply</Button>
-      </CardActions>
-    </Card>
+      <Card sx={{ 
+        my: 2,
+        minWidth: 275,
+        maxHeight: '78%',
+        overflow: 'auto'
+         }}>
+        <CardContent>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            date sent: {date}
+          </Typography>
+          <Typography variant="h5" component="div">
+            Title: {title}
+          </Typography>
+          <Typography variant="body2">
+            the message: Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe nisi velit temporibus sed laudantium optio incidunt, ea reiciendis at ab nobis voluptatibus facere libero rerum, deserunt nulla inventore quam perspiciatis! Lorem ipsum dolor sit amet consectetur adipisicing elit. A nemo at officia totam maiores, quas repellendus dolore repudiandae mollitia, iusto sequi vero ipsum excepturi facere aut veritatis voluptatem eius est. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi reiciendis repellendus at. Porro rem hic aut impedit odit facilis a, architecto, consequuntur reprehenderit, voluptatibus totam numquam nemo obcaecati incidunt adipisci! {message}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">reply</Button>
+        </CardActions>
+      </Card>
   );
 }

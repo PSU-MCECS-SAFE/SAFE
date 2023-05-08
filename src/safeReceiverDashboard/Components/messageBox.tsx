@@ -190,9 +190,9 @@ function MessageBox() {
     <Box
       sx={{
         flexGrow: 1,
-        maxWidth: 1750,
-        marginTop: '32px',
-        marginLeft: '32px',
+        maxWidth: `90%`,
+        maxHeight: '90%',
+        mx: 'auto'
       }}
     >
       <MessageControl />
@@ -224,10 +224,7 @@ function MessageBox() {
           </MessageStyles>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography mt={2}>
-              <MessageCard date={dateToDisplay}  title={titleToDisplay} message={messageToDisplay}/>
-          </Typography>
-              
+              <MessageCard date={dateToDisplay}  title={titleToDisplay} message={messageToDisplay}/>    
         </Grid>
       </Grid>
     </Box>
