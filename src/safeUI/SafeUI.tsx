@@ -12,41 +12,6 @@ import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
-import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha,
-} from 'react-google-recaptcha-v3';
-
-// Function to handle token from reCAPTCHA
-function handleToken(token: string) {}
-
-const Captcha = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
-  // Event handler to call verification on button click or form submit
-  const handleReCaptchaVerify = useCallback(async () => {
-    if (!executeRecaptcha) {
-      console.log('reCAPTCHA execution failed');
-      return;
-    }
-    const token = await executeRecaptcha();
-    handleToken(token);
-  }, [executeRecaptcha]);
-
-  // Trigger verification as soon as component is loaded
-  useEffect(() => {
-    handleReCaptchaVerify();
-  }, [handleReCaptchaVerify]);
-
-  return <button onClick={handleReCaptchaVerify}>Verify reCAPTCHA</button>;
-};
-
-// Tags to be used to insert CAPTCHA into UI
-/*
-<GoogleReCaptchaProvider reCaptchaKey="key">
-  <Captcha />
-</GoogleReCaptchaProvider>
-*/
 
 /* Components to implement
  * 1) Welcome Message
@@ -190,7 +155,7 @@ function SafeUI() {
 
       <Typography mt={2} mb={3} align='center'>
         Find out how we are committed to keeping your identity{' '}
-        <a href='./about.html' target='blank'>
+        <a href='./about.html'>
           anonymous
         </a>
         !
