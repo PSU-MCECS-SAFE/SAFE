@@ -16,7 +16,7 @@ import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from 'react-google-recaptcha-v3';
-import verifyString from '../safeMessageDB/verifyString';
+import { checkString, checkProfanities } from '../safeMessageDB/verifyString'
 
 // Function to handle token from reCAPTCHA
 function handleToken(token: string) {}
@@ -113,7 +113,7 @@ function SafeUI() {
        * This is how to call the getMessage from atabase
        */
 
-      // fetch('http://localhost:3001/message')
+      // fetch('https://localhost:3001/message')
       //   .then(response => response.json())
       //   .then(data => {
       //     console.log(data);
@@ -126,12 +126,12 @@ function SafeUI() {
       try{
         // For clarification, this is call the
         // checkString function in verifyString file
-        verifyString(subject);
-        sentiment = verifyString(message);
+        checkString(subject);
+        sentiment = checkString(message);
       }catch(e){
         // There are cuss words in either the subject or the message
       }
-      fetch('http://localhost:3001/addMessage', {
+      fetch('https://localhost:3001/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

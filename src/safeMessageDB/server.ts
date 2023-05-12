@@ -23,70 +23,52 @@ app.use(
 );
 app.use(cors());
 
-/**
- * Commenting out since we are working on sender now. We will use get method later in future development
- */
 // Define an endpoint for retrieving all events
-// app.get('/message', async (req: Request, res: Response) => {
-//     try {
-//         // Acquire a client connection from the connection pool
-//         const client = await messageDBConnect.connect();
-
-//         // Execute a SQL query to retrieve all events
-//         const result = await client.query('SELECT * FROM "Message"');
-//         res.json(result.rows);
-//         // Release the client connection back to the pool
-//         client.release();
-//         // Send the results as JSON
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
-
-app.delete('/delete', async (req: Request, res: Response) => {
-  const { code } = req.body;
-  try{
-    // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
-    // Execute a SQL query to insert a new event
-    await client.query(
-      'DELETE FROM "Message" WHERE code = $1',
-      [
-        code
-      ]
-    );
-    // Release the client connection back to the pool
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-  res.sendStatus(200);
-});
-
-// Define an endpoint for retrieving all events
-app.all('/query', async (req: Request, res: Response) => {
-  const { query } = req.body;
+app.get('/getmessage', async (req: Request, res: Response) => {
+  const {
+    code
+  } = req.body;
 
   try {
     // Acquire a client connection from the connection pool
     const client = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve all events
-    const result = await client.query('$1', [ query ]);
+    const result = await client.query('SELECT message, message_reply FROM "Message" WHERE code = $1;', [code]);
+    res.json(result.rows);
     // Release the client connection back to the pool
     client.release();
     // Send the results as JSON
-    res.json(result.rows).send();
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Define an endpoint for adding a new event
-app.post('/addMessage', async (req: Request, res: Response) => {
+app.post('/addReply', async (req: Request, res: Response) => {
+  const {
+    code,
+    reply
+  } = req.body;
+
+  try {
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+    // Execute a SQL query to insert a new event
+    await client.query(
+      'UPDATE "Message" SET message_reply = $1 WHERE code = $2;', [reply, code]
+    );
+    // Release the client connection back to the pool
+    await client.release();
+
+    res.status(200); //we use this to test if user can get back the code from server
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/setReply', async (req: Request, res: Response) => {
   const {
     code
   } = req.body;
