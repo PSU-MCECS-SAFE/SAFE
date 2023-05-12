@@ -7,23 +7,23 @@
       "esnext"
     ],
     "allowJs": true,
-    "outDir": "JSoutFile", //Need this since we are converting TS to JS to run node.js, need to create a JSoutFile folder before running npx tsc
+    "outDir": "JSoutFile", //Where the compiled files will go
     "sourceMap": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "commonjs", //Need this to run es6 code
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": false,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "module":"CommonJS"
   },
   "include": [
-    "src",
-    "src/**/*.tsx" // Fixed typo in pattern
+    "src/safeMessageDB/server.ts" //This will also compile a few other files
+                                  //where it is referenced in or uses.
   ]
 }
