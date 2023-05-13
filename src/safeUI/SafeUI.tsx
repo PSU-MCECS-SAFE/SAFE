@@ -12,42 +12,7 @@ import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
-import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha,
-} from 'react-google-recaptcha-v3';
-import { checkString, checkProfanities } from '../safeMessageDB/verifyString'
-
-// Function to handle token from reCAPTCHA
-function handleToken(token: string) {}
-
-const Captcha = () => {
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
-  // Event handler to call verification on button click or form submit
-  const handleReCaptchaVerify = useCallback(async () => {
-    if (!executeRecaptcha) {
-      console.log('reCAPTCHA execution failed');
-      return;
-    }
-    const token = await executeRecaptcha();
-    handleToken(token);
-  }, [executeRecaptcha]);
-
-  // Trigger verification as soon as component is loaded
-  useEffect(() => {
-    handleReCaptchaVerify();
-  }, [handleReCaptchaVerify]);
-
-  return <button onClick={handleReCaptchaVerify}>Verify reCAPTCHA</button>;
-};
-
-// Tags to be used to insert CAPTCHA into UI
-/*
-<GoogleReCaptchaProvider reCaptchaKey="key">
-  <Captcha />
-</GoogleReCaptchaProvider>
-*/
+import { checkString, checkProfanities } from '../safeMessageDB/verifyString';
 
 /* Components to implement
  * 1) Welcome Message
@@ -123,12 +88,12 @@ function SafeUI() {
       // fetch data from API endpoint
       // param: request method, header, body
       var sentiment: number = 0;
-      try{
+      try {
         // For clarification, this is call the
         // checkString function in verifyString file
         checkString(subject);
         sentiment = checkString(message);
-      }catch(e){
+      } catch (e) {
         // There are cuss words in either the subject or the message
       }
       fetch('https://localhost:3001/addMessage', {
@@ -186,30 +151,34 @@ function SafeUI() {
         }}
       >
         <img
-          src="/PSU_logo_accent_transparent.png"
-          alt="Logo"
-          width="135"
-          height="53"
+          src='/PSU_logo_accent_transparent.png'
+          alt='Logo'
+          width='135'
+          height='53'
         />
       </Box>
-      <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
+      <Typography mt={2} mb={3} variant='h3' align='center' gutterBottom>
         Welcome to <b>SAFE</b>
         <br />
         PSU's CS Department Anonymous Feedback System
       </Typography>
 
       <Typography mt={2} mb={3} align='center'>
-        Find out how we are committed to keeping your identity <a href="./about.html" target="blank">anonymous</a>!
+        Find out how we are committed to keeping your identity{' '}
+        <a href='./about.html' target='blank'>
+          anonymous
+        </a>
+        !
       </Typography>
 
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container rowSpacing={2} spacing={2} justifyContent="center">
+      <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+        <Grid container rowSpacing={2} spacing={2} justifyContent='center'>
           <Grid item xs={8}>
             <TextField
-              id="label"
-              variant="standard"
-              label="To:"
-              value="Portland State University - Computer Science Department"
+              id='label'
+              variant='standard'
+              label='To:'
+              value='Portland State University - Computer Science Department'
               disabled={true} // If prop isn't disabled, text from 'To:' box can be removed.
               // Even though static value remains, text is technically removed
               // preventing submission of button. Text can be further inserted,
@@ -233,10 +202,10 @@ function SafeUI() {
 
           <Grid item xs={8}>
             <TextField
-              id="label"
-              variant="standard"
-              label="Subject:"
-              placeholder="Briefly describe your feedback (course feedback, suggestions for improvement...)"
+              id='label'
+              variant='standard'
+              label='Subject:'
+              placeholder='Briefly describe your feedback (course feedback, suggestions for improvement...)'
               fullWidth
               onChange={handleSubjectChange}
               error={subjectError}
@@ -244,7 +213,7 @@ function SafeUI() {
               inputProps={{ maxLength: MAX_Subject_CHARACTERS }}
             />
 
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent='flex-end'>
               <Typography mt={2} mb={3} gutterBottom>
                 {subjectCharacterCount} / 100
               </Typography>
@@ -254,30 +223,30 @@ function SafeUI() {
           <Grid item xs={8}>
             <TextField
               hiddenLabel
-              id="filled-hidden-label-normal"
-              placeholder="Enter Message"
-              variant="outlined"
+              id='filled-hidden-label-normal'
+              placeholder='Enter Message'
+              variant='outlined'
               multiline
               rows={7}
               fullWidth
-              autoComplete="off"
-              spellCheck="false"
+              autoComplete='off'
+              spellCheck='false'
               onChange={handleMessageChange}
               error={messageError}
               helperText={helperText}
               inputProps={{ maxLength: MAX_CHARACTERS }}
             />
 
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent='flex-end'>
               <Typography mt={2} mb={3} gutterBottom>
                 {characterCount} / 7500
               </Typography>
             </Grid>
 
-            <Box textAlign="center">
+            <Box textAlign='center'>
               <StyledSubmitButton
-                variant="contained"
-                type="submit"
+                variant='contained'
+                type='submit'
                 disabled={isSubmitDisabled}
                 onClick={handleButtonClick}
               >
@@ -291,22 +260,22 @@ function SafeUI() {
               message="Feedback Successfully sent to PSU's CS Dept."
               autoHideDuration={5000}
             />
-            <Typography variant="subtitle2" mt={4} mb={3} align="center">
+            <Typography variant='subtitle2' mt={4} mb={3} align='center'>
               This site should not be used to report{' '}
-              <Link href="https://www.pdx.edu/diversity/title-ix">
+              <Link href='https://www.pdx.edu/diversity/title-ix'>
                 Title IX
               </Link>{' '}
               violations, including{' '}
-              <Link href="https://www.pdx.edu/sexual-assault/faculty-staff-reporting-obligations">
+              <Link href='https://www.pdx.edu/sexual-assault/faculty-staff-reporting-obligations'>
                 sexual misconduct
               </Link>{' '}
               or{' '}
-              <Link href="https://www.pdx.edu/general-counsel/mandatory-child-abuse-reporting">
+              <Link href='https://www.pdx.edu/general-counsel/mandatory-child-abuse-reporting'>
                 child abuse
               </Link>
               ; please use the respective links for further information. Please
               note also that the{' '}
-              <Link href="https://www.pdx.edu/womens-resource-center/">
+              <Link href='https://www.pdx.edu/womens-resource-center/'>
                 Women’s Resource Center
               </Link>{' '}
               also provides a confidential reporting option for the PSU
