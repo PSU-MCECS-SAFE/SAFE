@@ -17,6 +17,12 @@ import {
   useGoogleReCaptcha,
 } from 'react-google-recaptcha-v3';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 // Function to handle token from reCAPTCHA
 function handleToken(token: string) {}
 
@@ -68,6 +74,9 @@ function SafeUI() {
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
   const [open, setOpen] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const handleOpenError = () => setOpenError(true);
+  const handleCloseError = () => setOpenError(false);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -142,9 +151,13 @@ function SafeUI() {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          else{
+            handleSnackbarOpen();
+          }
         })
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
+          handleOpenError();
         });
     }
   };
@@ -159,7 +172,6 @@ function SafeUI() {
       bubbles: true,
     }) as unknown as React.FormEvent<HTMLFormElement>;
     handleSubmit(formEvent);
-    handleSnackbarOpen();
   };
 
   const isSubmitDisabled = !to || !subject || !message;
@@ -306,6 +318,20 @@ function SafeUI() {
               message="Feedback Successfully sent to PSU's CS Dept."
               autoHideDuration={5000}
             />
+            <Dialog
+              open={openError}
+              onClose={handleCloseError}
+              aria-labelledby='responsive-dialog-title'
+            >
+              <DialogTitle id='responsive-dialog-title'>
+                Error
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  There was an error while submitting your feedback. Please try again later.
+                </DialogContentText>
+              </DialogContent>
+            </Dialog>
           </Grid>
         </Grid>
       </form>
