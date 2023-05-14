@@ -76,11 +76,20 @@ def whoIsMyHost():
     # This regex looks for psu specific servers that the original team used in
     # the development process. ada, babbage, and rita were all used before the
     # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase
-    pattern = r"(ada|babbage|feedback|quizor\d+)\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
+    pattern = r"(ada|babbage|feedback|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
     if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
         return False
     return True
 
+def runFullSetup():
+    """
+    Runs the entire setup process for the app in a set particular order
+    to ensure algorithmic deployment
+    """
+    clearScreen()
+    makeConfigFile()
+    executeNpmAll()
+    print("\n\nSAFE setup complete!\n\n")
 
 def makeConfigFile():
     """
@@ -307,10 +316,7 @@ def scriptMenu():
         # bunch of if/else if statements.
         match option:
             case "1":
-                clearScreen()
-                makeConfigFile()
-                executeNpmAll()
-                print("\n\nSAFE setup complete!\n\n")
+                runFullSetup()
             case "2":
                 clearScreen()
                 makeConfigFile()
@@ -354,6 +360,20 @@ def main():
         )
         time.sleep(2)
 
+    # Has the script EVER been ran before? If not, force setup to take place.
+    if not os.path.exists(__CFG_PATH):
+        print(
+            "\n\n\t\t\tNOTICE:\n"
+            "It appears this script has never been ran before. This\n"
+            "script will now take you through the process of generating the\n"
+            "required configuration information. Once that is complete, it\n"
+            "will build the project.\n\n"
+        )
+        time.sleep(5)
+        print("\nResuming script . . .\n")
+        time.sleep(2)
+        runFullSetup()
+        
     # Nice little menu to use this script.
     scriptMenu()
 
