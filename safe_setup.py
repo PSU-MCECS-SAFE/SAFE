@@ -72,7 +72,11 @@ def whoIsMyHost():
     """
     clearScreen()
     myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
-    pattern = r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)"
+    
+    # This regex looks for psu specific servers that the original team used in
+    # the development process. ada, babbage, and rita were all used before the
+    # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase
+    pattern = r"(ada|babbage|feedback|quizor\d+)\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
     if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
         return False
     return True
@@ -122,13 +126,13 @@ def makeConfigFile():
             return
 
     print("\n\nGenerating new configuration file. . .\n")
-    # Prompt the user for their database credentials
+    # Prompt the user for the database credentials
     while True:
         username = input("Enter the username: ")
 
         password = input("\nEnter the password: ")
 
-        db_address = input("\nEnter the endpoint address: ")
+        db_address = input("\nEnter the PostgreSQL database address: ")
 
         db_name = input("\nEnter the database name: ")
 
@@ -155,6 +159,7 @@ def makeConfigFile():
         "rcvr_email": rcvr_email,
     }
 
+    # Dump that dictionary to the file
     with open(__CFG_PATH, "w") as outfile:
         outfile.write(json.dumps(config_info, indent=4))
 
@@ -163,6 +168,11 @@ def makeConfigFile():
 
 
 def executeNpmAll():
+    """
+    Executes all npm scripts that would be required on initial setup or if the
+    person running the script elects to run all the npm scripts again from a
+    fresh build
+    """
     print(
         "\n\nNow performing NPM deployment actions. Some directories related\n"
         "the websites code may be removed to generate new versions.\n"
@@ -291,6 +301,10 @@ def scriptMenu():
             "\n\nOption: "
         )
         print("\n")
+        # Python added their version of switch statements in 3.10. If the script
+        # fails to run at this point, ensure that python is up to date on the
+        # machine running this script. This just looks and runs nicer than a
+        # bunch of if/else if statements.
         match option:
             case "1":
                 clearScreen()
@@ -314,7 +328,7 @@ def scriptMenu():
                 executeNpmAll()
             case "0":
                 return
-            case _:
+            case _: # Default case if user picks bad option.
                 print("\n\n**ERROR** - Invalid option. . .\n")
 
 
