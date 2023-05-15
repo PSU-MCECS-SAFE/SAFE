@@ -72,7 +72,7 @@ def whoIsMyHost():
     """
     clearScreen()
     myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
-    pattern = r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)"
+    pattern = r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu|feedback\.cs\.pdx\.edu)"
     if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
         return False
     return True
