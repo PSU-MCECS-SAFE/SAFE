@@ -20,25 +20,25 @@ app.use(
 );
 app.use(cors());
 
-/**
- * Commenting out since we are working on sender now. We will use get method later in future development
- */
-// Define an endpoint for retrieving all events
+// /**
+//  * Commenting out since we are working on sender now. We will use get method later in future development
+//  */
+// // Define an endpoint for retrieving all events
 // app.get('/message', async (req: Request, res: Response) => {
-//     try {
-//         // Acquire a client connection from the connection pool
-//         const client = await messageDBConnect.connect();
+//   try {
+//     // Acquire a client connection from the connection pool
+//     const client = await messageDBConnect.connect();
 
-//         // Execute a SQL query to retrieve all events
-//         const result = await client.query('SELECT * FROM "Message"');
-//         res.json(result.rows);
-//         // Release the client connection back to the pool
-//         client.release();
-//         // Send the results as JSON
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
+//     // Execute a SQL query to retrieve all events
+//     const result = await client.query('SELECT * FROM "Message"');
+//     res.json(result.rows);
+//     // Release the client connection back to the pool
+//     client.release();
+//     // Send the results as JSON
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
 // });
 
 // Define an endpoint for adding a new event
