@@ -24,6 +24,63 @@ app.use(
 app.use(cors());
 
 // Define an endpoint for retrieving all events
+app.get('/getallmessages', async (req: Request, res: Response) => {
+  try {
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+
+    // Execute a SQL query to retrieve all events
+    const result = await client.query(
+      'SELECT * FROM "Message";',
+    );
+    if (result.rows.length === 0) {
+      res
+        .status(404)
+        .json({ error: 'No messages in database' });
+    } else {
+      res.status(200).json(result.rows[0]);
+    }
+    // Release the client connection back to the pool
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: 'Internal server error, please try back later' });
+  }
+});
+
+// Define an endpoint for deleting a message
+app.delete('/deletemessage', async (req: Request, res: Response) => {
+  const { code } = req.query;
+
+  try {
+    // Acquire a client connection from the connection pool
+    const client = await messageDBConnect.connect();
+
+    // Execute a SQL query to retrieve all events
+    const result = await client.query(
+      'DELETE FROM "Message" WHERE code = $1;',
+      [code]
+    );
+    if (result.rows.length === 0) {
+      res
+        .status(404)
+        .json({ error: 'No matching record found with provided code' });
+    } else {
+      res.status(200).json(result.rows[0]);
+    }
+    // Release the client connection back to the pool
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: 'Internal server error, please try back later' });
+  }
+});
+
+// Define an endpoint for retrieving all events
 app.get('/getmessage', async (req: Request, res: Response) => {
   const { code } = req.query;
 
