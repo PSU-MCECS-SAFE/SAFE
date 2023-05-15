@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import React from 'react';
 import BannerNavBar from './Components/bannerNavBar';
 import MessageBox from './Components/messageBox';
-import MessageControl from './Components/messageControl';
 
 function ReceiverDashboard() {
   return (

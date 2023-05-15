@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
@@ -5,6 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 function BannerNavBar() {
   const [open, setOpen] = useState(false);
   const targetRef = useRef(null);
+  const [signIn, setSignIn] = useState('Logout')
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpen(true);
@@ -40,7 +42,7 @@ function BannerNavBar() {
           fontSize: '24px',
         }}
       >
-        Safe Faculty Dashboard
+        SAFE Faculty Dashboard
       </Typography>
       <IconButton id="logout-button" onClick={handleClick} ref={targetRef}>
         <PersonIcon />
@@ -55,14 +57,15 @@ function BannerNavBar() {
           onClick={() => {
             handleClose();
             //Place logout function here
+            if(signIn === 'Logout'){
+              setSignIn('Login')
+            } else {
+              setSignIn('Logout')
+            }
           }}
         >
-          {' '}
-          Logout{' '}
+          {signIn}
         </MenuItem>
-        <MenuItem onClick={handleClose}> Action2 </MenuItem>
-        <MenuItem onClick={handleClose}> Action3 </MenuItem>
-        {/* What should the other actions be? Do we need them? */}
       </Menu>
     </Box>
   );

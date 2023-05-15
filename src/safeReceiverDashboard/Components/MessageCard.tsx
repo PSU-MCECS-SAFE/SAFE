@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,6 +12,8 @@ interface IMessageCardProps {
 }
 
 export default function MessageCard({ date, title, message }: IMessageCardProps) {
+  const text: string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe nisi velit temporibus sed laudantium optio incidunt, ea reiciendis at ab nobis voluptatibus facere libero rerum, deserunt nulla inventore quam perspiciatis! Lorem ipsum dolor sit amet consectetur adipisicing elit. A nemo at officia totam maiores, quas repellendus dolore repudiandae mollitia, iusto sequi vero ipsum excepturi facere aut veritatis voluptatem eius est. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi reiciendis repellendus at. Porro rem hic aut impedit odit facilis a, architecto, consequuntur reprehenderit, voluptatibus totam numquam nemo obcaecati incidunt adipisci!";
+  
   return (
       <Card sx={{ 
         my: 2,
@@ -28,7 +29,7 @@ export default function MessageCard({ date, title, message }: IMessageCardProps)
             Title: {title}
           </Typography>
           <Typography variant="body2">
-            the message: Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe nisi velit temporibus sed laudantium optio incidunt, ea reiciendis at ab nobis voluptatibus facere libero rerum, deserunt nulla inventore quam perspiciatis! Lorem ipsum dolor sit amet consectetur adipisicing elit. A nemo at officia totam maiores, quas repellendus dolore repudiandae mollitia, iusto sequi vero ipsum excepturi facere aut veritatis voluptatem eius est. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi reiciendis repellendus at. Porro rem hic aut impedit odit facilis a, architecto, consequuntur reprehenderit, voluptatibus totam numquam nemo obcaecati incidunt adipisci! {message}
+            the message: {message}. {text}
           </Typography>
         </CardContent>
         <CardActions>
