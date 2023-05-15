@@ -2,9 +2,12 @@
 //is a fail safe for older versions. Best to do it anyways!
 import {
   Box,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   Link,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
@@ -32,10 +35,15 @@ function SafeUI() {
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
-  const [open, setOpen] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
   const handleOpenError = () => setOpenError(true);
   const handleCloseError = () => setOpenError(false);
+
+  const handleCloseSuccessSent = () => {
+    setOpenSuccess(false);
+    window.location.reload(); // Refresh the page
+  };
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMessage = e.target.value;
@@ -110,7 +118,7 @@ function SafeUI() {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           } else {
-            handleSnackbarOpen();
+            setOpenSuccess(true);
           }
         })
         .catch((error) => {
@@ -118,10 +126,6 @@ function SafeUI() {
           handleOpenError();
         });
     }
-  };
-
-  const handleSnackbarOpen = () => {
-    setOpen(true);
   };
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -160,10 +164,7 @@ function SafeUI() {
 
       <Typography mt={2} mb={3} align='center'>
         Find out how we are committed to keeping your identity{' '}
-        <a href='./about.html'>
-          anonymous
-        </a>
-        !
+        <a href='./about.html'>anonymous</a>!
       </Typography>
 
       <form noValidate autoComplete='off' onSubmit={handleSubmit}>
@@ -269,13 +270,7 @@ function SafeUI() {
                 Submit
               </StyledSubmitButton>
             </Box>
-            <Snackbar
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              open={open}
-              onClose={() => setOpen(false)}
-              message="Feedback Successfully sent to PSU's CS Dept."
-              autoHideDuration={5000}
-            />
+
             <Dialog
               open={openError}
               onClose={handleCloseError}
@@ -286,6 +281,21 @@ function SafeUI() {
                 <DialogContentText>
                   There was an error while submitting your feedback. Please try
                   again later.
+                </DialogContentText>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog
+              open={openSuccess}
+              onClose={handleCloseSuccessSent}
+              aria-labelledby='responsive-dialog-title'
+            >
+              <DialogTitle id='responsive-dialog-title'>
+                Thank you for your feedback!
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Your feedback successfully sent to PSU's CS Department!
                 </DialogContentText>
               </DialogContent>
             </Dialog>
