@@ -86,8 +86,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      const port = 3001;
-      fetch(`http://131.252.208.28:${port}/addMessage`, {
+      fetch('https://feedback.cs.pdx.edu/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
