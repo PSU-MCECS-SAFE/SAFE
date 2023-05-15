@@ -6,7 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 function BannerNavBar() {
   const [open, setOpen] = useState(false);
   const targetRef = useRef(null);
-  const [signIn, setSignIn] = useState('Logout')
+  const [signIn, setSignIn] = useState('Logout');
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpen(true);
@@ -29,10 +29,10 @@ function BannerNavBar() {
       }}
     >
       <img
-        src="/PSU_logo_accent_transparent.png"
-        alt="Logo"
-        width="135"
-        height="53"
+        src='./PSU_logo_accent_transparent.png'
+        alt='Logo'
+        width='135'
+        height='53'
       />
       <Typography
         sx={{
@@ -44,11 +44,11 @@ function BannerNavBar() {
       >
         SAFE Faculty Dashboard
       </Typography>
-      <IconButton id="logout-button" onClick={handleClick} ref={targetRef}>
+      <IconButton id='logout-button' onClick={handleClick} ref={targetRef}>
         <PersonIcon />
       </IconButton>
       <Menu
-        id="logout-menu"
+        id='logout-menu'
         open={open}
         onClose={handleClose}
         anchorEl={targetRef.current}
@@ -57,10 +57,10 @@ function BannerNavBar() {
           onClick={() => {
             handleClose();
             //Place logout function here
-            if(signIn === 'Logout'){
-              setSignIn('Login')
+            if (signIn === 'Logout') {
+              setSignIn('Login');
             } else {
-              setSignIn('Logout')
+              setSignIn('Logout');
             }
           }}
         >
