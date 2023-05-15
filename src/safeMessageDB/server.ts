@@ -51,14 +51,14 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     receive_reply,
     has_been_read,
     time_submitted,
-    message_replied,
+    message_reply,
   } = req.body;
 
   // Sanitize all properties of the req.body object
   const sanitizedBody = {
     title: xss(title),
     message: xss(message),
-    message_replied: xss(message_replied),
+    message_reply: xss(message_reply),
   };
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s]/g, '');
 
@@ -68,7 +68,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
     // Execute a SQL query to insert a new event
     await client.query(
-      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_reply) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         sanitizedTitle,
         receiver_name,
@@ -77,7 +77,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
         receive_reply,
         has_been_read,
         time_submitted,
-        sanitizedBody.message_replied,
+        sanitizedBody.message_reply,
       ]
     );
     // Release the client connection back to the pool

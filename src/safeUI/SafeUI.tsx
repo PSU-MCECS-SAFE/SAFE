@@ -143,15 +143,14 @@ function SafeUI() {
           receive_reply: false,
           has_been_read: false,
           time_submitted: null,
-          message_replied: null,
+          message_reply: null,
         }),
       })
         // response from fetch
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
-          }
-          else{
+          } else {
             handleSnackbarOpen();
           }
         })
@@ -323,12 +322,11 @@ function SafeUI() {
               onClose={handleCloseError}
               aria-labelledby='responsive-dialog-title'
             >
-              <DialogTitle id='responsive-dialog-title'>
-                Error
-              </DialogTitle>
+              <DialogTitle id='responsive-dialog-title'>Error</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  There was an error while submitting your feedback. Please try again later.
+                  There was an error while submitting your feedback. Please try
+                  again later.
                 </DialogContentText>
               </DialogContent>
             </Dialog>
