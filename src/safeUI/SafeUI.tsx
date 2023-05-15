@@ -86,7 +86,7 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3001/addMessage', {
+      fetch('https://feedback.cs.pdx.edu/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ function SafeUI() {
           receive_reply: false,
           has_been_read: false,
           time_submitted: null,
-          message_replied: null,
+          message_reply: null,
         }),
       })
         // response from fetch
