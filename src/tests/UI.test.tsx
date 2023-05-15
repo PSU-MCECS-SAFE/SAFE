@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import SafeUI from '../safeUI/SafeUI';
+import React from 'react';
 
 test('renders SafeUI without crashing', () => {
   render(<SafeUI />);
