@@ -139,8 +139,7 @@ function SafeUI() {
         .then((response) => {
           if (response.status === 400) {
             throw new Error('Invalid message: message contains profanities');
-          }
-          else if (!response.ok) {
+          } else if (!response.ok) {
             throw new Error(response.statusText);
           }
           setOpenEmail(true);
@@ -157,8 +156,6 @@ function SafeUI() {
         });
     }
   };
-
-
 
   const handleClose = () => {
     setOpenEmail(false);
@@ -187,7 +184,7 @@ function SafeUI() {
       .then((responseText) => {
         alert(responseText);
         window.location.reload();
-      })
+      });
     setOpenEmail(false);
     setOpenCode(true);
   };
@@ -337,6 +334,7 @@ function SafeUI() {
           backgroundColor: '#6a7f10',
           height: '38px',
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           paddingLeft: '25px',
         }}
@@ -391,10 +389,7 @@ function SafeUI() {
 
       <Typography mt={2} mb={3} align='center'>
         Find out how we are committed to keeping your identity{' '}
-        <a href='./about.html'>
-          anonymous
-        </a>
-        !
+        <a href='./about.html'>anonymous</a>!
       </Typography>
 
       <form noValidate autoComplete='off' onSubmit={handleSubmit}>
