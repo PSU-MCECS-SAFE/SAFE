@@ -108,12 +108,8 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-// The IP address belongs to the rita.cecs.pdx.edu, hence the port here is unique,
-// if someone else is using a paticular port, you will need to change both server
-// and UI part of the port.
-const port = 3001;
-app.listen(port, '131.252.208.28', () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(3001, 'feedback.cs.pdx.edu', () => {
+  console.log(`Server listening on port 3001`);
 });
 
 export default app;
