@@ -85,7 +85,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
     // Send notification email to receiver
     const mailArgs = [
-      `-s "${sanitizedTitle}"`,
+      `-s SAFE "${sanitizedTitle}"`,
       getConfigProp(sjp.rcvr_email, scp),
     ];
     const mail = spawn('mail', mailArgs);
