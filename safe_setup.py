@@ -72,11 +72,24 @@ def whoIsMyHost():
     """
     clearScreen()
     myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
-    pattern = r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)"
+    
+    # This regex looks for psu specific servers that the original team used in
+    # the development process. ada, babbage, and rita were all used before the
+    # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase
+    pattern = r"(ada|babbage|feedback|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
     if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
         return False
     return True
 
+def runFullSetup():
+    """
+    Runs the entire setup process for the app in a set particular order
+    to ensure algorithmic deployment
+    """
+    clearScreen()
+    makeConfigFile()
+    executeNpmAll()
+    print("\n\nSAFE setup complete!\n\n")
 
 def makeConfigFile():
     """
@@ -122,13 +135,13 @@ def makeConfigFile():
             return
 
     print("\n\nGenerating new configuration file. . .\n")
-    # Prompt the user for their database credentials
+    # Prompt the user for the database credentials
     while True:
         username = input("Enter the username: ")
 
         password = input("\nEnter the password: ")
 
-        db_address = input("\nEnter the endpoint address: ")
+        db_address = input("\nEnter the PostgreSQL database address: ")
 
         db_name = input("\nEnter the database name: ")
 
@@ -155,6 +168,7 @@ def makeConfigFile():
         "rcvr_email": rcvr_email,
     }
 
+    # Dump that dictionary to the file
     with open(__CFG_PATH, "w") as outfile:
         outfile.write(json.dumps(config_info, indent=4))
 
@@ -163,6 +177,11 @@ def makeConfigFile():
 
 
 def executeNpmAll():
+    """
+    Executes all npm scripts that would be required on initial setup or if the
+    person running the script elects to run all the npm scripts again from a
+    fresh build
+    """
     print(
         "\n\nNow performing NPM deployment actions. Some directories related\n"
         "the websites code may be removed to generate new versions.\n"
@@ -291,12 +310,13 @@ def scriptMenu():
             "\n\nOption: "
         )
         print("\n")
+        # Python added their version of switch statements in 3.10. If the script
+        # fails to run at this point, ensure that python is up to date on the
+        # machine running this script. This just looks and runs nicer than a
+        # bunch of if/else if statements.
         match option:
             case "1":
-                clearScreen()
-                makeConfigFile()
-                executeNpmAll()
-                print("\n\nSAFE setup complete!\n\n")
+                runFullSetup()
             case "2":
                 clearScreen()
                 makeConfigFile()
@@ -314,7 +334,7 @@ def scriptMenu():
                 executeNpmAll()
             case "0":
                 return
-            case _:
+            case _: # Default case if user picks bad option.
                 print("\n\n**ERROR** - Invalid option. . .\n")
 
 
@@ -340,6 +360,20 @@ def main():
         )
         time.sleep(2)
 
+    # Has the script EVER been ran before? If not, force setup to take place.
+    if not os.path.exists(__CFG_PATH):
+        print(
+            "\n\n\t\t\tNOTICE:\n"
+            "It appears this script has never been ran before. This\n"
+            "script will now take you through the process of generating the\n"
+            "required configuration information. Once that is complete, it\n"
+            "will build the project.\n\n"
+        )
+        time.sleep(5)
+        print("\nResuming script . . .\n")
+        time.sleep(2)
+        runFullSetup()
+        
     # Nice little menu to use this script.
     scriptMenu()
 

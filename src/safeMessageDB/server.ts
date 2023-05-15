@@ -42,7 +42,9 @@ app.use(cors());
 // });
 
 // Define an endpoint for adding a new event
+// This is a POST request to post data into the database
 app.post('/addMessage', async (req: Request, res: Response) => {
+  //get all data from the request body and store them into these object
   const {
     title,
     receiver_name,
@@ -51,24 +53,27 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     receive_reply,
     has_been_read,
     time_submitted,
-    message_replied,
+    message_reply,
   } = req.body;
 
   // Sanitize all properties of the req.body object
   const sanitizedBody = {
     title: xss(title),
     message: xss(message),
-    message_replied: xss(message_replied),
+    message_reply: xss(message_reply),
   };
-  const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s]/g, '');
+  //replace anything that is not a letter, number or '/'
+  const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s\/]/g, '');
 
   try {
     // Acquire a client connection from the connection pool
+    // it will return the db.pool from the connect() function
     const client = await messageDBConnect.connect();
 
     // Execute a SQL query to insert a new event
     await client.query(
-      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_replied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+      //using this type of Value array to keep us away from malicious actions
+      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_reply) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         sanitizedTitle,
         receiver_name,
@@ -77,7 +82,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
         receive_reply,
         has_been_read,
         time_submitted,
-        sanitizedBody.message_replied,
+        sanitizedBody.message_reply,
       ]
     );
     // Release the client connection back to the pool
@@ -86,11 +91,15 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     // Send notification email to receiver
     const mailArgs = [
       `-s "${sanitizedTitle}"`,
-      getConfigProp(sjp.rcvr_email, scp),
+      getConfigProp(sjp.rcvr_email, scp), //get email address from Config
     ];
+    //send out email using spawn to create a child process in terminal
     const mail = spawn('mail', mailArgs);
     mail.stdin.write(sanitizedBody.message);
     mail.stdin.end();
+    //status 200 to indicate success. This 'send' here can put different type of respond data
+    //and it will be able to let the fetch part to catch the data you want to return back to
+    //the UI part. e.g. The unique code of the message
     res.status(200).send();
   } catch (err) {
     console.error(err);
@@ -99,8 +108,12 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3001, '131.252.208.28', () => {
-  console.log(`Server listening on port 3001`);
+// The IP address belongs to the rita.cecs.pdx.edu, hence the port here is unique,
+// if someone else is using a paticular port, you will need to change both server
+// and UI part of the port.
+const port = 3001;
+app.listen(port, '131.252.208.28', () => {
+  console.log(`Server listening on port ${port}`);
 });
 
 export default app;
