@@ -62,8 +62,10 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     message: xss(message),
     message_reply: xss(message_reply),
   };
-  //replace anything that is not a letter, number or '/'
-  const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s\/]/g, '');
+  
+  //replace anything that is not a letter, number, '-', or '/'
+  const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s/-]/g, '');
+  const time = new Date();
 
   try {
     // Acquire a client connection from the connection pool
@@ -72,7 +74,9 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
     // Execute a SQL query to insert a new event
     await client.query(
+
       //using this type of Value array to keep us away from malicious actions
+
       'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_reply) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         sanitizedTitle,
@@ -81,7 +85,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
         code,
         receive_reply,
         has_been_read,
-        time_submitted,
+        time,
         sanitizedBody.message_reply,
       ]
     );
@@ -90,12 +94,12 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 
     // Send notification email to receiver
     const mailArgs = [
-      `-s "${sanitizedTitle}"`,
+      `-s "[SAFE FEEDBACK] - (${sanitizedTitle})"`,
       getConfigProp(sjp.rcvr_email, scp), //get email address from Config
     ];
     //send out email using spawn to create a child process in terminal
     const mail = spawn('mail', mailArgs);
-    mail.stdin.write(sanitizedBody.message);
+    mail.stdin.write(`This is a notification that you have received a message from SAFE at ${time}.\n\n\n` + `Subject: ${sanitizedTitle}\n\n` + "Message:\n" + sanitizedBody.message);
     mail.stdin.end();
     //status 200 to indicate success. This 'send' here can put different type of respond data
     //and it will be able to let the fetch part to catch the data you want to return back to
