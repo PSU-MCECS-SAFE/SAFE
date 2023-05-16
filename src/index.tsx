@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import SafeUI from "./safeUI/SafeUI"
+import SafeUI from "./safeUI/SafeUI";
 import reportWebVitals from "./reportWebVitals";
 
 /**
- * Is compiled into .js and ran as a script once `npm run build` is complete
- * within 'index.html'
+ * Project is compiled into .js and ran as a script once `npm run build` is 
+ * complete within 'index.html'
  *
  * All other elements are established in the other files. If in VSCode you can
- * ctrl+left click <App /> to see the connection and how that path is made.
- * - Alex
+ * ctrl+left click <SafeUI/> to see the connection and how that path is made.
+ * - Alex (Capstone team Spring '23)
  */
 
 const root = ReactDOM.createRoot(

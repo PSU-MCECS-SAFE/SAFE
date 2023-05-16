@@ -97,11 +97,13 @@ function SafeUI() {
 
       // fetch data from API endpoint
       // param: request method, header, body
-      fetch('http://131.252.208.28:3001/addMessage', {
+      const port = 3001;
+      fetch(`http://131.252.208.28:${port}/addMessage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        //make the body from JavaScript object to be JSON object
         body: JSON.stringify({
           title: subject,
           receiver_name: to,
@@ -113,7 +115,9 @@ function SafeUI() {
           message_reply: null,
         }),
       })
-        // response from fetch
+        //response from fetch
+        //response has different types of data that got carry
+        //out from the Post request
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -121,6 +125,8 @@ function SafeUI() {
             setOpenSuccess(true);
           }
         })
+        //catch any error, this can be spicify later to catch some paticular error
+        //and respond the correct message instead of a genearal message like this
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
           handleOpenError();
