@@ -3,22 +3,26 @@ import { PoolClient, QueryResult } from 'pg';
 
 export class Code {
 
-    public static async genCode(client: PoolClient): Promise<string> {
-        const max: number = 64;
-        const min: number = 32;
-        var code_length: number = Code.randInt(max, min);
+    public static async genCode(client: PoolClient, code: string = ""): Promise<string> {
+        const max_code_length: number = 64;
+        const min_code_length: number = 32;
         const dictionary: string = Code.sortChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
 
         // Generate random code
-        let code_combination: number[] = [];
-        for (let i: number = 0; i < code_length; i++) {
-            code_combination.push(Code.randInt(dictionary.length - 1));
-        }
+        let code_combination: number[] = ((code.length < min_code_length) || (code.length > max_code_length)) ? Code.initCodeCombination(Code.randInt(max_code_length, min_code_length), dictionary) : Code.renderCodeCombination(code, dictionary);
 
         await Code.getCode(client, code_combination, dictionary);
 
         return Code.renderCode(code_combination, dictionary);
+    }
+
+    private static initCodeCombination(code_length: number, dictionary: string) : number[] {
+        let code_combination = [];
+        for (let i: number = 0; i < code_length; i++) {
+            code_combination.push(Code.randInt(dictionary.length - 1));
+        }
+        return code_combination;
     }
 
     private static async getCode(client: PoolClient, code_combination: number[], dictionary: string, index: number = 0): Promise<boolean> {
@@ -100,6 +104,14 @@ export class Code {
             code += (dictionary[char]);
         });
         return code;
+    }
+
+    private static renderCodeCombination(code: string, dictionary: string) {
+        let code_combination = [];
+        for(var i = 0; i < code.length; i++){
+            code_combination.push(dictionary.indexOf(code[i]));
+        }
+        return code_combination;
     }
 
     private static sortChars(str: string): string {
