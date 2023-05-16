@@ -2,7 +2,6 @@
 //is a fail safe for older versions. Best to do it anyways!
 import {
   Box,
-  Button,
   Grid,
   Link,
   Snackbar,
@@ -14,6 +13,7 @@ import { StyledButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
+import { checkString, checkProfanities } from '../safeMessageDB/verifyString';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -34,6 +34,8 @@ const MAX_EMAIL_CHARACTERS = 256;
 
 function SafeUI() {
   const [code, setCode] = useState('');
+  const [check_message, setcheck_message] = useState<any>(null);
+
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
   const [to, setTo] = useState('PSU CS Department');
@@ -44,6 +46,7 @@ function SafeUI() {
   const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
   const [open, setOpen] = useState(false);
+
   const [openEmail, setOpenEmail] = useState(false);
   const [openCode, setOpenCode] = useState(false);
   const [email, setEmail] = useState('');
@@ -112,7 +115,7 @@ function SafeUI() {
        * This is how to call the getMessage from atabase
        */
 
-      // fetch('http://localhost:3001/message')
+      // fetch('https://localhost:3001/message')
       //   .then(response => response.json())
       //   .then(data => {
       //     console.log(data);
@@ -132,7 +135,7 @@ function SafeUI() {
           message: message,
           receive_reply: false,
           has_been_read: false,
-          message_replied: null,
+          message_reply: null,
         }),
       })
         // response from fetch
@@ -247,19 +250,42 @@ function SafeUI() {
     setOpenMessageModal(false);
   };
 
+  // CHECK REPLY button main function
   const handleCodeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputCode === 'ABCD') {
-      // Check if input code matched the database
-      // If not, message will not display, and message prompt for invalid code will be displayed
-      handleOpenMessageModal();
-      setValidCode(true);
-      setCodeModalHelperText('');
-    } else {
-      setOpenMessageModal(false);
-      setValidCode(false);
-      setCodeModalHelperText('Code is invalid. Please try another code.');
-    }
+    // fetching getmessage endpoint and pass in inputCode in url
+    fetch(
+      `http://131.252.208.28:3004/getmessage?code=${encodeURIComponent(
+        inputCode
+      )}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      // response from fetch
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((responseJson) => {
+        console.log(responseJson);
+        setcheck_message(responseJson);
+        handleOpenMessageModal();
+        setValidCode(true);
+        setCodeModalHelperText('');
+      })
+      // If catching error from endpoint, display error message
+      .catch((error) => {
+        console.log(error);
+        setOpenMessageModal(false);
+        setValidCode(false);
+        setCodeModalHelperText('Code is invalid. Please try another code.');
+      });
   };
 
   const handleSnackbarOpen = () => {
@@ -310,14 +336,24 @@ function SafeUI() {
         Message{' '}
       </DialogTitle>
       <DialogContent>
-        {/* The 'sx' prop is used to preserve the format of the message when user typed in message box*/}
-
-        <DialogContentText
-          sx={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}
-        >
-          {' '}
-          {message}
-        </DialogContentText>
+        {check_message && (
+          <DialogContentText
+            sx={{
+              whiteSpace: 'pre-wrap',
+              overflowWrap: 'anywhere',
+              marginBottom: '16px',
+            }}
+          >
+            <div>
+              <strong>Sent Message: </strong> <br />
+              {check_message.message}
+            </div>
+            <div style={{ marginTop: '10px' }}>
+              <strong>Reply: </strong> <br />
+              {check_message.message_reply}
+            </div>
+          </DialogContentText>
+        )}
       </DialogContent>
       <DialogActions>
         <StyledButton onClick={handleCloseMessageModal}> Close</StyledButton>
