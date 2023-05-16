@@ -31,8 +31,7 @@ a:link {
 }
 
 .button-center {
-    position: absolute;
-    padding-left: 30%;
+    text-align: center;
     padding-top: 1%;
   }
 
@@ -60,6 +59,7 @@ p.safemessage{
 }
 
 h1.safeheader{
+    text-align: center;
     font-family: "Times New Roman", Times, serif;
     font: serif;
     font-size: xx-large;
