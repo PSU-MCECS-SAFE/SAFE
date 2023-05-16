@@ -21,8 +21,8 @@ Significantly, SAFE exudes a user-centric approach by relieving students from th
 4. Run `node JSoutFile/safeMessageDB/server.js`
       - *** explain what is this and what this will do? ***
 
-Common error when compiling or deploying code
-   - 
+   Common error when compiling or deploying code
+      - 
 
 ## License Information
 The SAFE Project is currently licensed under the MIT license.
