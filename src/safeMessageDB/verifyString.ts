@@ -1,30 +1,36 @@
 import Sentiment from 'sentiment';
 import BadWordsFilter from 'bad-words';
 
-//this will return a scorce range from -5 to 5 and other things we don't need
-export function checkString(msg: string): number {
+/**
+ * Return a score indicating the sentiment of the text, and how confident that score is.
+ * Negative numbers indicate negative sentiment, positive numbers indicate positive sentiment. Zero is neutral.
+ * The higher the absolute value of the score is, the more confident there is in the score.
+ * @param text The text being evaluated
+ * @throws Error if string is empty or contains profane language
+ * @returns Score indicating the sentiment of the text.
+ */
+export function checkString(text: string): number {
     // Make sure string isn't empty
-    if (msg.length === 0) {
-        throw new Error("Invalid String: String is empty");
+    if (text.length === 0) {
+        throw new Error("Invalid String: Empty String");
     }
 
-    // Return the sentiment analysis results
-    var sentiment = new Sentiment();
-    var result: Sentiment.AnalysisResult = sentiment.analyze(msg);
-    return result.comparative;
-}
-
-/* 
-  Some common examples of profane words that may be included in the bad-words package are:
-    -The "F-word" and other common swear words
-    -Racial slurs and derogatory terms
-    -Words related to sex and sexuality
-    -Insults and derogatory terms for individuals or groups
-*/
-export function checkProfanities(words: string): boolean {
+    /* 
+    Filter for profane words
+    Some common examples of profane words that may be included in the bad-words package are:
+    - The "F-word" and other common swear words
+    - Racial slurs and derogatory terms
+    - Words related to sex and sexuality
+    - Insults and derogatory terms for individuals or groups
+    */
     const filter = new BadWordsFilter();
-    if (filter.isProfane(words)) {
-        return true
+    if (filter.isProfane(text)){
+        throw new Error("Invalid String: Bad Words");
     }
-    return false;
+
+    // Run the sentiment analysis
+    var sentiment = new Sentiment();
+    var result: Sentiment.AnalysisResult = sentiment.analyze(text);
+
+    return result.comparative;
 }

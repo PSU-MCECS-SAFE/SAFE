@@ -11,7 +11,7 @@ import {
 import xss from 'xss';
 
 import { Code } from '../safeUtil/generateCode';
-import { checkString, checkProfanities } from './verifyString';
+import { checkString } from './verifyString';
 
 // Create a new Express app
 const app = express();
@@ -189,19 +189,20 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     message_reply: xss(message_reply),
   };
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s\/]/g, '');
-  let ProfaneFlag = checkProfanities(message);
-  if (ProfaneFlag) {
+  let result: number | null = null;
+  try{
+    result = checkString(message);
+  }catch (e: any){
     return res
       .status(400)
-      .json({ error: 'Invalid message: message contains profanities' });
+      .json({ error: e.message });
   }
-  const result = checkString(message);
-  let analysis_result;
+  let analysis_result: string | null = null;
   if (result < 0) {
     analysis_result = 'negative';
   } else if (result === 0) {
     analysis_result = 'neutral';
-  } else if (result >= 1) {
+  } else if (result > 0) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
