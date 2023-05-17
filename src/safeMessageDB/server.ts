@@ -10,7 +10,7 @@ import {
 } from '../safeUtil/Util';
 import xss from 'xss';
 
-import { Code } from '../safeUtil/generateCode';
+import Code from '../safeUtil/generateCode';
 import { checkString } from './verifyString';
 
 // Create a new Express app

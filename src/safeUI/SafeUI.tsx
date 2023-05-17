@@ -13,7 +13,7 @@ import { StyledButton } from './Styles/Styled';
 import React from 'react';
 // import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
-import { checkString, checkProfanities } from '../safeMessageDB/verifyString';
+import { checkString } from '../safeMessageDB/verifyString';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
