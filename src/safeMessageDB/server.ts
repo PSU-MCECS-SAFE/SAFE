@@ -11,7 +11,7 @@ import {
 import xss from 'xss';
 
 import { Code } from '../safeUtil/generateCode';
-import { checkString, checkProfanities } from './verifyString';
+import { checkString } from './verifyString';
 
 // Create a new Express app
 const app = express();
@@ -31,14 +31,10 @@ app.get('/getallmessages', async (req: Request, res: Response) => {
     const client = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve all messages
-    const result = await client.query(
-      'SELECT * FROM "Message";',
-    );
+    const result = await client.query('SELECT * FROM "Message";');
     //if no message return
     if (result.rows.length === 0) {
-      res
-        .status(404)
-        .json({ error: 'No message in database' });
+      res.status(404).json({ error: 'No message in database' });
     } else {
       //return all the message getting out
       res.status(200).json(result.rows);
@@ -73,7 +69,7 @@ app.delete('/deletemessage', async (req: Request, res: Response) => {
         .json({ error: 'No matching record found with provided code' });
     } else {
       // Send the message back to front-end
-      res.status(200).json("Message deleted!");
+      res.status(200).json('Message deleted!');
     }
     // Release the client connection back to the pool
     client.release();
@@ -206,19 +202,20 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s/-]/g, '');
   const time = new Date();
 
-  let ProfaneFlag = checkProfanities(message);
-  if (ProfaneFlag) {
+  let result: number | null = null;
+  try {
+    result = checkString(message);
+  } catch (e: any) {
     return res
       .status(205)
       .json({ error: 'Invalid message: message contains profanities' });
   }
-  const result = checkString(message);
-  let analysis_result;
+  let analysis_result: string | null = null;
   if (result < 0) {
     analysis_result = 'negative';
   } else if (result === 0) {
     analysis_result = 'neutral';
-  } else if (result >= 1) {
+  } else if (result > 0) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
@@ -252,11 +249,15 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     const mailArgs = [
       `-s "[SAFE FEEDBACK] - (${sanitizedTitle})"`,
       getConfigProp(sjp.rcvr_email, scp), //get email address from Config
-
     ];
     //send out email using spawn to create a child process in terminal
     const mail = spawn('mail', mailArgs);
-    mail.stdin.write(`This is a notification that you have received a message from SAFE at ${time}.\n\n\n` + `Subject: ${sanitizedTitle}\n\n` + "Message:\n" + sanitizedBody.message);
+    mail.stdin.write(
+      `This is a notification that you have received a message from SAFE at ${time}.\n\n\n` +
+        `Subject: ${sanitizedTitle}\n\n` +
+        'Message:\n' +
+        sanitizedBody.message
+    );
     mail.stdin.end();
 
     //status 200 to indicate success. This 'send' here can put different type of respond data
