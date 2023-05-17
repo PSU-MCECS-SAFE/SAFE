@@ -15,6 +15,7 @@ import { StyledSubmitButton } from './Styles/Styled';
 import React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import BannerBar from './Components/bannerBar';
+import HeaderText from './Components/headerText';
 
 /* Components to implement
  * 1) Welcome Message
@@ -147,17 +148,7 @@ function SafeUI() {
   return (
     <Box sx={{ backgroundColor: '#faf7e1', width: 'auto', height: 'auto' }}>
       <BannerBar />
-
-      <Typography mt={2} mb={3} variant="h3" align="center" gutterBottom>
-        Welcome to <b>SAFE</b>
-        <br />
-        PSU's CS Department Anonymous Feedback System
-      </Typography>
-
-      <Typography mt={2} mb={3} align="center">
-        Find out how we are committed to keeping your identity{' '}
-        <a href="./about.html">anonymous</a>!
-      </Typography>
+      <HeaderText />
 
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Grid container rowSpacing={2} spacing={2} justifyContent="center">
