@@ -30,5 +30,9 @@ Significantly, SAFE exudes a user-centric approach by relieving students from th
       - make sure you're connected to VPN
       - make sure code is in public_html folder
 
+## Documentation (Will update when its finalize)
+   - SAFE Project Document
+   - SAFE Technical Document
+
 ## License Information
 The SAFE Project is currently licensed under the MIT license.
