@@ -8,6 +8,7 @@ It offers an invaluable method for students to provide honest feedback, shedding
 Significantly, SAFE exudes a user-centric approach by relieving students from the obligation to log in or create an account, thereby guaranteeing the utmost protection of their privacy as no identifying information is stored.
 
 ## Configuration
+   - This branch setup is only for developing purposes, there are slightly difference setups between `main`(deploy to SAFE domain) and this branch.
    - To connect to the database and test the backend code, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
 
 ## Compile Instruction
