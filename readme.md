@@ -12,17 +12,25 @@ Significantly, SAFE exudes a user-centric approach by relieving students from th
 
 ## Compile Instruction
 1. Log in your `ssh username@rita.cecs.pdx.edu` PSU Linux system, go public_html folder
-      - *** reason why we use rita not ada or something else? ***
-      - *** reason why we try to deploy code in public_html not web_deb? ***
+      - Why use `rita` not `ada` or `ruby`?
+         We use the `rita` IP address to fetch requests for student developers to test the website on their PSU personal websites. Alternatively, you can use `ada`, but you'll need the corresponding IP address. Unfortunately, `ruby` doesn't have an available IP address for student use.
+      - Why we use public_html not dev_html?
+         We need to use HTTP instead of HTTPS because the dev_html URL will always auto-correct to HTTPS.
 2. Clone the repository and `git checkout` to MVP branch 
-3. Run `npm run psu_deploy`, choose option 1 in the menu, and fill out the database login information. 
-      - *** what is this command line? what it will do? brief describe and refer to issue that Alex wrote ***
-      - Hit Option 0 when the script is done.
+3. Run `npm run psu_deploy`
+      - Choose option 1 in the menu, and fill out the database login information. 
+      - Choose Option 0 when the script is done.
+      - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. Please refer to issue#27
 4. Run `node JSoutFile/safeMessageDB/server.js`
-      - *** explain what is this and what this will do? ***
+      - This command line will start the REST server, allowing the server to listen to the assigned IP.
+5. Open your PSU personal website of build folder to test SAFE
+      - https://web.cecs.pdx.edu/~username/SAFE/build
+      - [reference](https://cat.pdx.edu/services/web/account-websites/) of your PSU web pages
 
-   Common error when compiling or deploying code
-      - 
+   Common errors when compiling or deploying code
+      - make sure you're at HTTP instead of HTTPS 
+      - make sure you're connected to VPN
+      - make sure code is in public_html folder
 
 ## License Information
 The SAFE Project is currently licensed under the MIT license.
