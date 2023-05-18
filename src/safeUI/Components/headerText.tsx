@@ -19,7 +19,7 @@ function HeaderText() {
         variant="h3"
         align="center"
         gutterBottom
-        sx={{ fontSize: { xs: 20, sm: 25, md: 30 } }}
+        sx={{ fontSize: { xs: 18, sm: 25, md: 30, lg: 40 } }}
       >
         Welcome to <b>SAFE</b>
         <br />
