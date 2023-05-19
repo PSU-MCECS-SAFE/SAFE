@@ -7,6 +7,10 @@ It offers an invaluable method for students to provide honest feedback, shedding
 
 Significantly, SAFE exudes a user-centric approach by relieving students from the obligation to log in or create an account, thereby guaranteeing the utmost protection of their privacy as no identifying information is stored.
 
+## Feature
+Allow students to submit anonymous feedback to the chair of the Portland State University Computer Science department. 
+For more implementation details, please refer to the SAFE Technical Document.
+
 ## Configuration
    - This branch setup is only for developing purposes, there are slightly difference setups between `main`(deploy to SAFE domain) and this branch.
    - To connect to the database and test the backend code, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
@@ -17,7 +21,7 @@ Significantly, SAFE exudes a user-centric approach by relieving students from th
       - Why we use public_html not dev_html? - We need to use HTTP instead of HTTPS because the dev_html URL will always auto-correct to HTTPS.
 2. Clone the repository and `git checkout MVP` to MVP branch 
 3. Run `npm run psu_deploy`
-      - Choose option 1 in the menu, and fill out the database login information. 
+      - Choose Pption 1 in the menu, and fill out the database login information. 
       - Choose Option 0 when the script is done.
       - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
 4. Run `node JSoutFile/safeMessageDB/server.js`
