@@ -1,6 +1,6 @@
 import { Box, Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { StyledSubmitButton } from '../Styles/Styled';
+import { StyledSubmitButton } from '../../Styles/Styled';
 
 /* the submit button for the Form component.
  */

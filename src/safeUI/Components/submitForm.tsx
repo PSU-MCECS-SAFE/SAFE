@@ -1,22 +1,12 @@
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useState } from 'react';
-import { StyledSubmitButton } from '../Styles/Styled';
-import SubjectField from './subjectField';
+import SubjectField from './Form Components/subjectField';
 import SubmitError from './submitError';
 import SubmitSuccess from './submitSuccess';
 import TitleNine from './titleNine';
-import ToField from './toField';
-import MessageField from './messageField';
-import SubmitButton from './submitButton';
+import ToField from './Form Components/toField';
+import MessageField from './Form Components/messageField';
+import SubmitButton from './Form Components/submitButton';
 
 const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 100;
