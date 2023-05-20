@@ -70,7 +70,7 @@ h1.safeheader{
     transform: scale(1);
   }
 }
- 
+ /*The span tag below can be wrapped around any element in the html file to create the blurring animation effect. The nth children code is supporting this animation.*/
 span {
     display: inline-block;
     opacity: 0;
