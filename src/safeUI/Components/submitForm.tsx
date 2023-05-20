@@ -1,20 +1,29 @@
-import { Grid } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import SubjectField from "./Form Components/subjectField";
-import SubmitError from "./submitError";
-import SubmitSuccess from "./submitSuccess";
-import TitleNine from "./titleNine";
-import ToField from "./Form Components/toField";
-import MessageField from "./Form Components/messageField";
-import SubmitButton from "./Form Components/submitButton";
+import { Grid } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import SubjectField from './Form Components/subjectField';
+import SubmitError from './Form Components/submitError';
+import SubmitSuccess from './Form Components/submitSuccess';
+import TitleNine from './Form Components/titleNine';
+import ToField from './Form Components/toField';
+import MessageField from './Form Components/messageField';
+import SubmitButton from './Form Components/submitButton';
 import {
   handleMessageChange,
   handleSubjectChange,
   handleCloseSuccessSent,
-} from "./eventHandler";
+} from './eventHandler';
 
 /* Main form components packaged here and sent to SafeUI.
  * Contains some event functions and calls to the other form components.
+ *
+ * SubmitForm wraps 7 smaller components -
+ * ToField, SubjectField, MessageField,
+ * SubmitError, SubmitSuccess, TitleNine
+ * and SubmitButton
+ *
+ * Consider combining Submit success/error into single function
+ * and breaking up handleSubmit to reduce file length and
+ * improve readability.
  */
 
 const MAX_CHARACTERS = 7500;
@@ -23,9 +32,9 @@ const MAX_Subject_CHARACTERS = 100;
 function SubmitForm() {
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
-  const [to, setTo] = useState("PSU CS Department");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [to, setTo] = useState('PSU CS Department');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
   const [toError, setToError] = useState(false);
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
@@ -40,11 +49,6 @@ function SubmitForm() {
       window.location.reload();
     }
   }, [shouldReload]);
-
-  // const handleCloseSuccessSent = () => {
-  //   setOpenSuccess(false);
-  //   window.location.reload(); // Refresh the page
-  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,9 +72,9 @@ function SubmitForm() {
       // param: request method, header, body
       const port = 3001;
       fetch(`http://131.252.208.28:${port}/addMessage`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         //make the body from JavaScript object to be JSON object
         body: JSON.stringify({
@@ -89,7 +93,7 @@ function SubmitForm() {
         //out from the Post request
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error('Network response was not ok');
           } else {
             setOpenSuccess(true);
           }
@@ -97,7 +101,7 @@ function SubmitForm() {
         //catch any error, this can be specify later to catch some particular error
         //and respond the correct message instead of a general message like this
         .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
+          console.error('There was a problem with the fetch operation:', error);
           handleOpenError();
         });
     }
@@ -105,7 +109,7 @@ function SubmitForm() {
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const formEvent = new Event("submit", {
+    const formEvent = new Event('submit', {
       bubbles: true,
     }) as unknown as React.FormEvent<HTMLFormElement>;
     handleSubmit(formEvent);
@@ -116,10 +120,8 @@ function SubmitForm() {
   return (
     <form noValidate autoComplete="off" onSubmit={handleSubmit}>
       <Grid container rowSpacing={2} spacing={2} justifyContent="center">
-        {/* ToField Component */}
         <ToField onChange={(e) => setTo(e.target.value)} error={toError} />
 
-        {/* SubjectField Component  */}
         <SubjectField
           onChange={(event) =>
             handleSubjectChange(event, setSubject, setSubjectCharCount)

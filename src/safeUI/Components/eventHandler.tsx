@@ -1,4 +1,5 @@
-/* Event functions for the different components
+/* Event functions for the different components to be
+ * referenced in submitForm.tsx
  */
 
 export const handleMessageChange = (
@@ -29,6 +30,5 @@ export const handleSubjectChange = (
 
 export const handleCloseSuccessSent = (setOpenSuccess, setShouldReload) => {
   setOpenSuccess(false);
-  //window.location.reload(); // Refresh the page
   setShouldReload(true);
 };
