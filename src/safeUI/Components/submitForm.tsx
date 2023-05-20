@@ -15,6 +15,8 @@ import SubmitError from './submitError';
 import SubmitSuccess from './submitSuccess';
 import TitleNine from './titleNine';
 import ToField from './toField';
+import MessageField from './messageField';
+import SubmitButton from './submitButton';
 
 const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 100;
@@ -138,48 +140,24 @@ function SubmitForm() {
           subCharCount={subjectCharacterCount}
         />
 
-        {/* ###################################################################### */}
+        <MessageField
+          onChange={handleMessageChange}
+          error={messageError}
+          maxCharCount={MAX_CHARACTERS }
+          charCount={characterCount}
+        />
 
-        {/* MessageField Component */}
         <Grid item xs={8}>
-          <TextField
-            hiddenLabel
-            id="filled-hidden-label-normal"
-            placeholder="Enter Message"
-            variant="outlined"
-            multiline
-            rows={7}
-            fullWidth
-            autoComplete="off"
-            spellCheck="false"
-            onChange={handleMessageChange}
-            error={messageError}
-            // helperText={helperText}
-            inputProps={{ maxLength: MAX_CHARACTERS }}
-          />
-
-          <Grid container justifyContent="flex-end">
-            <Typography mt={2} mb={3} gutterBottom>
-              {characterCount} / 7500
-            </Typography>
-          </Grid>
-
           <TitleNine />
-          {/* SubmitButton Component  */}
-          <Box textAlign="center">
-            <StyledSubmitButton
-              variant="contained"
-              type="submit"
-              disabled={isSubmitDisabled}
-              onClick={handleButtonClick}
-            >
-              Submit
-            </StyledSubmitButton>
-          </Box>
-
-          <SubmitError open={openError} onClose={handleCloseError} />
-          <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} />
         </Grid>
+
+        <SubmitButton 
+          disabled={isSubmitDisabled}
+          onClick={handleButtonClick}
+        />   
+        
+        <SubmitError open={openError} onClose={handleCloseError} />
+        <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} /> 
       </Grid>
     </form>
   );
