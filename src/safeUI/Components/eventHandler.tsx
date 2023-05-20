@@ -1,4 +1,4 @@
-/* Event functions for the different components 
+/* Event functions for the different components
  */
 
 export const handleMessageChange = (
@@ -27,7 +27,8 @@ export const handleSubjectChange = (
   }
 };
 
-export const handleCloseSuccessSent = (setOpenSuccess) => {
+export const handleCloseSuccessSent = (setOpenSuccess, setShouldReload) => {
   setOpenSuccess(false);
-  window.location.reload(); // Refresh the page
+  //window.location.reload(); // Refresh the page
+  setShouldReload(true);
 };

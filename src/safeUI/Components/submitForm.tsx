@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SubjectField from "./Form Components/subjectField";
 import SubmitError from "./submitError";
 import SubmitSuccess from "./submitSuccess";
@@ -31,30 +31,19 @@ function SubmitForm() {
   const [messageError, setMessageError] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
+  const [shouldReload, setShouldReload] = useState(false);
   const handleOpenError = () => setOpenError(true);
   const handleCloseError = () => setOpenError(false);
 
-  const handleCloseSuccessSent = () => {
-    setOpenSuccess(false);
-    window.location.reload(); // Refresh the page
-  };
+  useEffect(() => {
+    if (shouldReload) {
+      window.location.reload();
+    }
+  }, [shouldReload]);
 
-  // const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   const newMessage = e.target.value;
-  //   const newCharacterCount = newMessage.length;
-  //   if (newCharacterCount <= 7500) {
-  //     setMessage(newMessage);
-  //     setCharCount(newCharacterCount);
-  //   }
-  // };
-
-  // const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   const newSubject = e.target.value;
-  //   const newCharacterCount = newSubject.length;
-  //   if (newCharacterCount <= 100) {
-  //     setSubject(newSubject);
-  //     setSubjectCharCount(newCharacterCount);
-  //   }
+  // const handleCloseSuccessSent = () => {
+  //   setOpenSuccess(false);
+  //   window.location.reload(); // Refresh the page
   // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -151,7 +140,10 @@ function SubmitForm() {
         <TitleNine />
         <SubmitButton disabled={isSubmitDisabled} onClick={handleButtonClick} />
         <SubmitError open={openError} onClose={handleCloseError} />
-        <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} />
+        <SubmitSuccess
+          open={openSuccess}
+          onClose={() => handleCloseSuccessSent(setSubject, setShouldReload)}
+        />
       </Grid>
     </form>
   );
