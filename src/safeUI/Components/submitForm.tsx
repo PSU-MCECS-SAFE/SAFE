@@ -1,12 +1,17 @@
-import { Grid } from '@mui/material';
-import React, { useState } from 'react';
-import SubjectField from './Form Components/subjectField';
-import SubmitError from './submitError';
-import SubmitSuccess from './submitSuccess';
-import TitleNine from './titleNine';
-import ToField from './Form Components/toField';
-import MessageField from './Form Components/messageField';
-import SubmitButton from './Form Components/submitButton';
+import { Grid } from "@mui/material";
+import React, { useState } from "react";
+import SubjectField from "./Form Components/subjectField";
+import SubmitError from "./submitError";
+import SubmitSuccess from "./submitSuccess";
+import TitleNine from "./titleNine";
+import ToField from "./Form Components/toField";
+import MessageField from "./Form Components/messageField";
+import SubmitButton from "./Form Components/submitButton";
+import {
+  handleMessageChange,
+  handleSubjectChange,
+  handleCloseSuccessSent,
+} from "./eventHandler";
 
 const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 100;
@@ -14,13 +19,12 @@ const MAX_Subject_CHARACTERS = 100;
 function SubmitForm() {
   const [characterCount, setCharCount] = useState(0);
   const [subjectCharacterCount, setSubjectCharCount] = useState(0);
-  const [to, setTo] = useState('PSU CS Department');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+  const [to, setTo] = useState("PSU CS Department");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [toError, setToError] = useState(false);
   const [subjectError, setSubjectError] = useState(false);
   const [messageError, setMessageError] = useState(false);
-  //   const [helperText, setHelperText] = useState('');
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const handleOpenError = () => setOpenError(true);
@@ -31,23 +35,23 @@ function SubmitForm() {
     window.location.reload(); // Refresh the page
   };
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newMessage = e.target.value;
-    const newCharacterCount = newMessage.length;
-    if (newCharacterCount <= 7500) {
-      setMessage(newMessage);
-      setCharCount(newCharacterCount);
-    }
-  };
+  // const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   const newMessage = e.target.value;
+  //   const newCharacterCount = newMessage.length;
+  //   if (newCharacterCount <= 7500) {
+  //     setMessage(newMessage);
+  //     setCharCount(newCharacterCount);
+  //   }
+  // };
 
-  const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newSubject = e.target.value;
-    const newCharacterCount = newSubject.length;
-    if (newCharacterCount <= 100) {
-      setSubject(newSubject);
-      setSubjectCharCount(newCharacterCount);
-    }
-  };
+  // const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   const newSubject = e.target.value;
+  //   const newCharacterCount = newSubject.length;
+  //   if (newCharacterCount <= 100) {
+  //     setSubject(newSubject);
+  //     setSubjectCharCount(newCharacterCount);
+  //   }
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +61,7 @@ function SubmitForm() {
 
     if (to && subject && message) {
       /**
-       * This is how to call the getMessage from atabase
+       * This is how to call the getMessage from database
        */
 
       // fetch('http://localhost:3001/message')
@@ -71,9 +75,9 @@ function SubmitForm() {
       // param: request method, header, body
       const port = 3001;
       fetch(`http://131.252.208.28:${port}/addMessage`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         //make the body from JavaScript object to be JSON object
         body: JSON.stringify({
@@ -92,15 +96,15 @@ function SubmitForm() {
         //out from the Post request
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error("Network response was not ok");
           } else {
             setOpenSuccess(true);
           }
         })
-        //catch any error, this can be spicify later to catch some paticular error
-        //and respond the correct message instead of a genearal message like this
+        //catch any error, this can be specify later to catch some particular error
+        //and respond the correct message instead of a general message like this
         .catch((error) => {
-          console.error('There was a problem with the fetch operation:', error);
+          console.error("There was a problem with the fetch operation:", error);
           handleOpenError();
         });
     }
@@ -108,7 +112,7 @@ function SubmitForm() {
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const formEvent = new Event('submit', {
+    const formEvent = new Event("submit", {
       bubbles: true,
     }) as unknown as React.FormEvent<HTMLFormElement>;
     handleSubmit(formEvent);
@@ -124,16 +128,20 @@ function SubmitForm() {
 
         {/* SubjectField Component  */}
         <SubjectField
-          onChange={handleSubjectChange}
+          onChange={(event) =>
+            handleSubjectChange(event, setSubject, setSubjectCharCount)
+          }
           error={subjectError}
           maxCharCount={MAX_Subject_CHARACTERS}
           subCharCount={subjectCharacterCount}
         />
 
         <MessageField
-          onChange={handleMessageChange}
+          onChange={(event) =>
+            handleMessageChange(event, setMessage, setCharCount)
+          }
           error={messageError}
-          maxCharCount={MAX_CHARACTERS }
+          maxCharCount={MAX_CHARACTERS}
           charCount={characterCount}
         />
 
@@ -141,13 +149,10 @@ function SubmitForm() {
           <TitleNine />
         </Grid>
 
-        <SubmitButton 
-          disabled={isSubmitDisabled}
-          onClick={handleButtonClick}
-        />   
-        
+        <SubmitButton disabled={isSubmitDisabled} onClick={handleButtonClick} />
+
         <SubmitError open={openError} onClose={handleCloseError} />
-        <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} /> 
+        <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} />
       </Grid>
     </form>
   );
