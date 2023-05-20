@@ -125,59 +125,10 @@ function SubmitForm() {
   return (
     <form noValidate autoComplete="off" onSubmit={handleSubmit}>
       <Grid container rowSpacing={2} spacing={2} justifyContent="center">
-        {/* ###################################################################### */}
         {/* ToField Component */}
-        {/* <Grid item xs={8}>
-          <TextField
-            id="label"
-            variant="standard"
-            label="To:"
-            value="Portland State University - Computer Science Department"
-            disabled={true} // If prop isn't disabled, text from 'To:' box can be removed.
-            // Even though static value remains, text is technically removed
-            // preventing submission of button. Text can be further inserted,
-            // leaving unneccessary input access to users
-            // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-            //autoComplete=''       Future improvement: Have list of receivers here,
-            //                      Could be expanded if SAFE is used by multiple departments
-            fullWidth
-            //required
-            // Bold text for disabled component
-            sx={{
-              '& .MuiInputBase-input.Mui-disabled': {
-                WebkitTextFillColor: '#000000',
-              },
-            }}
-            onChange={(e) => setTo(e.target.value)}
-            error={toError}
-            // helperText={helperText}
-          />
-        </Grid> */}
-        {/* ###################################################################### */}
         <ToField onChange={(e) => setTo(e.target.value)} error={toError} />
 
-        {/* ###################################################################### */}
         {/* SubjectField Component  */}
-        {/* <Grid item xs={8}>
-          <TextField
-            id="label"
-            variant="standard"
-            label="Subject:"
-            placeholder="Briefly describe your feedback (course feedback, suggestions for improvement...)"
-            fullWidth
-            onChange={handleSubjectChange}
-            error={subjectError}
-            // helperText={helperText}
-            inputProps={{ maxLength: MAX_Subject_CHARACTERS }}
-          />
-
-          <Grid container justifyContent="flex-end">
-            <Typography mt={2} mb={3} gutterBottom>
-              {subjectCharacterCount} / 100
-            </Typography>
-          </Grid>
-        </Grid> */}
-
         <SubjectField
           onChange={handleSubjectChange}
           error={subjectError}

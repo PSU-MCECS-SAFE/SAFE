@@ -1,6 +1,16 @@
 import { Grid, TextField } from '@mui/material';
 import React from 'react';
 
+/* ToField section for Form component
+ * If prop isn't disabled, text from 'To:' field can be removed.
+ * Even though static value remains, text is technically removed
+ * preventing submission of button. Text can be further inserted,
+ * leaving unneccessary input access.
+ *
+ * Future improvement: Have list of receivers under "autoComplete"
+ * textfield prop. This could be expanded if used by multiple depts.
+ */
+
 function ToField({ onChange, error }) {
   return (
     <Grid item xs={8}>

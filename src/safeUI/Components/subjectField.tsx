@@ -1,6 +1,12 @@
 import { Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
 
+/* Subject Field section for Form component
+ * Displays placeholder text when page initially
+ * visited. References handler functions in form
+ * component. Consider including them here.
+ */
+
 function SubjectField({ onChange, error, maxCharCount, subCharCount }) {
   return (
     <Grid item xs={8}>

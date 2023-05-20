@@ -19,13 +19,6 @@ import HeaderText from './Components/headerText';
 import TitleNine from './Components/titleNine';
 import SubmitForm from './Components/submitForm';
 
-/* Components to implement
- * 1) Welcome Message
- * 2) Receiver Name
- * 3) Subject Line
- * 4) Message Box (2000(+?) input limit)
- * 5) Submit Button
- */
 // const MAX_CHARACTERS = 7500;
 // const MAX_Subject_CHARACTERS = 100;
 function SafeUI() {
