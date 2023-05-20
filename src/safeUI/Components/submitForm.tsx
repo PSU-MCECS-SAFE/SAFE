@@ -13,6 +13,9 @@ import {
   handleCloseSuccessSent,
 } from "./eventHandler";
 
+/* Main form components packaged here and sent to SafeUI
+ */
+
 const MAX_CHARACTERS = 7500;
 const MAX_Subject_CHARACTERS = 100;
 

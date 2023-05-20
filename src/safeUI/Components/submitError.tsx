@@ -6,6 +6,8 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+/* Pop out modal telling sender that their message was not sent
+ */
 function SubmitError({ open, onClose }) {
   return (
     <Dialog

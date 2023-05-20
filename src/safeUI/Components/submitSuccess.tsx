@@ -6,6 +6,9 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+/* Pop out modal telling sender that their message was sent
+ */
+
 function SubmitSuccess({ open, onClose }) {
   return (
     <Dialog

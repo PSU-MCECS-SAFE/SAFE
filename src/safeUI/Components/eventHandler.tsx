@@ -1,3 +1,6 @@
+/* Event functions for the different components 
+ */
+
 export const handleMessageChange = (
   e: React.ChangeEvent<HTMLTextAreaElement>,
   setMessage,

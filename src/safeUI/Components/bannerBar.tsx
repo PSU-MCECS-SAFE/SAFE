@@ -1,6 +1,10 @@
 import { Box } from '@mui/material';
 import React from 'react';
 
+/* Banner bar located at the top of the page
+ * contains psu logo
+ */
+
 function BannerBar() {
   return (
     <Box

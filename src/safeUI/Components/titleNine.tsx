@@ -1,11 +1,14 @@
 import { Link, Typography, Box, Grid } from '@mui/material';
 import React from 'react';
 
+/* Basic warning telling users that this site is not to report Title IX violations 
+ */
+
 function TitleNine() {
   return (
     <Grid item xs={8}>
     <div>
-      <Typography variant="subtitle2" mt={4} mb={3} align="center">
+      <Typography variant="subtitle2" m={1} align="center">
         This site should not be used to report{' '}
         <Link href="https://www.pdx.edu/diversity/title-ix">Title IX</Link>{' '}
         violations, including{' '}
