@@ -11,6 +11,8 @@ import {
 import React, { useState } from 'react';
 import { StyledSubmitButton } from '../Styles/Styled';
 import SubjectField from './subjectField';
+import SubmitError from './submitError';
+import SubmitSuccess from './submitSuccess';
 import TitleNine from './titleNine';
 import ToField from './toField';
 
@@ -175,36 +177,8 @@ function SubmitForm() {
             </StyledSubmitButton>
           </Box>
 
-          {/* SubmitError Component  */}
-          <Dialog
-            open={openError}
-            onClose={handleCloseError}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle id="responsive-dialog-title">Error</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                There was an error while submitting your feedback. Please try
-                again later.
-              </DialogContentText>
-            </DialogContent>
-          </Dialog>
-
-          {/* SubmitSuccess Component  */}
-          <Dialog
-            open={openSuccess}
-            onClose={handleCloseSuccessSent}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle id="responsive-dialog-title">
-              Thank you for your feedback!
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Your feedback successfully sent to PSU's CS Department!
-              </DialogContentText>
-            </DialogContent>
-          </Dialog>
+          <SubmitError open={openError} onClose={handleCloseError} />
+          <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} />
         </Grid>
       </Grid>
     </form>
