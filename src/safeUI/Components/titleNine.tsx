@@ -1,8 +1,9 @@
-import { Link, Typography } from '@mui/material';
+import { Link, Typography, Box, Grid } from '@mui/material';
 import React from 'react';
 
 function TitleNine() {
   return (
+    <Grid item xs={8}>
     <div>
       <Typography variant="subtitle2" mt={4} mb={3} align="center">
         This site should not be used to report{' '}
@@ -23,6 +24,7 @@ function TitleNine() {
         also provides a confidential reporting option for the PSU community.
       </Typography>
     </div>
+    </Grid>
   );
 }
 

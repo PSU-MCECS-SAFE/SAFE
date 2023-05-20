@@ -144,13 +144,8 @@ function SubmitForm() {
           maxCharCount={MAX_CHARACTERS}
           charCount={characterCount}
         />
-
-        <Grid item xs={8}>
-          <TitleNine />
-        </Grid>
-
+        <TitleNine />
         <SubmitButton disabled={isSubmitDisabled} onClick={handleButtonClick} />
-
         <SubmitError open={openError} onClose={handleCloseError} />
         <SubmitSuccess open={openSuccess} onClose={handleCloseSuccessSent} />
       </Grid>
