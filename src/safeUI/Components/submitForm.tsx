@@ -57,26 +57,14 @@ function SubmitForm() {
     setMessageError(false);
 
     if (to && subject && message) {
-      /**
-       * This is how to call the getMessage from database
-       */
-
-      // fetch('http://localhost:3001/message')
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     console.log(data);
-      //   })
-      //   .catch(error => console.error(error))
-
-      // fetch data from API endpoint
-      // param: request method, header, body
+      // send POST request to 'addMessage' route
       const port = 3001;
       fetch(`http://131.252.208.28:${port}/addMessage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        //make the body from JavaScript object to be JSON object
+        //JSON payload in the request body that contains data
         body: JSON.stringify({
           title: subject,
           receiver_name: to,
@@ -88,9 +76,6 @@ function SubmitForm() {
           message_reply: null,
         }),
       })
-        //response from fetch
-        //response has different types of data that got carry
-        //out from the Post request
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -98,8 +83,6 @@ function SubmitForm() {
             setOpenSuccess(true);
           }
         })
-        //catch any error, this can be specify later to catch some particular error
-        //and respond the correct message instead of a general message like this
         .catch((error) => {
           console.error('There was a problem with the fetch operation:', error);
           handleOpenError();
@@ -118,8 +101,8 @@ function SubmitForm() {
   const isSubmitDisabled = !to || !subject || !message;
 
   return (
-    <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-      <Grid container rowSpacing={2} spacing={2} justifyContent="center">
+    <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+      <Grid container rowSpacing={2} spacing={2} justifyContent='center'>
         <ToField onChange={(e) => setTo(e.target.value)} error={toError} />
 
         <SubjectField
