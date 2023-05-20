@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import React from 'react';
 
-/* SAFE title for the sender page
+/* SAFE title for the sender page. Will render right under the banner bar
  */
 
 function HeaderText() {

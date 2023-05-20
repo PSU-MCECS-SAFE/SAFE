@@ -1,4 +1,4 @@
-import { Link, Typography, Box, Grid } from '@mui/material';
+import { Link, Typography, Grid } from '@mui/material';
 import React from 'react';
 
 /* Basic warning telling users that this site is not to report Title IX violations 

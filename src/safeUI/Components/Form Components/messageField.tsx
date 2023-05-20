@@ -1,6 +1,5 @@
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { StyledSubmitButton } from '../../Styles/Styled';
 
 /* Message Field section for Form component.
  * Displays placeholder text when page initially visited.
