@@ -12,24 +12,26 @@ Allow students to submit anonymous feedback to the chair of the Portland State U
 For more implementation details, please refer to the SAFE Technical Document.
 
 ## Configuration
-   - This branch setup is only for developing purposes, there are slightly difference setups between `main`(deploy to SAFE domain) and this branch.
+   - *****This MVP branch setup is exclusively for development purposes. By compiling this branch, you can test and develop it on your own PSU web page.**
    - To connect to the database and test the backend code, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
 
 ## Compile Instruction
 1. Log in your `ssh username@rita.cecs.pdx.edu` in PSU Linux system, go to public_html folder
       - Why use `rita` not `ada` or `ruby`? - We use the `rita` IP address to fetch requests for student developers to test the website on their PSU personal websites. Alternatively, you can use `ada`, but you'll need the corresponding IP address. Unfortunately, `ruby` doesn't have an available IP address for student use.
       - Why we use public_html not dev_html? - We need to use HTTP instead of HTTPS because the dev_html URL will always auto-correct to HTTPS.
-2. Clone the repository and `git checkout MVP` to MVP branch 
-3. Run `npm run psu_deploy`
+2. Clone the repository and switch to the MVP branch 
+      - `git clone https://github.com/PSU-MCECS-SAFE/SAFE.git` 
+      - `git checkout MVP`
+4. Run `npm run psu_deploy`
       - Option 1 in the menu will run automatically run if the script detects that it is missing `safeConfig.json`
       - Fill out the database login information and receiver email address.
       - Choose Option 0 when the script is done.
       - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
-4. Run `node JSoutFile/safeMessageDB/server.js`
+5. Run `node JSoutFile/safeMessageDB/server.js`
       - This command line will start the REST server, allowing the server to listen to the assigned IP.
-5. Open your PSU personal website of build folder and **you're in SAFE now!**
+6. Open your PSU personal website of build folder and **you're in SAFE now!**
       - https://web.cecs.pdx.edu/~username/SAFE/build
-      - [reference](https://cat.pdx.edu/services/web/account-websites/) of your PSU web pages
+      - [Reference](https://cat.pdx.edu/services/web/account-websites/) of your PSU web pages
 
    Common errors when compiling or deploying code
       - make sure you're at HTTP instead of HTTPS 
