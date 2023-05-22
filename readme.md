@@ -13,7 +13,7 @@ For more implementation details, please refer to the SAFE Technical Document.
 
 ## Configuration
    - This branch is the branch that we will deploy to SAFE domain.
-   - To connect to the VM, you will need SSH key in the VM, connect with the CAT to do it.
+   - To connect to the VM, you will need your computer's SSH key in the VM, connect with the CAT to do it.
    - To connect to the VM, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
 
 ## Compile Instruction
@@ -23,11 +23,12 @@ For more implementation details, please refer to the SAFE Technical Document.
       - Choose Option 1 in the menu, and fill out the database login information. 
       - Choose Option 0 when the script is done.
       - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
-4. Run `pm2 list`
+4. Copy everything in **build** folder to **SAFEdeploy** This is because **SAFEdeploy** is the domain of feedback.cs.pdx.edu.
+5. Run `pm2 list`
       - This will list out all pm2 process we have.
       - run `pm2 delete id/name` to delete all of the old pm2 process since we now need to kick start the newer version of the server.
-5. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
-6. Open SAFE website and all set.
+6. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
+7. Open SAFE website and all set.
       - [SAFE](https://feedback.cs.pdx.edu/)
 
    Common errors when compiling or deploying code
