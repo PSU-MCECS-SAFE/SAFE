@@ -24,11 +24,12 @@ For more implementation details, please refer to the SAFE Technical Document.
       - Choose Option 1 in the menu, and fill out the database login information. 
       - Choose Option 0 when the script is done.
       - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
-4. Run `node JSoutFile/safeMessageDB/server.js`
-      - This command line will start the REST server, allowing the server to listen to the assigned IP.
-5. Open your PSU personal website of build folder and **you're in SAFE now!**
-      - https://web.cecs.pdx.edu/~username/SAFE/build
-      - [reference](https://cat.pdx.edu/services/web/account-websites/) of your PSU web pages
+4. Run `pm2 list`
+      - This will list out all pm2 process we have.
+      - run `pm2 delete id/name` to delete all of the old pm2 process since we now need to kick start the newer version of the server
+5. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name
+6. Open SAFE website and all set
+      - [SAFE](https://feedback.cs.pdx.edu/)
 
    Common errors when compiling or deploying code
       - make sure you're at HTTP instead of HTTPS 
