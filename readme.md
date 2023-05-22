@@ -27,7 +27,8 @@ For more implementation details, please refer to the SAFE Technical Document.
       - Choose Option 0 when the script is done.
       - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
 5. Copy everything in **build** folder to **SAFEdeploy** 
-      - `cp -r /path/to/source_directory/* /path/to/destination_directory/`
+      - make sure you are in root folder of feedback_web. To ensure this, do `pwd' and you should see `/u/feedback_web` as output.
+      - Then do cp `-r /public_html/SAFE/build/* /SAFEdeploy/`.
       - This is because **SAFEdeploy** is the domain of feedback.cs.pdx.edu.
 7. Run `pm2 list`
       - This will list out all pm2 process we have.
