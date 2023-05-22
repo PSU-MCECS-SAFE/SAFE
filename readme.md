@@ -21,22 +21,22 @@ For more implementation details, please refer to the SAFE Technical Document.
 2. Clone the repository and switch to the main branch 
       - `git clone https://github.com/PSU-MCECS-SAFE/SAFE.git`
       - `git checkout main`
-4. Run `npm run psu_deploy`
+3. Run `npm run psu_deploy`
       - Option 1 in the menu will run automatically run if the script detects that it is missing `safeConfig.json`
       - Fill out the database login information and receiver email address.
       - Choose Option 0 when the script is done.
       - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
-5. Copy everything in **build** folder to **SAFEdeploy** 
+4. Copy everything in **build** folder to **SAFEdeploy** 
       - make sure you are in root folder of feedback_web. To ensure this, do `pwd' and you should see `/u/feedback_web` as output.
       - Then do cp `-r /public_html/SAFE/build/* /SAFEdeploy/`.
       - This is because **SAFEdeploy** is the domain of feedback.cs.pdx.edu.
-7. Run `pm2 list`
+5. Run `pm2 list`
       - This will list out all pm2 process we have.
       - run `pm2 delete id/name` to delete all of the old pm2 process since we now need to kick start the newer version of the server.
-8. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
-9. Open SAFE website and test it out, you are all set.
+6. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
+7. Open SAFE website and test it out, you are all set.
       - [SAFE](https://feedback.cs.pdx.edu/)
-10. to stop the server, do `pm2 stop NameOfTheServer/idOfTheProcess`
+8. to stop the server, do `pm2 stop NameOfTheServer/idOfTheProcess`
 
 
    Common errors when compiling or deploying code
