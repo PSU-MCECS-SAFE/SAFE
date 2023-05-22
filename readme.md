@@ -28,7 +28,7 @@ For more implementation details, please refer to the SAFE Technical Document.
       - This will list out all pm2 process we have.
       - run `pm2 delete id/name` to delete all of the old pm2 process since we now need to kick start the newer version of the server.
 6. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
-7. Open SAFE website and all set.
+7. Open SAFE website and test it out, you are all set.
       - [SAFE](https://feedback.cs.pdx.edu/)
 
    Common errors when compiling or deploying code
