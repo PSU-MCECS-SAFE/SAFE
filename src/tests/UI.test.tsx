@@ -25,7 +25,14 @@ test('renders the welcome message and subtitle', () => {
   );
   // Check if the subtitle is rendered with correct content
   expect(
-    screen.queryByText(/Find out how we are committed to keeping your identity/i)
+    screen.getByText(/Find out how we are committed to keeping your identity/i)
+  ).toBeInTheDocument();
+});
+
+test('check for title nine warning', () => {
+  render(<SafeUI />);
+  expect(
+    screen.getByText(/This site should not be used to report/i)
   ).toBeInTheDocument();
 });
 
@@ -66,18 +73,3 @@ test('displays character count of the subject', () => {
   });
   expect(screen.getByText(/14 \/ 100/i)).toBeInTheDocument();
 });
-
-
-/* test('displays character count of subject and message', () => {
-  render(<SafeUI />);
-  const messageInput = screen.getByPlaceholderText(/Enter Message/i);
-  const subjectInput = screen.getByLabelText(/Subject:/i);
-  fireEvent.change(messageInput, {
-    target: { value: 'This is a test message' }
-  });
-  fireEvent.change(subjectInput, {
-    target: { value: 'This is a test' }
-  });
-  expect(screen.getByText(/14 \/ 250/i)).toBeInTheDocument();
-  expect(screen.getByText(/22 \/ 7500/i)).toBeInTheDocument();
-}); */
