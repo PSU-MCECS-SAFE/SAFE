@@ -36,7 +36,8 @@ For more implementation details, please refer to the SAFE Technical Document.
 8. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
 9. Open SAFE website and test it out, you are all set.
       - [SAFE](https://feedback.cs.pdx.edu/)
-10. to stop the server, do `pm2 stop NameOfTheServer/idOfTheProcess`.
+10. to stop the server, do `pm2 stop NameOfTheServer/idOfTheProcess`
+
 
    Common errors when compiling or deploying code
       - make sure you're at HTTP instead of HTTPS 
