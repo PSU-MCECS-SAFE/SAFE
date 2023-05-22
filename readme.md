@@ -12,13 +12,13 @@ Allow students to submit anonymous feedback to the chair of the Portland State U
 For more implementation details, please refer to the SAFE Technical Document.
 
 ## Configuration
-   - This branch is the branch that we will deploy to SAFE domain.
-   - To connect to the VM, you will need your computer's SSH key in the VM, connect with the CAT to do it.
+   - The codebase in this branch is deployed to SAFE domain.
+   - To connect to the VM, your computer's SSH key need to add to the SAFE VM, contact CAT to do it.
    - To connect to the VM, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
 
 ## Compile Instruction
 1. Log in `ssh feedback_web@feedback.cs.pdx.edu`, go to public_html folder
-2. Clone the repository and `git checkout MVP` to MVP branch 
+2. Clone the repository and `git checkout main` to the main branch 
 3. Run `npm run psu_deploy`
       - Choose Option 1 in the menu, and fill out the database login information. 
       - Choose Option 0 when the script is done.
