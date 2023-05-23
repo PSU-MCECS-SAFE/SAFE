@@ -2,6 +2,9 @@
  * referenced in submitForm.tsx
  */
 
+const MAX_CHARACTERS = 7500;
+const MAX_Subject_CHARACTERS = 100;
+
 export const handleMessageChange = (
   e: React.ChangeEvent<HTMLTextAreaElement>,
   setMessage,
@@ -9,7 +12,7 @@ export const handleMessageChange = (
 ) => {
   const newMessage = e.target.value;
   const newCharacterCount = newMessage.length;
-  if (newCharacterCount <= 7500) {
+  if (newCharacterCount <= MAX_CHARACTERS) {
     setMessage(newMessage);
     setCharCount(newCharacterCount);
   }
@@ -22,7 +25,7 @@ export const handleSubjectChange = (
 ) => {
   const newSubject = e.target.value;
   const newCharacterCount = newSubject.length;
-  if (newCharacterCount <= 100) {
+  if (newCharacterCount <= MAX_Subject_CHARACTERS) {
     setSubject(newSubject);
     setSubjectCharCount(newCharacterCount);
   }
