@@ -26,7 +26,14 @@ test('renders the welcome message and subtitle', () => {
   );
   // Check if the subtitle is rendered with correct content
   expect(
-    screen.queryByText(/Find out how we are committed to keeping your identity/i)
+    screen.getByText(/Find out how we are committed to keeping your identity/i)
+  ).toBeInTheDocument();
+});
+
+test('check for title nine warning', () => {
+  render(<SafeUI />);
+  expect(
+    screen.getByText(/This site should not be used to report/i)
   ).toBeInTheDocument();
 });
 

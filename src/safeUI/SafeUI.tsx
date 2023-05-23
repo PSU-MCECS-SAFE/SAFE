@@ -1,5 +1,16 @@
 //This import isn't required in newer versions of react in every file, but
-//is a fail safe for older versions. Best to do it anyways!
+//is a fail safe for older versions. Best to do it anyways!'
+import React from 'react';
+import { Box } from '@mui/material';
+import BannerBar from './Components/bannerBar';
+import HeaderText from './Components/headerText';
+import SubmitForm from './Components/submitForm';
+
+/* SAFE UI application is rendered here. Individual components
+ * are broken up and referenced from the Component folder to
+ * improve system readability and maintainability.
+ */
+
 import {
   Box,
   Grid,
@@ -10,8 +21,6 @@ import {
 } from '@mui/material';
 import { StyledSubmitButton } from './Styles/Styled';
 import { StyledButton } from './Styles/Styled';
-import React from 'react';
-// import { lightGreen } from '@mui/material/colors';
 import { useCallback, useEffect, useState } from 'react';
 import { checkString, checkProfanities } from '../safeMessageDB/verifyString';
 
@@ -21,29 +30,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-/* Components to implement
- * 1) Welcome Message
- * 2) Receiver Name
- * 3) Subject Line
- * 4) Message Box (2000(+?) input limit)
- * 5) Submit Button
- */
-const MAX_CHARACTERS = 7500;
-const MAX_Subject_CHARACTERS = 100;
 const MAX_EMAIL_CHARACTERS = 256;
 
 function SafeUI() {
   const [code, setCode] = useState('');
   const [check_message, setcheck_message] = useState<any>(null);
 
-  const [characterCount, setCharCount] = useState(0);
-  const [subjectCharacterCount, setSubjectCharCount] = useState(0);
-  const [to, setTo] = useState('PSU CS Department');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-  const [toError, setToError] = useState(false);
-  const [subjectError, setSubjectError] = useState(false);
-  const [messageError, setMessageError] = useState(false);
   const [helperText, setHelperText] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -63,100 +55,12 @@ function SafeUI() {
   const [validCode, setValidCode] = useState(false);
   const [codeModalHelperText, setCodeModalHelperText] = useState('');
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newMessage = e.target.value;
-    const newCharacterCount = newMessage.length;
-    if (newCharacterCount <= MAX_CHARACTERS) {
-      setMessage(newMessage);
-      setCharCount(newCharacterCount);
-    }
-  };
-
-  const handleSubjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newSubject = e.target.value;
-    const newCharacterCount = newSubject.length;
-    if (newCharacterCount <= MAX_Subject_CHARACTERS) {
-      setSubject(newSubject);
-      setSubjectCharCount(newCharacterCount);
-    }
-  };
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newEmail = e.target.value;
     const newCharacterCount = newEmail.length;
     if (newCharacterCount <= MAX_EMAIL_CHARACTERS) {
       setEmail(newEmail);
       setValidEmail(emailRegex.test(newEmail));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setToError(false);
-    setSubjectError(false);
-    setMessageError(false);
-    setHelperText('');
-
-    if (to === '') {
-      setToError(true);
-      setHelperText('This field is required');
-    }
-    if (subject === '') {
-      setSubjectError(true);
-      setHelperText('This field is required');
-    }
-    if (message === '') {
-      setMessageError(true);
-      setHelperText('This field is required');
-    }
-
-    if (to && subject && message) {
-      /**
-       * This is how to call the getMessage from atabase
-       */
-
-      // fetch('https://localhost:3001/message')
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     console.log(data);
-      //   })
-      //   .catch(error => console.error(error))
-
-      // fetch data from API endpoint
-      // param: request method, header, body
-      fetch('http://131.252.208.28:3004/addMessage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: subject,
-          receiver_name: to,
-          message: message,
-          receive_reply: false,
-          has_been_read: false,
-          message_reply: null,
-        }),
-      })
-        // response from fetch
-        .then((response) => {
-          if (response.status === 400) {
-            throw new Error('Invalid message: message contains profanities');
-          } else if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          setOpenEmail(true);
-          handleSnackbarOpen();
-          return response.text();
-        })
-        .then((responseText) => {
-          setCode(responseText);
-        })
-        .catch((error) => {
-          setOpenEmail(false);
-          console.error('There was a problem with the fetch operation:', error);
-          alert(error);
-        });
     }
   };
 
@@ -288,16 +192,9 @@ function SafeUI() {
       });
   };
 
-  const handleSnackbarOpen = () => {
+  const 
+  = () => {
     setOpen(true);
-  };
-
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const formEvent = new Event('submit', {
-      bubbles: true,
-    }) as unknown as React.FormEvent<HTMLFormElement>;
-    handleSubmit(formEvent);
   };
 
   const uniqueCodeInputModal = (
@@ -361,28 +258,14 @@ function SafeUI() {
     </div>
   );
 
-  const isSubmitDisabled = !to || !subject || !message;
-
+function SafeUI() {
   return (
     <Box sx={{ backgroundColor: '#faf7e1', width: 'auto', height: 'auto' }}>
-      <Box
-        sx={{
-          backgroundColor: '#6a7f10',
-          height: '38px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingLeft: '25px',
-        }}
-      >
-        <Box textAlign='right' sx={{ height: '38px' }}>
-          <img
-            src='./PSU_logo_accent_transparent.png'
-            alt='Logo'
-            width='135'
-            height='38'
-          />
-        </Box>
+      <BannerBar />
+      <HeaderText />
+      <SubmitForm />
+
+      // below are additional features code
         <Box textAlign='right' sx={{ height: '38px' }}>
           <StyledButton
             variant='contained'
@@ -417,123 +300,7 @@ function SafeUI() {
           </Dialog>
         </Box>
       </Box>
-      <Typography mt={2} mb={3} variant='h3' align='center' gutterBottom>
-        Welcome to <b>SAFE</b>
-        <br />
-        PSU's CS Department Anonymous Feedback System
-      </Typography>
-
-      <Typography mt={2} mb={3} align='center'>
-        Find out how we are committed to keeping your identity{' '}
-        <a href='./about.html'>anonymous</a>!
-      </Typography>
-
-      <form noValidate autoComplete='off' onSubmit={handleSubmit}>
-        <Grid container rowSpacing={2} spacing={2} justifyContent='center'>
-          <Grid item xs={8}>
-            <TextField
-              id='label'
-              variant='standard'
-              label='To:'
-              value='Portland State University - Computer Science Department'
-              disabled={true} // If prop isn't disabled, text from 'To:' box can be removed.
-              // Even though static value remains, text is technically removed
-              // preventing submission of button. Text can be further inserted,
-              // leaving unneccessary input access to users
-              // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-              //autoComplete=''       Future improvement: Have list of receivers here,
-              //                      Could be expanded if SAFE is used by multiple departments
-              fullWidth
-              //required
-              // Bold text for disabled component
-              sx={{
-                '& .MuiInputBase-input.Mui-disabled': {
-                  WebkitTextFillColor: '#000000',
-                },
-              }}
-              onChange={(e) => setTo(e.target.value)}
-              error={toError}
-              helperText={helperText}
-            />
-          </Grid>
-
-          <Grid item xs={8}>
-            <TextField
-              id='label'
-              variant='standard'
-              label='Subject:'
-              placeholder='Briefly describe your feedback (course feedback, suggestions for improvement...)'
-              fullWidth
-              onChange={handleSubjectChange}
-              error={subjectError}
-              helperText={helperText}
-              inputProps={{ maxLength: MAX_Subject_CHARACTERS }}
-            />
-
-            <Grid container justifyContent='flex-end'>
-              <Typography mt={2} mb={3} gutterBottom>
-                {subjectCharacterCount} / {MAX_Subject_CHARACTERS}
-              </Typography>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={8}>
-            <TextField
-              hiddenLabel
-              id='filled-hidden-label-normal'
-              placeholder='Enter Message'
-              variant='outlined'
-              multiline
-              rows={7}
-              fullWidth
-              autoComplete='off'
-              spellCheck='false'
-              onChange={handleMessageChange}
-              error={messageError}
-              helperText={helperText}
-              inputProps={{ maxLength: MAX_CHARACTERS }}
-            />
-
-            <Grid container justifyContent='flex-end'>
-              <Typography mt={2} mb={3} gutterBottom>
-                {characterCount} / {MAX_CHARACTERS}
-              </Typography>
-            </Grid>
-
-            <Typography variant='subtitle2' mt={4} mb={3} align='center'>
-              This site should not be used to report{' '}
-              <Link href='https://www.pdx.edu/diversity/title-ix'>
-                Title IX
-              </Link>{' '}
-              violations, including{' '}
-              <Link href='https://www.pdx.edu/sexual-assault/faculty-staff-reporting-obligations'>
-                sexual misconduct
-              </Link>{' '}
-              or{' '}
-              <Link href='https://www.pdx.edu/general-counsel/mandatory-child-abuse-reporting'>
-                child abuse
-              </Link>
-              ; please use the respective links for further information. Please
-              note also that the{' '}
-              <Link href='https://www.pdx.edu/womens-resource-center/'>
-                Women’s Resource Center
-              </Link>{' '}
-              also provides a confidential reporting option for the PSU
-              community.
-            </Typography>
-            <Box textAlign='center'>
-              <StyledSubmitButton
-                variant='contained'
-                type='submit'
-                disabled={isSubmitDisabled}
-                onClick={handleButtonClick}
-              >
-                Submit
-              </StyledSubmitButton>
-            </Box>
-          </Grid>
-        </Grid>
-      </form>
+      
 
       <Dialog
         open={openEmail}
@@ -593,7 +360,7 @@ function SafeUI() {
             />
           </DialogContent>
           <DialogActions>
-            <StyledButton onClick={handleClose}>Cancel</StyledButton>
+            <StyledButton onClick={handleClose}>No</StyledButton>
             <StyledSubmitButton variant='contained' type='submit'>
               Submit
             </StyledSubmitButton>
