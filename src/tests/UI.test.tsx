@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom'
 import { render, screen, fireEvent } from '@testing-library/react';
 import SafeUI from '../safeUI/SafeUI';
 import React from 'react';
