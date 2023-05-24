@@ -35,3 +35,29 @@ export const handleCloseSuccessSent = (setOpenSuccess, setShouldReload) => {
   setOpenSuccess(false);
   setShouldReload(true);
 };
+
+//Check Reply Button - Event Handlers Functions
+
+export const handleOpenInputCodeModal = (setOpenInputCodeModal) => {
+  setOpenInputCodeModal(true);
+};
+
+export const handleCloseInputCodeModal = (
+  setOpenInputCodeModal,
+  setCodeModalHelperText
+) => {
+  setOpenInputCodeModal(false);
+  setCodeModalHelperText("");
+};
+
+export const handleOpenMessageModal = (
+  setOpenMessageModal,
+  setOpenInputCodeModal
+) => {
+  setOpenMessageModal(true);
+  setOpenInputCodeModal(false);
+};
+
+export const handleCloseMessageModal = (setOpenMessageModal) => {
+  setOpenMessageModal(false);
+};
