@@ -245,26 +245,7 @@ def executeNpmRunBuild():
         "\n'npm run build' complete!!"
         "\n**************************"
     )
-    modifyUserGroupPermissions()
-        
-    # If the host is the VM, lets just copy our brand new build and deploy!
-    # Nothing could go wrong if we do... right? TEST YOUR BUILDS OFF THE VM
-    # FIRST AND THIS SHOULD BE FIIIIIIINE.
-    if __HOST_IS_FEEDBACK_VM == True: 
-        print(
-            "\n***************************************************************"
-            "\nCopying new build to 'SAFEdeploy' with correct permissions. . ."
-            "\n***************************************************************"
-        )
-        time.sleep(2)        
-        os.system("rm -fr ~/SAFEdeploy/*")
-        os.system("cp -rp ./build/* ~/SAFEdeploy/")
-        print(
-        "\n***************"
-        "\nCopy complete!!"
-        "\n***************"
-        )
-        time.sleep(2)        
+    modifyUserGroupPermissions()      
 
 
 def executeNpxTsc():
@@ -325,7 +306,32 @@ def modifyUserGroupPermissions():
         time.sleep(1)
     return
 
-
+def copyNewBuild():
+    """
+    Once a npm run build is complete and the correct option is selected from the
+    menu this will smartly and safely copy the new build into SAFEdeploy. This
+    also carries over the correct permissions too for the deployed site.
+    """
+        
+    # If the host is the VM, lets just copy our brand new build and deploy!
+    # Nothing could go wrong if we do... right? TEST YOUR BUILDS OFF THE VM
+    # FIRST AND THIS SHOULD BE FIIIIIIINE.
+    if __HOST_IS_FEEDBACK_VM == True: 
+        print(
+            "\n***************************************************************"
+            "\nCopying new build to 'SAFEdeploy' with correct permissions. . ."
+            "\n***************************************************************"
+        )
+        time.sleep(2)        
+        os.system("rm -fr ~/SAFEdeploy/*")
+        os.system("cp -rp ./build/* ~/SAFEdeploy/")
+        print(
+        "\n***************"
+        "\nCopy complete!!"
+        "\n***************"
+        )
+        time.sleep(2)     
+        
 def scriptMenu():
     """
     Navigate the script to match users desired needs.
@@ -341,6 +347,7 @@ def scriptMenu():
             "\n\t4)  Run 'npm run build' to build website."
             "\n\t5)  Run 'npx tsc' to compile REST api script."
             "\n\t6)  Run options 3-5."
+            "\n\t7)  Runs option 4. Deploys website if on correct host."
             "\n\t0)  Exit this script."
             "\n\nOption: "
         )
@@ -367,6 +374,10 @@ def scriptMenu():
             case "6":
                 clearScreen()
                 executeNpmAll()
+            case "7":
+                clearScreen()
+                executeNpmRunBuild()
+                copyNewBuild()
             case "0":
                 return
             case _: # Default case if user picks bad option.
