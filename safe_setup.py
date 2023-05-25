@@ -80,7 +80,7 @@ def whoIsMyHost():
     # This regex looks for psu specific servers that the original team used in
     # the development process. ada, babbage, and rita were all used before the
     # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase.
-    pattern = r"(ada|babbage|feedback|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
+    pattern = r"(feedback|ada|babbage|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
     if __HOST_IS_FEEDBACK_VM:
         return True # We 100% know we are allowed because we are the VM!
     elif re.match(pattern, __HOST_IS) == False:
