@@ -337,7 +337,8 @@ def copyNewBuild():
             "\nThe deploy part of this command can only be done on the SAFE"
             "\nvirtual machine. If this message is a bug, please contact the"
             "\ndevelopment team to resolve the issue."
-            )     
+            )
+    return
         
 def scriptMenu():
     """
