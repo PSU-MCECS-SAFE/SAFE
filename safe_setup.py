@@ -354,7 +354,7 @@ def scriptMenu():
             "\n\t4)  Run 'npm run build' to build website."
             "\n\t5)  Run 'npx tsc' to compile REST api script."
             "\n\t6)  Run options 3-5."
-            "\n\t7)  Runs option 4. Deploys website if on correct host."
+            "\n\t7)  Runs option 4. Deploys website if on the SAFE virtual machine."
             "\n\t0)  Exit this script."
             "\n\nOption: "
         )
