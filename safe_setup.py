@@ -330,7 +330,14 @@ def copyNewBuild():
         "\nCopy complete!!"
         "\n***************"
         )
-        time.sleep(2)     
+        time.sleep(2)
+    else:
+        print(
+            "\n\n\t\tERROR:"
+            "\nThe deploy part of this command can only be done on the SAFE"
+            "\nvirtual machine. If this message is a bug, please contact the"
+            "\ndevelopment team to resolve the issue."
+            )     
         
 def scriptMenu():
     """
