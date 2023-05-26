@@ -97,8 +97,9 @@ function SubmitForm() {
       })
         // response from fetch
         .then((response) => {
-          if (response.status === 400) {
-            throw new Error('Invalid message: message contains profanities');
+          if (response.status === 205) {
+            alert('Invalid message: message contains profanities');
+            return;
           } else if (!response.ok) {
             throw new Error(response.statusText);
           }
@@ -106,7 +107,8 @@ function SubmitForm() {
           return response.text();
         })
         .then((responseText) => {
-          setCode(responseText);
+          if (responseText)
+            setCode(responseText);
         })
         .catch((error) => {
           setOpenEmail(false);

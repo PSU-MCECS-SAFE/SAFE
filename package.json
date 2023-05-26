@@ -19,6 +19,7 @@
     "@types/pg": "^8.6.6",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "bad-words": "^3.0.4",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "pg": "^8.10.0",
@@ -61,7 +62,7 @@
   "devDependencies": {
     "@types/bad-words": "^3.0.1",
     "@types/cors": "^2.8.13",
-    "@types/bad-words": "^3.0.1",
+    "@types/qrcode": "^1.5.0",
     "@types/sentiment": "^5.0.1"
   }
 }

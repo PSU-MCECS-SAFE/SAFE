@@ -209,7 +209,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   let ProfaneFlag = checkProfanities(message);
   if (ProfaneFlag) {
     return res
-      .status(400)
+      .status(205)
       .json({ error: 'Invalid message: message contains profanities' });
   }
   const result = checkString(message);
