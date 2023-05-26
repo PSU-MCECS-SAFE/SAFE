@@ -58,8 +58,6 @@
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/bad-words": "^3.0.1",
-    "@types/cors": "^2.8.13",
-    "@types/qrcode": "^1.5.0",
     "@types/sentiment": "^5.0.1"
   }
 }
