@@ -1,7 +1,7 @@
 import os
 import json
 import shutil
-import subprocess
+import socket
 import sys
 import time
 import re
@@ -36,6 +36,11 @@ __OS_NAME = os.name
 __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
 __JSOUT_PATH = "./JSoutFile"
+__HOST_IS = socket.gethostname() # Get a string of the hostname for us
+
+
+# Is that host *the* VM for SAFE? True or False
+__HOST_IS_FEEDBACK_VM = True if __HOST_IS == "feedback.cs.pdx.edu" else False
 __DEBUG = isDebugPresent()
 
 
@@ -71,13 +76,14 @@ def whoIsMyHost():
     True otherwise.
     """
     clearScreen()
-    myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
     
     # This regex looks for psu specific servers that the original team used in
     # the development process. ada, babbage, and rita were all used before the
-    # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase
-    pattern = r"(ada|babbage|feedback|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
-    if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
+    # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase.
+    pattern = r"(feedback|ada|babbage|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
+    if __HOST_IS_FEEDBACK_VM:
+        return True # We 100% know we are allowed because we are the VM!
+    elif re.match(pattern, __HOST_IS) == None:
         return False
     return True
 
@@ -239,7 +245,7 @@ def executeNpmRunBuild():
         "\n'npm run build' complete!!"
         "\n**************************"
     )
-    modifyUserGroupPermissions()
+    modifyUserGroupPermissions()      
 
 
 def executeNpxTsc():
@@ -277,20 +283,63 @@ def modifyUserGroupPermissions():
     # CAT's documentation on what permissions must be set for the apache
     # server to access the directories.
     # https://cat.pdx.edu/services/web/account-websites/
+    
+    # DO NOT RUN CHMOD 711 ON BUILD ON THE VM!!!! This is a security issue that
+    # will alert the CAT. Instead, we want to chmod 700 build *then*
+    # chmod 711 -R build/* to get the internals properly setup!
     if __OS_NAME == "posix":
         print(
             "\nUNIX-like system detected. . . Running chmod changes on REQUIRED"
             "\ndirectories for the SAFE website on PSU servers."
         )
         time.sleep(1)
-        os.system("chmod 711 ../SAFE")
-        if os.path.exists(__BUILD_PATH):
+        os.system("chmod 711 ../SAFE") # Gotta make SAFE visible first.
+        
+        # Then the others under the conditions laid out above in the comments.
+        if __HOST_IS_FEEDBACK_VM == False and os.path.exists(__BUILD_PATH):
             os.system("chmod -R 711 ./build")
+        elif __HOST_IS_FEEDBACK_VM == True and os.path.exists(__BUILD_PATH):
+            os.system("chmod 700 ./build && chmod 711 -R ./build/*")
+                
+            
         print("\nModifications complete\n")
         time.sleep(1)
     return
 
-
+def copyNewBuild():
+    """
+    Once a npm run build is complete and the correct option is selected from the
+    menu this will smartly and safely copy the new build into SAFEdeploy. This
+    also carries over the correct permissions too for the deployed site.
+    """
+        
+    # If the host is the VM, lets just copy our brand new build and deploy!
+    # Nothing could go wrong if we do... right? TEST YOUR BUILDS OFF THE VM
+    # FIRST AND THIS SHOULD BE FIIIIIIINE.
+    if __HOST_IS_FEEDBACK_VM == True: 
+        print(
+            "\n***************************************************************"
+            "\nCopying new build to 'SAFEdeploy' with correct permissions. . ."
+            "\n***************************************************************"
+        )
+        time.sleep(2)        
+        os.system("rm -fr ~/SAFEdeploy/*")
+        os.system("cp -rp ./build/* ~/SAFEdeploy/")
+        print(
+        "\n***************"
+        "\nCopy complete!!"
+        "\n***************"
+        )
+        time.sleep(2)
+    else:
+        print(
+            "\n\n\t\tERROR:"
+            "\nThe deploy part of this command can only be done on the SAFE"
+            "\nvirtual machine. If this message is a bug, please contact the"
+            "\ndevelopment team to resolve the issue."
+            )
+    return
+        
 def scriptMenu():
     """
     Navigate the script to match users desired needs.
@@ -306,6 +355,7 @@ def scriptMenu():
             "\n\t4)  Run 'npm run build' to build website."
             "\n\t5)  Run 'npx tsc' to compile REST api script."
             "\n\t6)  Run options 3-5."
+            "\n\t7)  Runs option 4. Deploys website if on the SAFE virtual machine."
             "\n\t0)  Exit this script."
             "\n\nOption: "
         )
@@ -332,6 +382,18 @@ def scriptMenu():
             case "6":
                 clearScreen()
                 executeNpmAll()
+            case "7":
+                if __HOST_IS_FEEDBACK_VM:
+                    clearScreen()
+                    executeNpmRunBuild()
+                    copyNewBuild()
+                else:
+                    clearScreen()
+                    print("\n\t\tNOTICE:"
+                          "\nUnable to execute option 7. The current system is"
+                          "\nnot the SAFE VM designated by this script. If this"
+                          "\nis in error contact the dev team to resolve this"
+                          "\nproblem.")
             case "0":
                 return
             case _: # Default case if user picks bad option.
