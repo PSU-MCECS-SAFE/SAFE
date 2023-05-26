@@ -12,8 +12,6 @@ import xss from 'xss';
 
 import Code from '../safeUtil/generateCode';
 import { checkString } from './verifyString';
-import Code from '../safeUtil/generateCode';
-import { checkString } from './verifyString';
 
 // Create a new Express app
 const app = express();
@@ -212,7 +210,6 @@ app.post('/addMessage', async (req: Request, res: Response) => {
       .status(205)
       .json({ error: 'Invalid message: message contains profanities' });
   }
-  let analysis_result: string | null = null;
   let analysis_result: string | null = null;
   if (result < 0) {
     analysis_result = 'negative';
