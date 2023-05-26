@@ -12,39 +12,31 @@ Allow students to submit anonymous feedback to the chair of the Portland State U
 For more implementation details, please refer to the SAFE Technical Document.
 
 ## Configuration
-   - **This MVP branch is for a snapshot of the delivered project.** It is a 
-      fully functioning version of the SAFE project based on the requirements
-      for the **Spring '23** capstone team. Updates were made, fixes were
-      preformed however this is a guaranteed 100% functional version of the
-      final product.
-   - To connect to the database and test the backend code, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
+   - *****The codebase in this `main` branch is deployed to the SAFE domain. Please DO NOT touch this branch until the new release version is ready.**
+   - To connect to the VM, your computer's SSH key need to add to the SAFE VM, contact CAT to do it.
+   - To connect to the VM, you will need to establish a [VPN connection to PSU network](https://cat.pdx.edu/services/network/vpn-services/). 
 
 ## Compile Instruction
-1. Log in your `ssh username@rita.cecs.pdx.edu` in PSU Linux system, go to public_html folder
-      - Why do we need to use use `rita` not `ada` or `ruby`? - We use the `rita` IP address to fetch requests for student developers to test the website on their PSU personal websites. Alternatively, you can use `ada`, but you'll need the corresponding IP address. Unfortunately, `ruby` doesn't have an available IP address for student use.
-      - Why do we need to use public_html not dev_html? - We need to use HTTP instead of HTTPS because the dev_html URL will always auto-correct to HTTPS.
-
-
-2. Clone the repository and switch to the `MVP` branch 
-      - `git clone https://github.com/PSU-MCECS-SAFE/SAFE.git` 
-      - `git checkout MVP`
-
-
+1. Log in `ssh feedback_web@feedback.cs.pdx.edu`, go to public_html folder
+2. Clone the repository and switch to the main branch 
+      - `git clone https://github.com/PSU-MCECS-SAFE/SAFE.git`
+      - `git checkout main`
 3. Run `npm run psu_deploy`
-      - **Option 1** in the menu will run automatically run if the script detects that it is missing `safeConfig.json`
-        - This option will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
+      - Option 1 in the menu will run automatically run if the script detects that it is missing `safeConfig.json`
       - Fill out the database login information and receiver email address.
-      - **Option 7** will only successfully and fully execute if it is on the VM `feedback.cs.pdx.edu`, otherwise an error pops up alerting the user of this fact.
-      - Read the SAFE technical documentation for more information regarding the script.
-
-4. Run `node JSoutFile/safeMessageDB/server.js`
-      - This command line will start the REST server, allowing the server to listen to the assigned IP and perform POST and GET requests to and from the database.
-
-
-5. Open your PSU personal website of build folder and **you're in SAFE now!**
-      - https://web.cecs.pdx.edu/~username/SAFE/build
-      - [CAT's explainer on how to setup your PSU web page](https://cat.pdx.edu/services/web/account-websites/) and the permissions required to make the site visible.
-        - Note: The python script will set these permissions correctly when build is ran. 
+      - Choose Option 0 when the script is done.
+      - This command line will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
+4. Copy everything in **build** folder to **SAFEdeploy** 
+      - make sure you are in root folder of feedback_web. To ensure this, do `pwd' and you should see `/u/feedback_web` as output.
+      - Then do cp `-r /public_html/SAFE/build/* /SAFEdeploy/`.
+      - This is because **SAFEdeploy** is the domain of feedback.cs.pdx.edu.
+5. Run `pm2 list`
+      - This will list out all pm2 process we have.
+      - run `pm2 delete id/name` to delete all of the old pm2 process since we now need to kick start the newer version of the server.
+6. Run `pm2 start node path/to/the/server.js --name anythingYouWantHere` This will have pm2 keep running your server on the back and give it a name.
+7. Open SAFE website and test it out, you are all set.
+      - [SAFE](https://feedback.cs.pdx.edu/)
+8. to stop the server, do `pm2 stop NameOfTheServer/idOfTheProcess`
 
 
 ## Common errors when compiling or deploying code working with public_html on `rita`
