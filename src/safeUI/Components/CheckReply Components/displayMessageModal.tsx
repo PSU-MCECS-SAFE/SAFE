@@ -6,6 +6,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { StyledButton } from "../../Styles/Styled";
 
+/*Pop Out Modal To Display Message Associate With The Provided Unique Code
+ */
+
 function displayMessageModal({ check_message, handleCloseMessageModal }) {
   return (
     <div>

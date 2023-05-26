@@ -14,6 +14,18 @@ import {
   handleCodeSubmit,
 } from "./checkReplyEvenHandler";
 
+/* The main file that contains every necessary components for check-reply button.
+ * Contains calls to other check-reply button components.
+ *
+ * The actual check-reply button
+ * The "Input Unique Code" modal
+ * And, the "Display Message" modal
+ * 
+ * Can increases readability if considering breaking up
+ * above mentioning three components to sub components
+
+*/
+
 const port = 3001;
 
 function CheckReply() {
@@ -24,46 +36,7 @@ function CheckReply() {
   const [codeModalHelperText, setCodeModalHelperText] = useState("");
   const [openInputCodeModal, setOpenInputCodeModal] = useState(false);
 
-  // // CHECK REPLY button main function
-  // const handleCodeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   // fetching getmessage endpoint and pass in inputCode in url
-  //   fetch(
-  //     `http://131.252.208.28:${port}/getmessage?code=${encodeURIComponent(
-  //       inputCode
-  //     )}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   )
-  //     // response from fetch
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(response.statusText);
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((responseJson) => {
-  //       console.log(responseJson);
-  //       setcheck_message(responseJson);
-  //       handleOpenMessageModal(setOpenMessageModal, setOpenInputCodeModal);
-  //       setValidCode(true);
-  //       setCodeModalHelperText("");
-  //     })
-  //     // If catching error from endpoint, display error message
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setOpenMessageModal(false);
-  //       setValidCode(false);
-  //       setCodeModalHelperText("Code is invalid. Please try another code.");
-  //     });
-  // };
-
   return (
-    //  {/* below are additional features code */}
     <Box textAlign="right" sx={{ height: "38px" }}>
       <StyledButton
         variant="contained"

@@ -3,7 +3,8 @@ import React from "react";
 import CheckReply from "./checkReply";
 
 /* Banner bar located at the top of the page
- * contains psu logo
+ * contains psu logo,
+ * check reply button from checkReply.tsx
  */
 
 function BannerBar() {

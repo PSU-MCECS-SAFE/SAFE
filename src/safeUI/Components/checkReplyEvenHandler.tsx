@@ -1,5 +1,9 @@
 /* Event functions for the different components to be
  * referenced in checkReply.tsx
+ *
+ * Contains all the important event handlers functions that
+ * got called and used in check-reply main file, Unique Code,
+ * and Display Message Modals.
  */
 
 export const handleOpenInputCodeModal = (setOpenInputCodeModal) => {

@@ -7,6 +7,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { StyledSubmitButton, StyledButton } from "../../Styles/Styled";
 import { Box, TextField } from "@mui/material";
 
+/*Pop Out Modal Asking Users To Input Their Provided Unique Code To View Message
+ */
+
 function uniqueCodeInputModal({
   handleCodeSubmit,
   codeModalHelperText,
