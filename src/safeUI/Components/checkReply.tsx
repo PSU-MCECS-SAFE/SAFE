@@ -123,7 +123,11 @@ function CheckReply() {
         onClose={() => handleCloseMessageModal(setOpenMessageModal)}
         scroll={"paper"}
       >
-        {displayMessageModal({ check_message, handleCloseMessageModal })}
+        {displayMessageModal({
+          check_message,
+          handleCloseMessageModal: () =>
+            handleCloseMessageModal(setOpenMessageModal),
+        })}
       </Dialog>
     </Box>
   );
