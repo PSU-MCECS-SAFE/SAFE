@@ -35,3 +35,14 @@ export const handleCloseSuccessSent = (setOpenSuccess, setShouldReload) => {
   setOpenSuccess(false);
   setShouldReload(true);
 };
+
+export const handleButtonClick = (
+  e: React.MouseEvent<HTMLButtonElement>,
+  handleSubmit
+) => {
+  e.preventDefault();
+  const formEvent = new Event('submit', {
+    bubbles: true,
+  }) as unknown as React.FormEvent<HTMLFormElement>;
+  handleSubmit(formEvent);
+};
