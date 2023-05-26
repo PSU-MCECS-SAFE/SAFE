@@ -390,7 +390,7 @@ def scriptMenu():
                 else:
                     clearScreen()
                     print("\n\t\tNOTICE:"
-                          "\nUnable to execute options 7. The current system is"
+                          "\nUnable to execute option 7. The current system is"
                           "\nnot the SAFE VM designated by this script. If this"
                           "\nis in error contact the dev team to resolve this"
                           "\nproblem.")
