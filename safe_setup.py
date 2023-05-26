@@ -383,9 +383,17 @@ def scriptMenu():
                 clearScreen()
                 executeNpmAll()
             case "7":
-                clearScreen()
-                executeNpmRunBuild()
-                copyNewBuild()
+                if __HOST_IS_FEEDBACK_VM:
+                    clearScreen()
+                    executeNpmRunBuild()
+                    copyNewBuild()
+                else:
+                    clearScreen()
+                    print("\n\t\tNOTICE:"
+                          "\nUnable to execute options 7. The current system is"
+                          "\nnot the SAFE VM designated by this script. If this"
+                          "\nis in error contact the dev team to resolve this"
+                          "\nproblem.")
             case "0":
                 return
             case _: # Default case if user picks bad option.
