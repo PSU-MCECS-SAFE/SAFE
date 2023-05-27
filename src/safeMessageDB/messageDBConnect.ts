@@ -5,12 +5,6 @@ import {
   safeConfigPath as scp,
 } from '../safeUtil/Util';
 
-export const ip: string = 'localhost';
-// export const ip: string = '131.252.208.28';
-export const port: number = 3004;
-export const addr: string = ip + ':' + port;
-
-// Create database connection
 /** 
  * Create database connection using Util.ts `getConfigProp` and the enum 
  * `safeJSONProps`. This const exists to keep secret information secret! We

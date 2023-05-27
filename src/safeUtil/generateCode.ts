@@ -22,7 +22,7 @@ export default class Code {
         .sort()
         .join("");
 
-    // Generate random code between max and min code lengths, or use the one provided
+    // Generate random code, or use the one provided
     let code_combination: number[] =
       code.length < min_code_length || code.length > max_code_length
         ? this.initCodeCombination(
