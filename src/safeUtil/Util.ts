@@ -1,5 +1,6 @@
 import fs from 'fs';
-import * as path from 'path';
+import path from 'path';
+// import * as path from 'path';
 
 /* This const is required to be done this way because of how getting file
  * paths can be, especially when interfacing from the client to the schools

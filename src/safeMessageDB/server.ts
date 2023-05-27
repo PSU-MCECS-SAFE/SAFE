@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { messageDBConnect } from './messageDBConnect';
+import { messageDBConnect, ip, port } from './messageDBConnect';
 import { spawn } from 'child_process';
 import {
   safeJSONProps as sjp,
@@ -12,6 +12,7 @@ import xss from 'xss';
 
 import Code from '../safeUtil/generateCode';
 import { checkString } from './verifyString';
+import { PoolClient, QueryResult } from 'pg';
 
 // Create a new Express app
 const app = express();
@@ -21,20 +22,22 @@ app.use(
     extended: true,
   })
 );
-//only recommended for development environments.
 app.use(cors());
 
 // Define an endpoint for retrieving all messages with it's all info
-app.get('/getallmessages', async (req: Request, res: Response) => {
+async function execQuery (req: Request, res: Response, query: string) {
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    const client: PoolClient = await messageDBConnect.connect();
 
-    // Execute a SQL query to retrieve all messages
-    const result = await client.query('SELECT * FROM "Message";');
-    //if no message return
+    // Execute a SQL query to retrieve all events
+    const result : QueryResult<any> = await client.query(
+      query
+    );
     if (result.rows.length === 0) {
-      res.status(404).json({ error: 'No message in database' });
+      res
+        .status(404)
+        .json({ error: 'No messages in database' });
     } else {
       //return all the message getting out
       res.status(200).json(result.rows);
@@ -47,7 +50,39 @@ app.get('/getallmessages', async (req: Request, res: Response) => {
       .status(500)
       .json({ error: 'Internal server error, please try back later' });
   }
+};
+
+// // Define an endpoint for retrieving all messages with it's all info
+// app.get('/getallmessages', async (req: Request, res: Response) => {
+//   try {
+//     // Acquire a client connection from the connection pool
+//     const client: PoolClient = await messageDBConnect.connect();
+
+//     // Execute a SQL query to retrieve all events
+//     const result = await client.query(
+//       'SELECT * FROM "Message";',
+//     );
+//     if (result.rows.length === 0) {
+//       res.status(404).json({ error: 'No message in database' });
+//     } else {
+//       //return all the message getting out
+//       res.status(200).json(result.rows);
+//     }
+//     // Release the client connection back to the pool
+//     client.release();
+//   } catch (err) {
+//     console.error(err);
+//     res
+//       .status(500)
+//       .json({ error: 'Internal server error, please try back later' });
+//   }
+// });
+
+app.get('/getallmessages', async (req: Request, res: Response) => {
+  await execQuery(req, res, 'SELECT * FROM "Message";');
 });
+
+
 
 // Define an endpoint for deleting a message
 app.delete('/deletemessage', async (req: Request, res: Response) => {
@@ -275,8 +310,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 // The IP address belongs to the rita.cecs.pdx.edu, hence the port here is unique,
 // if someone else is using a paticular port, you will need to change both server
 // and UI part of the port.
-const port = 3001;
-app.listen(port, '131.252.208.28', () => {
+app.listen(port, ip, () => {
   console.log(`Server listening on port ${port}`);
 });
 

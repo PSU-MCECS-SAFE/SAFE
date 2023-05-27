@@ -41,4 +41,11 @@ describe("Code Generation", () => {
     // @ts-ignore
     expect(Code.randInt(dictionary.length, 10)).toBeLessThanOrEqual(dictionary.length);
   });
+
+  test("Random Code Generator", async () => {
+    const client: PoolClient = await messageDBConnect.connect();
+
+    let first_code: string = await Code.genCode(client);
+    let second_code: string = await Code.genCode(client, "MessageTest", first_code);
+  });
 });
