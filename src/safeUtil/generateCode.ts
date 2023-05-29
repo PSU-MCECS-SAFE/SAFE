@@ -10,7 +10,7 @@ export class Code {
    */
   public static async genCode(
     client: PoolClient,
-    table: string = "message",
+    table: string = "Message",
     code: string = ""
   ): Promise<string> {
     const max_code_length: number = 64;
@@ -132,9 +132,9 @@ export class Code {
     const query = {
       rowMode: "array",
       text:
-        "SELECT code, time_submitted FROM " +
+        "SELECT code, time_submitted FROM \"" +
         table +
-        " WHERE code LIKE '" +
+        "\" WHERE code LIKE '" +
         code +
         "%" +
         "' AND char_length(code) = $1;",
@@ -207,7 +207,7 @@ export class Code {
       isAvailable = true;
       const query = {
         rowMode: "array",
-        text: "UPDATE " + table + " SET code = NULL WHERE code = $1;",
+        text: "UPDATE \"" + table + "\" SET code = NULL WHERE code = $1;",
         values: [this.renderCode(code_combination, dictionary)],
       };
       await client.query(query);
