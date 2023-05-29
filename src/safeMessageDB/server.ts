@@ -10,7 +10,8 @@ import {
 } from '../safeUtil/Util';
 import xss from 'xss';
 
-import Code from '../safeUtil/generateCode';
+import { Code } from '../safeUtil/generateCode';
+import { PoolClient, QueryResult } from 'pg';
 import { checkString } from './verifyString';
 
 // Create a new Express app
@@ -24,19 +25,21 @@ app.use(
 //only recommended for development environments.
 app.use(cors());
 
-// Define an endpoint for retrieving all messages with it's all info
-app.get('/getallmessages', async (req: Request, res: Response) => {
+let a = function add(a: number, b: number) : number { return a + b }
+
+async function execQuery(req: Request, res: Response, query: string, result: any | any[] = null) {
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    const client: PoolClient = await messageDBConnect.connect();
 
-    // Execute a SQL query to retrieve all messages
-    const result = await client.query('SELECT * FROM "Message";');
-    //if no message return
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: 'No message in database' });
+    // Execute SQL query
+    result = (result) ? result : await client.query(query);
+
+    // If no messages are returned
+    if ((<QueryResult>result).rows.length && result.rows.length === 0) {
+      res.status(404).json({ error: 'No results from query' });
     } else {
-      //return all the message getting out
+      // Return all the returned messages
       res.status(200).json(result.rows);
     }
     // Release the client connection back to the pool
@@ -47,6 +50,12 @@ app.get('/getallmessages', async (req: Request, res: Response) => {
       .status(500)
       .json({ error: 'Internal server error, please try back later' });
   }
+}
+
+// Define an endpoint for retrieving all messages with it's all info
+app.get('/getallmessages', async (req: Request, res: Response) => {
+  // Execute a SQL query to retrieve all messages
+  await execQuery(req, res, "SELECT * FROM message");
 });
 
 // Define an endpoint for deleting a message
@@ -59,7 +68,7 @@ app.delete('/deletemessage', async (req: Request, res: Response) => {
 
     // Execute a SQL query to retrieve a paticular message based on code
     const result = await client.query(
-      'DELETE FROM "Message" WHERE code = $1;',
+      "DELETE FROM " + "message" + " WHERE code = $1;",
       [code]
     );
     // If can't find message with coresponding code
@@ -84,33 +93,8 @@ app.delete('/deletemessage', async (req: Request, res: Response) => {
 // Define an endpoint for retrieving one message
 app.get('/getmessage', async (req: Request, res: Response) => {
   const { code } = req.query;
-
-  try {
-    // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
-
-    // Execute a SQL query to retrieve one message
-    const result = await client.query(
-      'SELECT message, message_reply FROM "Message" WHERE code = $1;',
-      [code]
-    );
-    // If can't find message with coresponding code
-    if (result.rows.length === 0) {
-      res
-        .status(404)
-        .json({ error: 'No matching record found with provided code' });
-    } else {
-      // Send the message back to front-end
-      res.status(200).json(result.rows[0]);
-    }
-    // Release the client connection back to the pool
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res
-      .status(500)
-      .json({ error: 'Internal server error, please try back later' });
-  }
+  // Execute a SQL query to retrieve one message
+  await execQuery(req, res, 'SELECT message, message_reply FROM message WHERE code = ' + code + ' ORDER BY time_submitted DESC;');
 });
 
 // Define an endpoint for adding reply to the message
@@ -122,7 +106,7 @@ app.post('/addReply', async (req: Request, res: Response) => {
     const client = await messageDBConnect.connect();
     // Execute a SQL query to insert a new message
     await client.query(
-      'UPDATE "Message" SET message_reply = $1 WHERE code = $2;',
+      "UPDATE " + "message" + " SET message_reply = $1 WHERE code = $2;",
       [reply, code]
     );
     // Release the client connection back to the pool
@@ -144,7 +128,7 @@ app.post('/setReply', async (req: Request, res: Response) => {
     const client = await messageDBConnect.connect();
     // Execute a SQL query to insert a new message
     await client.query(
-      'UPDATE "Message" SET receive_reply = true WHERE code = $1',
+      "UPDATE " + "message" + " SET receive_reply = true WHERE code = $1",
       [code]
     );
     // Release the client connection back to the pool
@@ -202,21 +186,19 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s/-]/g, '');
   const time = new Date();
 
-  let result: number | null = null;
+  let analysis_result: string | number;
   try {
-    result = checkString(message);
+    analysis_result = checkString(message);
   } catch (e: any) {
     return res
       .status(205)
       .json({ error: 'Invalid message: message contains profanities' });
   }
-  let analysis_result: string | null = null;
-  if (result < 0) {
+  if (analysis_result < 0) {
     analysis_result = 'negative';
-  } else if (result === 0) {
+  } else if (analysis_result === 0) {
     analysis_result = 'neutral';
-  } else if (result > 0) {
-  } else if (result > 0) {
+  } else if (analysis_result > 0) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
@@ -230,7 +212,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     // Execute a SQL query to insert a new message
     await client.query(
       //using this type of Value array to keep us away from malicious actions
-      'INSERT INTO "Message" (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_reply, sentiment_analysis) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+      "INSERT INTO " + "message" + " (title, receiver_name, message, code, receive_reply, has_been_read, time_submitted, message_reply, sentiment_analysis) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
       [
         sanitizedTitle,
         receiver_name,

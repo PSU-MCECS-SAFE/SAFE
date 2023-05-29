@@ -1,6 +1,6 @@
 import { PoolClient, QueryResult } from "pg";
 
-export default class Code {
+export class Code {
   /**
    * Get a unique code correlating to a response in the database.
    * @param client The database to connect to
@@ -10,7 +10,7 @@ export default class Code {
    */
   public static async genCode(
     client: PoolClient,
-    table: string = "Message",
+    table: string = "message",
     code: string = ""
   ): Promise<string> {
     const max_code_length: number = 64;
@@ -98,6 +98,8 @@ export default class Code {
         if (isAvailable) {
           break;
         }
+        // i is set to 0 if it is set to the last value of the dictionary.
+        // i increments by 1 otherwise
         i = i !== dictionary.length - 1 ? i + 1 : 0;
         code_combination[index] = i;
       } while (i !== init);
@@ -123,17 +125,20 @@ export default class Code {
     var existing_codes: string[] = [];
     var existing_code_dates: Date[] = [];
 
+    const code: string = this.renderCode(code_combination, dictionary).slice(
+      0,
+      code_combination.length - 1
+    );
     const query = {
       rowMode: "array",
-      text: "SELECT code, time_submitted FROM $1 WHERE code LIKE $2 AND char_length(code) = $3;",
+      text:
+        "SELECT code, time_submitted FROM " +
+        table +
+        " WHERE code LIKE '" +
+        code +
+        "%" +
+        "' AND char_length(code) = $1;",
       values: [
-        table,
-        String(
-          this.renderCode(code_combination, dictionary).slice(
-            0,
-            code_combination.length - 1
-          ) + "%"
-        ),
         code_combination.length,
       ],
     };
@@ -142,6 +147,7 @@ export default class Code {
     if (queryResult.rowCount === 0) {
       isAvailable = true;
     } else {
+      // Populate the codes and dates from the database into arrays
       for (var row: number = 0; row < queryResult.rowCount; row++) {
         existing_codes.push(queryResult.rows[row][0]);
         existing_code_dates.push(new Date(queryResult.rows[row][1]));
@@ -149,6 +155,7 @@ export default class Code {
     }
 
     for (var i: number = 0; i < dictionary.length && !isAvailable; i++) {
+      // Check the availability of every possible character in the last spot in the array
       code_combination[code_combination.length - 1] = i;
       isAvailable = await this.isAvailable(
         client,
@@ -195,11 +202,13 @@ export default class Code {
         ].getFullYear() >
       10
     ) {
+      // The code is available if it was last used 10 years ago
+      // Delete the last entry's code
       isAvailable = true;
       const query = {
         rowMode: "array",
-        text: "UPDATE $1 SET code = NULL WHERE code = $2;",
-        values: [table, String(this.renderCode(code_combination, dictionary))],
+        text: "UPDATE " + table + " SET code = NULL WHERE code = $1;",
+        values: [this.renderCode(code_combination, dictionary)],
       };
       await client.query(query);
     }
@@ -212,7 +221,7 @@ export default class Code {
    * @param min The lowest possible number, default is 0
    * @returns A random number between max and min (inclusive)
    */
-  private static randInt(max: number, min: number = 0): number {
+  private static randInt(max: number, min: number = 0) {
     // Make sure min and max are integers
     max = Math.floor(max + 1);
     min = Math.floor(min);

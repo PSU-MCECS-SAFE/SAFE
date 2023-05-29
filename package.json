@@ -15,7 +15,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.23",
     "@types/pg": "^8.6.6",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
@@ -62,6 +61,7 @@
   "devDependencies": {
     "@types/bad-words": "^3.0.1",
     "@types/cors": "^2.8.13",
+    "@types/node": "^20.2.5",
     "@types/qrcode": "^1.5.0",
     "@types/sentiment": "^5.0.1"
   }

@@ -36,6 +36,8 @@ export const enum safeJSONProps {
  * known as a `prop`.
  * @param prop From enum config_props. Used as a key to id which json property
  * the code is hunting for
+ * @param path Systems path for `safeConfig.json`. Default path is 
+ * `safeConfigPath` in `Util.ts`
  * @returns a string containing the information being requested based on prop
  */
 export function getConfigProp(prop: string, path: string): string {

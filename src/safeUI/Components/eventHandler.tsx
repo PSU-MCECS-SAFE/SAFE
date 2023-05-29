@@ -2,9 +2,6 @@
  * referenced in submitForm.tsx
  */
 
-const MAX_CHARACTERS = 7500;
-const MAX_Subject_CHARACTERS = 100;
-
 export const handleMessageChange = (
   e: React.ChangeEvent<HTMLTextAreaElement>,
   setMessage,
@@ -12,7 +9,7 @@ export const handleMessageChange = (
 ) => {
   const newMessage = e.target.value;
   const newCharacterCount = newMessage.length;
-  if (newCharacterCount <= MAX_CHARACTERS) {
+  if (newCharacterCount <= 7500) {
     setMessage(newMessage);
     setCharCount(newCharacterCount);
   }
@@ -25,7 +22,7 @@ export const handleSubjectChange = (
 ) => {
   const newSubject = e.target.value;
   const newCharacterCount = newSubject.length;
-  if (newCharacterCount <= MAX_Subject_CHARACTERS) {
+  if (newCharacterCount <= 100) {
     setSubject(newSubject);
     setSubjectCharCount(newCharacterCount);
   }
@@ -34,15 +31,4 @@ export const handleSubjectChange = (
 export const handleCloseSuccessSent = (setOpenSuccess, setShouldReload) => {
   setOpenSuccess(false);
   setShouldReload(true);
-};
-
-export const handleButtonClick = (
-  e: React.MouseEvent<HTMLButtonElement>,
-  handleSubmit
-) => {
-  e.preventDefault();
-  const formEvent = new Event('submit', {
-    bubbles: true,
-  }) as unknown as React.FormEvent<HTMLFormElement>;
-  handleSubmit(formEvent);
 };
