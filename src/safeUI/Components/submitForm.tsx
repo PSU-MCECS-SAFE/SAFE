@@ -59,7 +59,7 @@ function SubmitForm() {
     if (to && subject && message) {
       // send POST request to 'addMessage' route
       const port = 3001;
-      fetch(`http://131.252.208.28:${port}/addMessage`, {
+      fetch(`https://feedback.cs.pdx.edu/addMessage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

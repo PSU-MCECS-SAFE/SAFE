@@ -62,7 +62,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     message: xss(message),
     message_reply: xss(message_reply),
   };
-  
+
   //replace anything that is not a letter, number, '-', or '/'
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s/-]/g, '');
   const time = new Date();
@@ -112,7 +112,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 });
 
 // Start the server
-app.listen(3001, 'feedback.cs.pdx.edu', () => {
+app.listen(3001, '127.0.0.1', () => {
   console.log(`Server listening on port 3001`);
 });
 
