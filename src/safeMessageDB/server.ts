@@ -25,16 +25,17 @@ app.use(
 //only recommended for development environments.
 app.use(cors());
 
-async function execQuery(req: Request, res: Response, query: string, result: any | any[] = null) {
+// Define an endpoint for retrieving all messages with it's all info
+app.get('/getallmessages', async (req: Request, res: Response) => {
   try {
     // Acquire a client connection from the connection pool
     const client: PoolClient = await messageDBConnect.connect();
 
-    // Execute SQL query
-    result = (result) ? result : await client.query(query);
+    // Execute a SQL query to retrieve all messages
+    let result: QueryResult<any> = await client.query('SELECT * FROM "Message";');
 
     // If no messages are returned
-    if ((<QueryResult>result).rows.length && result.rows.length === 0) {
+    if (result.rows.length === 0) {
       res.status(404).json({ error: 'No results from query' });
     } else {
       // Return all the returned messages
@@ -48,29 +49,58 @@ async function execQuery(req: Request, res: Response, query: string, result: any
       .status(500)
       .json({ error: 'Internal server error, please try back later' });
   }
-}
-
-// Define an endpoint for retrieving all messages with it's all info
-app.get('/getallmessages', async (req: Request, res: Response) => {
-  // Execute a SQL query to retrieve all messages
-  await execQuery(req, res, 'SELECT * FROM "Message"');
 });
 
 // Define an endpoint for deleting a message
 app.delete('/deletemessage', async (req: Request, res: Response) => {
   const { code } = req.query;
 
-  // Execute a SQL query to retrieve a paticular message based on code
-  const query: string = 'DELETE FROM "Message" WHERE code = ${code};';
+  try {
+    // Acquire a client connection from the connection pool
+    const client: PoolClient = await messageDBConnect.connect();
 
-  execQuery(req, res, query, "Message deleted");
+    // Execute a SQL query to retrieve a paticular message based on code
+    let result: QueryResult <any> = await client.query('DELETE FROM "Message" WHERE code = ${code};');
+
+    // Return successful status
+    res.status(200).json("Message deleted");
+
+    // Release the client connection back to the pool
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: 'Internal server error, please try back later' });
+  }
 });
 
 // Define an endpoint for retrieving one message
 app.get('/getmessage', async (req: Request, res: Response) => {
   const { code } = req.query;
-  // Execute a SQL query to retrieve one message
-  await execQuery(req, res, 'SELECT message, message_reply FROM "Message" WHERE code = ' + code + ' ORDER BY time_submitted DESC;');
+
+  try {
+    // Acquire a client connection from the connection pool
+    const client: PoolClient = await messageDBConnect.connect();
+
+    // Execute a SQL query to retrieve one message
+    let result: QueryResult<any> = await client.query('SELECT message, message_reply FROM "Message" WHERE code = ' + code + ' ORDER BY time_submitted DESC;');
+
+    // If no messages are returned
+    if ((<QueryResult>result).rows.length && result.rows.length === 0) {
+      res.status(404).json({ error: 'No results from query' });
+    } else {
+      // Return the returned message
+      res.status(200).json(result.rows);
+    }
+    // Release the client connection back to the pool
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: 'Internal server error, please try back later' });
+  }
 });
 
 // Define an endpoint for adding reply to the message
