@@ -1,9 +1,9 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import SortIcon from "@mui/icons-material/Sort";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import SortIcon from '@mui/icons-material/Sort';
 import {
   Menu,
   FormControlLabel,
@@ -11,12 +11,16 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
-} from "@mui/material";
-import { useState } from "react";
+} from '@mui/material';
+import { useState } from 'react';
+
+/* Message control component that filters messages off 3 separate
+ * categories currently.
+ */
 
 function MessageControl() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedDropDownOption, setSelectedDropDownOption] = useState("");
+  const [selectedDropDownOption, setSelectedDropDownOption] = useState('');
   const open = Boolean(anchorEl);
 
   const handleDropDownClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,7 +37,7 @@ function MessageControl() {
   return (
     <AppBar
       position="static"
-      sx={{ marginTop: "10px", backgroundColor: "#fff" }}
+      sx={{ marginTop: '10px', backgroundColor: '#fff' }}
     >
       <Toolbar variant="dense">
         <IconButton
@@ -43,9 +47,9 @@ function MessageControl() {
           aria-label="menu"
           sx={{ mr: 2 }}
           onClick={handleDropDownClick}
-          aria-controls={open ? "message-filter" : undefined}
+          aria-controls={open ? 'message-filter' : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
+          aria-expanded={open ? 'true' : undefined}
         >
           <SortIcon fontSize="small" />
         </IconButton>
@@ -56,18 +60,18 @@ function MessageControl() {
           open={open}
           MenuListProps={{
             style: {
-              padding: "5px",
+              padding: '5px',
             },
-            "aria-labelledby": "message-filter-button",
+            'aria-labelledby': 'message-filter-button',
           }}
           onClose={handleCloseDropDown}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
+            vertical: 'bottom',
+            horizontal: 'center',
           }}
           transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
+            vertical: 'top',
+            horizontal: 'left',
           }}
         >
           <FormControl>
@@ -83,7 +87,7 @@ function MessageControl() {
                 control={
                   <Radio
                     sx={{
-                      "& .MuiSvgIcon-root": { fontSize: 18, color: "green" },
+                      '& .MuiSvgIcon-root': { fontSize: 18, color: 'green' },
                     }}
                   />
                 }
@@ -94,9 +98,9 @@ function MessageControl() {
                 control={
                   <Radio
                     sx={{
-                      "& .MuiSvgIcon-root": {
+                      '& .MuiSvgIcon-root': {
                         fontSize: 18,
-                        color: "green",
+                        color: 'green',
                       },
                     }}
                   />
@@ -108,7 +112,7 @@ function MessageControl() {
                 control={
                   <Radio
                     sx={{
-                      "& .MuiSvgIcon-root": { fontSize: 18, color: "green" },
+                      '& .MuiSvgIcon-root': { fontSize: 18, color: 'green' },
                     }}
                   />
                 }

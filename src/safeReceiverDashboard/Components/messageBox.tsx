@@ -9,14 +9,20 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {ListItemSecondaryAction} from '@mui/material';
+import { ListItemSecondaryAction } from '@mui/material';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import MessageControl from './messageControl';
 import MessageCard from './MessageCard';
 
+/* Messagebox component of the receiver dashboard
+ * Needs a lot of work to get up and running.
+ * Consider using an interface to work with well defined
+ * feedback objects.
+ */
+
 async function fetchMessages() {
   //function to fetchMessages from the database
-  //currently not implemented 
+  //currently not implemented
   //Some code to get you started (not fully tested!)
   /*   console.log(`in fetch`);
     const response = await fetch('131.252.208.28:3001/message', {
@@ -30,9 +36,8 @@ async function fetchMessages() {
     const messages = await response.json();
     console.log(`messages: ${messages}`);
     return messages; */
-  
-    //a different solution to fetch
-    /*
+  //a different solution to fetch
+  /*
     console.log(`in fetch`);
     fetch('131.252.208.28:3001/message', {
       method: 'GET',
@@ -83,12 +88,11 @@ function MessageBox() {
     setMessageToDisplay(message);
   };*/
 
-  function generate(
-    element: React.ReactElement,
-  ) {
+  // Generates an arbitrary amount of placeholder messages.
+  function generate(element: React.ReactElement) {
     return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) =>
       React.cloneElement(element, {
-        key: value
+        key: value,
       })
     );
   }
@@ -105,10 +109,11 @@ function MessageBox() {
       <MessageControl />
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <MessageStyles     
-           sx={{ 
-            mt: 2
-           }}>
+          <MessageStyles
+            sx={{
+              mt: 2,
+            }}
+          >
             <List>
               {generate(
                 <ListItem
