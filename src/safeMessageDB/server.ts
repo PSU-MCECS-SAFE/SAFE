@@ -32,7 +32,9 @@ app.get('/getallmessages', async (req: Request, res: Response) => {
     const client: PoolClient = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve all messages
-    let result: QueryResult<any> = await client.query('SELECT * FROM "Message";');
+    let result: QueryResult<any> = await client.query(
+      'SELECT * FROM "Message";'
+    );
 
     // If no messages are returned
     if (result.rows.length === 0) {
@@ -60,10 +62,12 @@ app.delete('/deletemessage', async (req: Request, res: Response) => {
     const client: PoolClient = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve a paticular message based on code
-    let result: QueryResult <any> = await client.query('DELETE FROM "Message" WHERE code = ${code};');
+    let result: QueryResult<any> = await client.query(
+      'DELETE FROM "Message" WHERE code = ${code};'
+    );
 
     // Return successful status
-    res.status(200).json("Message deleted");
+    res.status(200).json('Message deleted');
 
     // Release the client connection back to the pool
     client.release();
@@ -84,14 +88,17 @@ app.get('/getmessage', async (req: Request, res: Response) => {
     const client: PoolClient = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve one message
-    let result: QueryResult<any> = await client.query('SELECT message, message_reply FROM "Message" WHERE code = ' + code + ' ORDER BY time_submitted DESC;');
+    let result: QueryResult<any> = await client.query(
+      'SELECT message, message_reply FROM "Message" WHERE code = $1 ORDER BY time_submitted DESC;',
+      [code]
+    );
 
     // If no messages are returned
-    if ((<QueryResult>result).rows.length && result.rows.length === 0) {
+    if (result.rows.length === 0) {
       res.status(404).json({ error: 'No results from query' });
     } else {
       // Return the returned message
-      res.status(200).json(result.rows);
+      res.status(200).json(result.rows[0]);
     }
     // Release the client connection back to the pool
     client.release();
