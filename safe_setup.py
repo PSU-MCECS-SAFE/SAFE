@@ -349,7 +349,7 @@ def scriptMenu():
     while True:
         option = input(
             "\nSelect which task you need to execute:"
-            "\n\t1)  Execute full deployment (all of the below except option 6)."
+            "\n\t1)  Execute full setup (all of the below except 6 & 7)."
             "\n\t2)  Edit SAFE configuration file."
             "\n\t3)  Run 'npm install' to get missing packages."
             "\n\t4)  Run 'npm run build' to build website."
