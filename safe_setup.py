@@ -316,28 +316,21 @@ def copyNewBuild():
     # If the host is the VM, lets just copy our brand new build and deploy!
     # Nothing could go wrong if we do... right? TEST YOUR BUILDS OFF THE VM
     # FIRST AND THIS SHOULD BE FIIIIIIINE.
-    if __HOST_IS_FEEDBACK_VM == True: 
-        print(
-            "\n***************************************************************"
-            "\nCopying new build to 'SAFEdeploy' with correct permissions. . ."
-            "\n***************************************************************"
-        )
-        time.sleep(2)        
-        os.system("rm -fr ~/SAFEdeploy/*")
-        os.system("cp -rp ./build/* ~/SAFEdeploy/")
-        print(
-        "\n***************"
-        "\nCopy complete!!"
-        "\n***************"
-        )
-        time.sleep(2)
-    else:
-        print(
-            "\n\n\t\tERROR:"
-            "\nThe deploy part of this command can only be done on the SAFE"
-            "\nvirtual machine. If this message is a bug, please contact the"
-            "\ndevelopment team to resolve the issue."
-            )
+    print(
+        "\n***************************************************************"
+        "\nCopying new build to 'SAFEdeploy' with correct permissions. . ."
+        "\n***************************************************************"
+    )
+    time.sleep(2)        
+    os.system("rm -fr ~/SAFEdeploy/*")
+    os.system("cp -rp ./build/* ~/SAFEdeploy/")
+    print(
+    "\n***************"
+    "\nCopy complete!!"
+    "\n***************"
+    )
+    time.sleep(2)
+        
     return
         
 def scriptMenu():
@@ -349,7 +342,7 @@ def scriptMenu():
     while True:
         option = input(
             "\nSelect which task you need to execute:"
-            "\n\t1)  Execute full deployment (all of the below except option 6)."
+            "\n\t1)  Execute full setup (all of the below except 6 & 7)."
             "\n\t2)  Edit SAFE configuration file."
             "\n\t3)  Run 'npm install' to get missing packages."
             "\n\t4)  Run 'npm run build' to build website."
