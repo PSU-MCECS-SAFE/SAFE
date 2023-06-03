@@ -14,7 +14,7 @@ Significantly, SAFE employees a user-centric approach by relieving students from
 - Provide user a unique code if they would like to receive reply of their feedback
 - Provide an option to user if they would like to receive the unique code to input email address
 - Check receiver's reply with provided unique code.
-- \*\*For more implementation details, please refer to the SAFE Technical Document.
+- **For more implementation details, please refer to the [SAFE Technical Document](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing).**
 
 ## Configuration
 
@@ -40,10 +40,10 @@ Significantly, SAFE employees a user-centric approach by relieving students from
 3. Run `npm run psu_deploy`
 
    - **Option 1** in the menu will run automatically run if the script detects that it is missing `safeConfig.json`
-     - This option will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
+     - This option will install all necessary packages for SAFE, setup, and generate files to make database connections.
    - Fill out the database login information and receiver email address.
    - **Option 7** will only successfully and fully execute if it is on the VM `feedback.cs.pdx.edu`, otherwise an error pops up alerting the user of this fact.
-   - Read the SAFE technical documentation for more information regarding the script.
+   - Read the [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing) for more information regarding the script.
 
 4. Run `node JSoutFile/safeMessageDB/server.js`
 
@@ -61,9 +61,9 @@ Significantly, SAFE employees a user-centric approach by relieving students from
 - make sure code is in public_html folder
 
 ## Documentation
+- [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing)
+- [SAFE Project Document](https://docs.google.com/document/d/10eupnhzwyy5QGYRyrANkVYcIVGvMmakqFB1AjU6x6So/edit?usp=sharing)
 
-- SAFE Project Document
-- SAFE Technical Document
 
 ## License Information
 
