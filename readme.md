@@ -60,7 +60,7 @@ Significantly, SAFE employees a user-centric approach by relieving students from
 - make sure you're connected to VPN
 - make sure code is in public_html folder
 
-## Documentation
+## Documentation (Only accessible by PSU account holders)
 - [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing)
 - [SAFE Project Document](https://docs.google.com/document/d/10eupnhzwyy5QGYRyrANkVYcIVGvMmakqFB1AjU6x6So/edit?usp=sharing)
 
