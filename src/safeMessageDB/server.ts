@@ -62,7 +62,7 @@ app.post('/addMessage', async (req: Request, res: Response) => {
     message: xss(message),
     message_reply: xss(message_reply),
   };
-  
+
   //replace anything that is not a letter, number, '-', or '/'
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s/-]/g, '');
   const time = new Date();
@@ -116,8 +116,9 @@ app.post('/addMessage', async (req: Request, res: Response) => {
 // if someone else is using a paticular port, you will need to change both server
 // and UI part of the port.
 const port = 3001;
-app.listen(port, '131.252.208.28', () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(port, '127.0.0.1', () => {
+  console.log(`Server listening on port 3001`);
 });
+
 
 export default app;
