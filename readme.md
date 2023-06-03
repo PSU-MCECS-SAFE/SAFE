@@ -7,9 +7,12 @@ It offers an invaluable method for students to provide honest feedback, shedding
 
 Significantly, SAFE employees a user-centric approach by relieving students from the obligation to log in or create an account, thereby guaranteeing the utmost protection of their privacy as no personal identifying information is stored.
 
-## Features
-Allow students to submit anonymous feedback to the chair of the Portland State University Computer Science department. 
-For more implementation details, please refer to the SAFE Technical Document.
+## Feature
+   - Allow students to submit anonymous feedback to the chair of the Portland State University Computer Science department. 
+   - Provide user a unique code if they would like to receive reply of their feedback
+   - Provide an option to user if they would like to receive the unique code to input email address
+   - Check receiver's reply with provided unique code.
+   - **For more implementation details, please refer to the SAFE Technical Document.
 
 ## Configuration
    - **This `MVP` branch is for a snapshot of the delivered project.** It is a 
