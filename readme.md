@@ -11,7 +11,7 @@ Significantly, SAFE employees a user-centric approach by relieving students from
 ## Features
 
 Allow students to submit anonymous feedback to the chair of the Portland State University Computer Science department.
-For more implementation details, please refer to the SAFE Technical Document.
+For more implementation details, please refer to the [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing).
 
 ## Configuration
 
@@ -32,10 +32,10 @@ For more implementation details, please refer to the SAFE Technical Document.
 3. Run `npm run psu_deploy` which will execute (safely) `safe_setup.py`
 
    - **Option 1** in the menu will run automatically run if the script detects that it is missing `safeConfig.json`
-   - This option will install all necessary packages for SAFE, setup, and generate files to make database connections. More details please refer to [issue#27](https://github.com/PSU-MCECS-SAFE/SAFE/issues/27#issue-1697069201)
+   - This option will install all necessary packages for SAFE, setup, and generate files to make database connections.
    - Fill out the database login information and receiver email address.
    - **Option 7** will only successfully and fully execute if it is on the VM `feedback.cs.pdx.edu`, otherwise an error pops up alerting the user of this fact. This performs a large amount of heavy lifting for deploying new builds to the PSU system.
-   - Read the SAFE technical documentation on `safe_setup.py` for more information regarding this script. Only certain files need to be rebuilt sometimes so it is strongly encouraged to read this section of the documentation.
+   - Read the [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing) on `safe_setup.py` for more information regarding this script. Only certain files need to be rebuilt sometimes so it is strongly encouraged to read this section of the documentation.
 
 4. Execute **option 7 from the script if system is already setup**, otherwise execute option 1. It should execute automatically but if it doesn't for some reason, **you must do this before proceeding to the next step**.
 
@@ -60,9 +60,8 @@ For more implementation details, please refer to the SAFE Technical Document.
 - If you have **_ever_** modified your systems `hosts` file to modify and act as the host for the SAFE webpage for testing purposes, make sure you remove it before trying to connect to the website **-OR-** the VM.
 
 ## Documentation
-
-- SAFE Project Document
-- SAFE Technical Document
+- [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing)
+- [SAFE Project Document](https://docs.google.com/document/d/10eupnhzwyy5QGYRyrANkVYcIVGvMmakqFB1AjU6x6So/edit?usp=sharing)
 
 ## License Information
 
