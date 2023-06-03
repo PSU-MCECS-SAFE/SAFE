@@ -59,7 +59,7 @@ For more implementation details, please refer to the [SAFE technical documentati
 - Make sure code is in public_html folder
 - If you have **_ever_** modified your systems `hosts` file to modify and act as the host for the SAFE webpage for testing purposes, make sure you remove it before trying to connect to the website **-OR-** the VM.
 
-## Documentation
+## Documentation (Only accessible by PSU account holders)
 - [SAFE technical documentation](https://docs.google.com/document/d/1MdtnJYj4y3OirrlEhxFQHG48TJet-ErY3psOXECbdkA/edit?usp=sharing)
 - [SAFE Project Document](https://docs.google.com/document/d/10eupnhzwyy5QGYRyrANkVYcIVGvMmakqFB1AjU6x6So/edit?usp=sharing)
 
