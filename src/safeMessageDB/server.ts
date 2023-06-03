@@ -11,6 +11,7 @@ import {
 import xss from 'xss';
 
 import { Code } from '../safeUtil/generateCode';
+import { PoolClient, QueryResult } from 'pg';
 import { checkString } from './verifyString';
 
 // Create a new Express app
@@ -28,15 +29,18 @@ app.use(cors());
 app.get('/getallmessages', async (req: Request, res: Response) => {
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    const client: PoolClient = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve all messages
-    const result = await client.query('SELECT * FROM "Message";');
-    //if no message return
+    let result: QueryResult<any> = await client.query(
+      'SELECT * FROM "Message";'
+    );
+
+    // If no messages are returned
     if (result.rows.length === 0) {
-      res.status(404).json({ error: 'No message in database' });
+      res.status(404).json({ error: 'No results from query' });
     } else {
-      //return all the message getting out
+      // Return all the returned messages
       res.status(200).json(result.rows);
     }
     // Release the client connection back to the pool
@@ -55,22 +59,16 @@ app.delete('/deletemessage', async (req: Request, res: Response) => {
 
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    const client: PoolClient = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve a paticular message based on code
-    const result = await client.query(
-      'DELETE FROM "Message" WHERE code = $1;',
-      [code]
+    let result: QueryResult<any> = await client.query(
+      'DELETE FROM "Message" WHERE code = ${code};'
     );
-    // If can't find message with coresponding code
-    if (result.rowCount === 0) {
-      res
-        .status(404)
-        .json({ error: 'No matching record found with provided code' });
-    } else {
-      // Send the message back to front-end
-      res.status(200).json('Message deleted!');
-    }
+
+    // Return successful status
+    res.status(200).json('Message deleted');
+
     // Release the client connection back to the pool
     client.release();
   } catch (err) {
@@ -87,20 +85,19 @@ app.get('/getmessage', async (req: Request, res: Response) => {
 
   try {
     // Acquire a client connection from the connection pool
-    const client = await messageDBConnect.connect();
+    const client: PoolClient = await messageDBConnect.connect();
 
     // Execute a SQL query to retrieve one message
-    const result = await client.query(
-      'SELECT message, message_reply FROM "Message" WHERE code = $1;',
+    let result: QueryResult<any> = await client.query(
+      'SELECT message, message_reply FROM "Message" WHERE code = $1 ORDER BY time_submitted DESC;',
       [code]
     );
-    // If can't find message with coresponding code
+
+    // If no messages are returned
     if (result.rows.length === 0) {
-      res
-        .status(404)
-        .json({ error: 'No matching record found with provided code' });
+      res.status(404).json({ error: 'No results from query' });
     } else {
-      // Send the message back to front-end
+      // Return the returned message
       res.status(200).json(result.rows[0]);
     }
     // Release the client connection back to the pool
@@ -202,20 +199,19 @@ app.post('/addMessage', async (req: Request, res: Response) => {
   const sanitizedTitle = sanitizedBody.title.replace(/[^a-zA-Z0-9\s/-]/g, '');
   const time = new Date();
 
-  let result: number | null = null;
+  let analysis_result: string | number;
   try {
-    result = checkString(message);
+    analysis_result = checkString(message);
   } catch (e: any) {
     return res
       .status(205)
       .json({ error: 'Invalid message: message contains profanities' });
   }
-  let analysis_result: string | null = null;
-  if (result < 0) {
+  if (analysis_result < 0) {
     analysis_result = 'negative';
-  } else if (result === 0) {
+  } else if (analysis_result === 0) {
     analysis_result = 'neutral';
-  } else if (result > 0) {
+  } else if (analysis_result > 0) {
     analysis_result = 'positive';
   } else {
     analysis_result = 'unknown';
