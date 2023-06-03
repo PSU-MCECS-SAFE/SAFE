@@ -1,7 +1,7 @@
 import os
 import json
 import shutil
-import subprocess
+import socket
 import sys
 import time
 import re
@@ -36,6 +36,11 @@ __OS_NAME = os.name
 __CFG_PATH = "../safeConfig/safeConfig.json"
 __BUILD_PATH = "./build"
 __JSOUT_PATH = "./JSoutFile"
+__HOST_IS = socket.gethostname() # Get a string of the hostname for us
+
+
+# Is that host *the* VM for SAFE? True or False
+__HOST_IS_FEEDBACK_VM = True if __HOST_IS == "feedback.cs.pdx.edu" else False
 __DEBUG = isDebugPresent()
 
 
@@ -71,12 +76,26 @@ def whoIsMyHost():
     True otherwise.
     """
     clearScreen()
-    myHostIs = subprocess.run(["hostname"], shell=True, stdout=subprocess.PIPE)
-    pattern = r"(ada\.cs\.pdx\.edu|babbage\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu|quizor\d+\.cs\.pdx\.edu)"
-    if len(re.findall(pattern, myHostIs.stdout.decode("utf-8"))) == 0:
+    
+    # This regex looks for psu specific servers that the original team used in
+    # the development process. ada, babbage, and rita were all used before the
+    # VM (feedback.cs.pdx.edu) was stood up. Quizor is added just incase.
+    pattern = r"(feedback|ada|babbage|quizor\d+\.cs\.pdx\.edu|rita\.cecs\.pdx\.edu)"
+    if __HOST_IS_FEEDBACK_VM:
+        return True # We 100% know we are allowed because we are the VM!
+    elif re.match(pattern, __HOST_IS) == None:
         return False
     return True
 
+def runFullSetup():
+    """
+    Runs the entire setup process for the app in a set particular order
+    to ensure algorithmic deployment
+    """
+    clearScreen()
+    makeConfigFile()
+    executeNpmAll()
+    print("\n\nSAFE setup complete!\n\n")
 
 def makeConfigFile():
     """
@@ -122,13 +141,13 @@ def makeConfigFile():
             return
 
     print("\n\nGenerating new configuration file. . .\n")
-    # Prompt the user for their database credentials
+    # Prompt the user for the database credentials
     while True:
         username = input("Enter the username: ")
 
         password = input("\nEnter the password: ")
 
-        db_address = input("\nEnter the endpoint address: ")
+        db_address = input("\nEnter the PostgreSQL database address: ")
 
         db_name = input("\nEnter the database name: ")
 
@@ -155,6 +174,7 @@ def makeConfigFile():
         "rcvr_email": rcvr_email,
     }
 
+    # Dump that dictionary to the file
     with open(__CFG_PATH, "w") as outfile:
         outfile.write(json.dumps(config_info, indent=4))
 
@@ -163,6 +183,11 @@ def makeConfigFile():
 
 
 def executeNpmAll():
+    """
+    Executes all npm scripts that would be required on initial setup or if the
+    person running the script elects to run all the npm scripts again from a
+    fresh build
+    """
     print(
         "\n\nNow performing NPM deployment actions. Some directories related\n"
         "the websites code may be removed to generate new versions.\n"
@@ -220,7 +245,7 @@ def executeNpmRunBuild():
         "\n'npm run build' complete!!"
         "\n**************************"
     )
-    modifyUserGroupPermissions()
+    modifyUserGroupPermissions()      
 
 
 def executeNpxTsc():
@@ -258,20 +283,56 @@ def modifyUserGroupPermissions():
     # CAT's documentation on what permissions must be set for the apache
     # server to access the directories.
     # https://cat.pdx.edu/services/web/account-websites/
+    
+    # DO NOT RUN CHMOD 711 ON BUILD ON THE VM!!!! This is a security issue that
+    # will alert the CAT. Instead, we want to chmod 700 build *then*
+    # chmod 711 -R build/* to get the internals properly setup!
     if __OS_NAME == "posix":
         print(
             "\nUNIX-like system detected. . . Running chmod changes on REQUIRED"
             "\ndirectories for the SAFE website on PSU servers."
         )
         time.sleep(1)
-        os.system("chmod 711 ../SAFE")
-        if os.path.exists(__BUILD_PATH):
+        os.system("chmod 711 ../SAFE") # Gotta make SAFE visible first.
+        
+        # Then the others under the conditions laid out above in the comments.
+        if __HOST_IS_FEEDBACK_VM == False and os.path.exists(__BUILD_PATH):
             os.system("chmod -R 711 ./build")
+        elif __HOST_IS_FEEDBACK_VM == True and os.path.exists(__BUILD_PATH):
+            os.system("chmod 700 ./build && chmod 711 -R ./build/*")
+                
+            
         print("\nModifications complete\n")
         time.sleep(1)
     return
 
-
+def copyNewBuild():
+    """
+    Once a npm run build is complete and the correct option is selected from the
+    menu this will smartly and safely copy the new build into SAFEdeploy. This
+    also carries over the correct permissions too for the deployed site.
+    """
+        
+    # If the host is the VM, lets just copy our brand new build and deploy!
+    # Nothing could go wrong if we do... right? TEST YOUR BUILDS OFF THE VM
+    # FIRST AND THIS SHOULD BE FIIIIIIINE.
+    print(
+        "\n***************************************************************"
+        "\nCopying new build to 'SAFEdeploy' with correct permissions. . ."
+        "\n***************************************************************"
+    )
+    time.sleep(2)        
+    os.system("rm -fr ~/SAFEdeploy/*")
+    os.system("cp -rp ./build/* ~/SAFEdeploy/")
+    print(
+    "\n***************"
+    "\nCopy complete!!"
+    "\n***************"
+    )
+    time.sleep(2)
+        
+    return
+        
 def scriptMenu():
     """
     Navigate the script to match users desired needs.
@@ -281,22 +342,24 @@ def scriptMenu():
     while True:
         option = input(
             "\nSelect which task you need to execute:"
-            "\n\t1)  Execute full deployment (all of the below except option 6)."
+            "\n\t1)  Execute full setup (all of the below except 6 & 7)."
             "\n\t2)  Edit SAFE configuration file."
             "\n\t3)  Run 'npm install' to get missing packages."
             "\n\t4)  Run 'npm run build' to build website."
             "\n\t5)  Run 'npx tsc' to compile REST api script."
             "\n\t6)  Run options 3-5."
+            "\n\t7)  Runs option 4. Deploys website if on the SAFE virtual machine."
             "\n\t0)  Exit this script."
             "\n\nOption: "
         )
         print("\n")
+        # Python added their version of switch statements in 3.10. If the script
+        # fails to run at this point, ensure that python is up to date on the
+        # machine running this script. This just looks and runs nicer than a
+        # bunch of if/else if statements.
         match option:
             case "1":
-                clearScreen()
-                makeConfigFile()
-                executeNpmAll()
-                print("\n\nSAFE setup complete!\n\n")
+                runFullSetup()
             case "2":
                 clearScreen()
                 makeConfigFile()
@@ -312,9 +375,21 @@ def scriptMenu():
             case "6":
                 clearScreen()
                 executeNpmAll()
+            case "7":
+                if __HOST_IS_FEEDBACK_VM:
+                    clearScreen()
+                    executeNpmRunBuild()
+                    copyNewBuild()
+                else:
+                    clearScreen()
+                    print("\n\t\tNOTICE:"
+                          "\nUnable to execute option 7. The current system is"
+                          "\nnot the SAFE VM designated by this script. If this"
+                          "\nis in error contact the dev team to resolve this"
+                          "\nproblem.")
             case "0":
                 return
-            case _:
+            case _: # Default case if user picks bad option.
                 print("\n\n**ERROR** - Invalid option. . .\n")
 
 
@@ -340,6 +415,20 @@ def main():
         )
         time.sleep(2)
 
+    # Has the script EVER been ran before? If not, force setup to take place.
+    if not os.path.exists(__CFG_PATH):
+        print(
+            "\n\n\t\t\tNOTICE:\n"
+            "It appears this script has never been ran before. This\n"
+            "script will now take you through the process of generating the\n"
+            "required configuration information. Once that is complete, it\n"
+            "will build the project.\n\n"
+        )
+        time.sleep(5)
+        print("\nResuming script . . .\n")
+        time.sleep(2)
+        runFullSetup()
+        
     # Nice little menu to use this script.
     scriptMenu()
 

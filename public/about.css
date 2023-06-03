@@ -31,8 +31,7 @@ a:link {
 }
 
 .button-center {
-    position: absolute;
-    padding-left: 30%;
+    text-align: center;
     padding-top: 1%;
   }
 
@@ -60,6 +59,7 @@ p.safemessage{
 }
 
 h1.safeheader{
+    text-align: center;
     font-family: "Times New Roman", Times, serif;
     font: serif;
     font-size: xx-large;
@@ -70,7 +70,7 @@ h1.safeheader{
     transform: scale(1);
   }
 }
- 
+ /*The span tag below can be wrapped around any element in the html file to create the blurring animation effect. The nth children code is supporting this animation.*/
 span {
     display: inline-block;
     opacity: 0;
